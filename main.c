@@ -4,13 +4,12 @@
 #include <stdlib.h>
 
 typedef struct s_node {
-
-	int value;
+	char *value;
 	struct s_node *left;
 	struct s_node *right;
 } t_node;
 
-t_node *create_node(int value) {
+t_node *create_node(char *value) {
 	t_node *node = (t_node *)malloc(sizeof(t_node));
 	node->value = value;
 	node->left = NULL;
@@ -34,31 +33,47 @@ void print_tree(t_node *root) {
 	if (root == NULL) {
 		return;
 	}
-	printf("%d\n", root->value);
+	printf("%s\n", root->value);
 	print_tree(root->left);
 	print_tree(root->right);
 }
-
+t_node *multip(char *s);
+t_node *plus(char *s)
+{
+	for (size_t i = 0; s && s[i]; i++)
+	{
+		if (s[i] == '+' || s[i] == '-')
+		{
+			t_node *node = create_node(s[i] == '+' ? "+" : "-");
+			s[i] = '\0';
+			node->left = multip(s);
+			node->right = plus(s + i + 1);
+			return node;
+		}
+	}
+	return multip(s);
+}
+t_node *multip(char *s)
+{
+	for (size_t i = 0; s && s[i]; i++)
+	{
+		if (s[i] == '*' || s[i] == '/')
+		{
+			t_node *node = create_node(s[i] == '*' ? "*" : "/");
+			s[i] = '\0';
+			node->left = multip(s);
+			node->right = create_node(s + i + 1);
+			return node;
+		}
+	}
+	return create_node((s));
+}
 
 int main() {
  	char *input = readline("Calculate: ");
 
-	t_node *root = parseTree(input);
+	t_node *root = plus(input);
 	print_tree(root);
-	// t_node* n1 = create_node(10);
-	// t_node* n2 = create_node(20);
-	// t_node* n3 = create_node(30);
-	// t_node* n4 = create_node(40);
-	// t_node* n5 = create_node(50);
-
-
-
-	// n1->left = n2;
-	// n1->right = n3;
-	// n2->left = n4;
-	// n2->right = n5;
-
-	// print_tree(n1);
 
    
     return 0;
