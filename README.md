@@ -24,23 +24,23 @@ Minishell is a custom shell program written in C, designed to mimic some basic f
 | `read`                                         | Reads data from a file descriptor into a buffer.                    |
 | `close`                                        | Closes a previously opened file descriptor.                         |
 | `fork`                                         | Creates a new process by duplicating the calling process.           |
-| `wait/waitpid`                                 | Waits for a child process to change state.                          |
-| `signal/sigaction`                             | Handles or ignores signals sent to the process.                     |
-| `sigemptyset/sigaddset`                        | Initializes and adds signals to a signal set.                       |
+| `waitwaitpid`                                 | Waits for a child process to change state.                          |
+| `signal` <br> `sigaction`                             | Handles or ignores signals sent to the process.                     |
+| `sigemptyset` <br> `sigaddset`                        | Initializes and adds signals to a signal set.                       |
 | `kill`                                         | Sends a signal to a process or a group of processes.                |
 | `exit`                                         | Terminates the calling process.                                     |
 | `getcwd`                                       | Gets the current working directory.                                 |
 | `chdir`                                        | Changes the current working directory.                              |
-| `stat/lstat/fstat`                             | Returns information about a file or a file descriptor.              |
+| `stat` <br> `lstat` <br> `fstat`                             | Returns information about a file or a file descriptor.              |
 | `unlink`                                       | Removes a link to a file.                                           |
 | `execve`                                       | Replaces the current process image with a new process image.        |
-| `dup/dup2`                                     | Duplicates a file descriptor.                                       |
+| `dup` <br> `dup2`                                     | Duplicates a file descriptor.                                       |
 | `pipe`                                         | Creates a pipe for inter-process communication.                     |
-| `opendir/readdir/closedir`                     | Manages directory streams.                                          |
-| `strerror/perror`                              | Returns a pointer to the textual representation of an error code.   |
+| `opendir` <br> `readdir` <br> `closedir`                     | Manages directory streams.                                          |
+| `strerror` <br> `perror`                              | Returns a pointer to the textual representation of an error code.   |
 | `isatty`                                       | Tests whether a file descriptor refers to a terminal.               |
-| `ttyname/ttyslot`                              | Returns the name of the terminal associated with a file descriptor. |
+| `ttyname` <br> `ttyslot`                              | Returns the name of the terminal associated with a file descriptor. |
 | `ioctl`                                        | Controls device-specific input/output operations.                   |
 | `getenv`                                       | Returns the value of an environment variable.                       |
-| `tcsetattr/tcgetattr`                          | Sets and gets terminal attributes.                                  |
-| `tgetent/tgetflag/tgetnum/tgetstr/tgoto/tputs` | Terminal handling functions from the termcap library.               |
+| `tcsetattr` <br> `tcgetattr`                          | Sets and gets terminal attributes.                                  |
+| `tgetent` <br> `tgetflag` <br> `tgetnum` <br> `tgetstr` <br> `tgoto` <br> `tputs` | Terminal handling functions from the termcap library.               |
