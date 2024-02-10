@@ -81,6 +81,8 @@ int main(int argc, char **argv, char **envp)
 	val: (outfile);   prev: (>);     < : (-1);   | : (-1);   > : (0);
 
 	*/
+
+	// ls | wc
 	head->val = strcopy("|");
 	head->left->val = strcopy("wc");
 	head->right->val = strcopy("ls");
@@ -95,13 +97,6 @@ int main(int argc, char **argv, char **envp)
 	head->right->left = NULL;
 	head->left->right = NULL;
 	head->left->left = NULL;
-	
-
-	// pipe     read_from(0) out_to(1) not(-1)
-	
-	// in redirection   read_from(0) out_to(1) not (-1)
-	
-	// out redirection    read_from(0)  out_to(1)   not(-1)
 	
 	// ?
 	general_execution(head, envp);
