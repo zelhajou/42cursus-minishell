@@ -1,19 +1,31 @@
 # 42-minishell
 
 ## Overview
-Minishell is a custom shell program written in C, designed to mimic some basic functionalities of (bash)[https://en.wikipedia.org/wiki/Bash_(Unix_shell)], the Bourne Again SHell. This project is part of the 42 School curriculum, aimed at deepening our understanding of system processes, file descriptors, and the intricacies of command-line interfaces. By creating our own shell, we delve into the core of Unix-based systems, learning to control processes, interpret user commands, and manage environmental variables.
+Minishell is a custom shell program written in C, designed to mimic some basic functionalities of [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)), the Bourne Again SHell. This project is part of the 42 School curriculum, aimed at deepening our understanding of system processes, file descriptors, and the intricacies of command-line interfaces. By creating our own shell, we delve into the core of Unix-based systems, learning to control processes, interpret user commands, and manage environmental variables.
 
 
 ## Team Development Steps for Minishell
-### Step 1: Project Setup
-- Initialized the project repository and set up the basic directory structure.
-- Created a Makefile with rules for `all`, `clean`, `fclean`, `re`
+### Step 1: Initial Planning and Setup
+- **Repository Setup**: Collaboratively set up the GitHub repository, ensuring a clear directory structure and branch strategy.
+- **Makefile Creation**: Makefile that includes rules for `all`, `clean`, `fclean`, `re`
 - Set up libft libray
 
-https://www.youtube.com/watch?v=hMSByvFHOro&ab_channel=LukeSmith
+### Step 2: Research and Design Phase
+#### Shell Operations: 
+- [What Happens When You Type a Command in Your Terminal](https://www.youtube.com/watch?v=2P7fcVHxA9o&list=LL&index=6) 📹
+- [Shell Code Explained](https://www.youtube.com/playlist?list=PLbtzT1TYeoMhF4hcpEiCsOeN13zqrzBJq) 📹
+
+- [Shell Command Language](https://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html) 📹
+
+- [Unix terminals and shells](https://www.youtube.com/playlist?list=PLFAC320731F539902) 📹
+
+- [Terminal vs. Bash vs. Command line vs. Prompt](https://www.youtube.com/watch?v=hMSByvFHOro&ab_channel=LukeSmith) 📝
+
+- [Tutorial - Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/) 📝
 
 
-## External Functions
+#### External Functions:
+Reviewed the external functions allowed, dividing them among ourselves to research and explain their usage to the team.
 
 | Function                                       | Description                                                         |
 | ---------------------------------------------- | ------------------------------------------------------------------- |
@@ -52,3 +64,38 @@ https://www.youtube.com/watch?v=hMSByvFHOro&ab_channel=LukeSmith
 | `getenv`                                       | Returns the value of an environment variable.                       |
 | `tcsetattr` <br> `tcgetattr`                          | Sets and gets terminal attributes.                                  |
 | `tgetent` <br> `tgetflag` <br> `tgetnum` <br> `tgetstr` <br> `tgoto` <br> `tputs` | Terminal handling functions from the termcap library.               |
+
+### Step 3: Parsing and Input Management
+
+#### Command Reading:
+Implemented readline and integrated add_history
+
+[GNU Readline](https://en.wikipedia.org/wiki/GNU_Readline)
+```bash
+brew install readline
+```
+
+```c
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+int main(void)
+{
+    char *input;
+
+    while (1)
+    {
+        input = readline("minishell$ ");
+        if (!input)
+            break;
+        if (*input)
+            add_history(input);
+        printf("Input: %s\n", input);
+        free(input);
+    }
+    return 0;
+}
+```
+[readline(3) - Linux manual page](https://man7.org/linux/man-pages/man3/readline.3.html)
+
