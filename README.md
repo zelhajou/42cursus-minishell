@@ -4,6 +4,10 @@
 Minishell is a custom shell program written in C, designed to mimic some basic functionalities of [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)), the Bourne Again SHell. This project is part of the 42 School curriculum, aimed at deepening our understanding of system processes, file descriptors, and the intricacies of command-line interfaces. By creating our own shell, we delve into the core of Unix-based systems, learning to control processes, interpret user commands, and manage environmental variables.
 
 
+
+
+
+
 ## Team Development Steps for Minishell
 ### Step 1: Initial Planning and Setup
 - **Repository Setup**: Collaboratively set up the GitHub repository, ensuring a clear directory structure and branch strategy.
