@@ -1,12 +1,19 @@
 # 42-minishell
 
 ## Overview
-Minishell is a custom shell program written in C, designed to mimic some basic functionalities of [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)), the Bourne Again SHell. This project is part of the 42 School curriculum, aimed at deepening our understanding of system processes, file descriptors, and the intricacies of command-line interfaces. By creating our own shell, we delve into the core of Unix-based systems, learning to control processes, interpret user commands, and manage environmental variables.
+Our Minishell project represents a collaborative effort to build a custom shell program in C, inspired by the functionalities of [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)), the Bourne Again SHell. As part of the 42 School curriculum, this project served as a unique opportunity for us to deepen our collective understanding of system processes, file descriptors, and the complexities of command-line interfaces. Through the development of our own shell, we engaged in a comprehensive exploration of Unix-based systems, gaining hands-on experience in process control, command interpretation, and environmental variable management.
 
+## Project Challenges
 
-
-
-
+- **Parsing User Input**: Accurately parsing user input, including handling spaces, quotes, and special characters, while distinguishing between command arguments and options.
+- **Executing Commands**: Implementing logic to search for and execute the right executable based on the PATH environment variable or a specified path, and managing execution of built-in commands versus external commands.
+- **Signal Handling**: Correctly handling Unix signals such as SIGINT (`ctrl-C`), SIGQUIT (`ctrl-\`), and EOF (`ctrl-D`), and ensuring the shell behaves similarly to bash in response to these signals.
+- **Input/Output Redirection and Pipes**: Implementing input and output redirection (`<`, `>`, `>>`, `<<`) and pipes (`|`) to allow for command chaining and data redirection, which involves managing file descriptors and process communication.
+- **Environment Variable Expansion**: Managing environment variables and supporting their expansion within commands, including the special case of `$?` to represent the exit status of the most recently executed command.
+- **Memory Management**: Ensuring efficient memory management throughout the shell, including preventing memory leaks especially in the context of the readline function and dynamically allocated resources.
+- **Built-in Commands Implementation**: Creating internal implementations of several built-in commands (`echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`) that behave consistently with their bash counterparts.
+- **Concurrency and Process Management**: Handling concurrency through process creation and management, using system calls like `fork`, `execve`, `wait`, and `pipe`, and ensuring robust process control and signal handling.
+- **Error Handling**: Developing comprehensive error handling strategies to deal with invalid commands, permissions issues, nonexistent files, and other runtime errors.
 
 ## Team Development Steps for Minishell
 ### Step 1: Initial Planning and Setup
@@ -31,43 +38,98 @@ Minishell is a custom shell program written in C, designed to mimic some basic f
 #### External Functions:
 Reviewed the external functions allowed, dividing them among ourselves to research and explain their usage to the team.
 
-| Function                                       | Description                                                         |
-| ---------------------------------------------- | ------------------------------------------------------------------- |
-| `readline`                                     | Reads a line from the standard input and returns it.                |
-| `rl_clear_history`                             | Clears the readline history list.                                   |
-| `rl_on_new_line`                               | Prepares readline for reading input on a new line.                  |
-| `rl_replace_line`                              | Replaces the content of the readline current line buffer.           |
-| `rl_redisplay`                                 | Updates the display to reflect changes to the input line.           |
-| `add_history`                                  | Adds the most recent input to the readline history list.            |
-| `printf`                                       | Outputs formatted data to stdout.                                   |
-| `malloc`                                       | Allocates specified bytes of heap memory.                           |
-| `free`                                         | Deallocates previously allocated memory.                            |
-| `write`                                        | Writes data to a file descriptor.                                   |
-| `access`                                       | Checks calling process's permissions for a file or directory.       |
-| `open`                                         | Opens a file or device, returning a file descriptor.                |
-| `read`                                         | Reads data from a file descriptor into a buffer.                    |
-| `close`                                        | Closes a previously opened file descriptor.                         |
-| `fork`                                         | Creates a new process by duplicating the calling process.           |
-| `waitwaitpid`                                 | Waits for a child process to change state.                          |
-| `signal` <br> `sigaction`                             | Handles or ignores signals sent to the process.                     |
-| `sigemptyset` <br> `sigaddset`                        | Initializes and adds signals to a signal set.                       |
-| `kill`                                         | Sends a signal to a process or a group of processes.                |
-| `exit`                                         | Terminates the calling process.                                     |
-| `getcwd`                                       | Gets the current working directory.                                 |
-| `chdir`                                        | Changes the current working directory.                              |
-| `stat` <br> `lstat` <br> `fstat`                             | Returns information about a file or a file descriptor.              |
-| `unlink`                                       | Removes a link to a file.                                           |
-| `execve`                                       | Replaces the current process image with a new process image.        |
-| `dup` <br> `dup2`                                     | Duplicates a file descriptor.                                       |
-| `pipe`                                         | Creates a pipe for inter-process communication.                     |
-| `opendir` <br> `readdir` <br> `closedir`                     | Manages directory streams.                                          |
-| `strerror` <br> `perror`                              | Returns a pointer to the textual representation of an error code.   |
-| `isatty`                                       | Tests whether a file descriptor refers to a terminal.               |
-| `ttyname` <br> `ttyslot`                              | Returns the name of the terminal associated with a file descriptor. |
-| `ioctl`                                        | Controls device-specific input/output operations.                   |
-| `getenv`                                       | Returns the value of an environment variable.                       |
-| `tcsetattr` <br> `tcgetattr`                          | Sets and gets terminal attributes.                                  |
-| `tgetent` <br> `tgetflag` <br> `tgetnum` <br> `tgetstr` <br> `tgoto` <br> `tputs` | Terminal handling functions from the termcap library.               |
+### Readline Functions:
+| Function            | Description                                                   |
+| ------------------- | ------------------------------------------------------------- |
+| `readline`          | Reads a line from the standard input and returns it.         |
+| `rl_clear_history`  | Clears the readline history list.                            |
+| `rl_on_new_line`    | Prepares readline for reading input on a new line.           |
+| `rl_replace_line`   | Replaces the content of the readline current line buffer.    |
+| `rl_redisplay`      | Updates the display to reflect changes to the input line.    |
+| `add_history`       | Adds the most recent input to the readline history list.     |
+
+### Standard I/O Functions:
+| Function   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `printf`   | Outputs formatted data to stdout.                       |
+
+### Memory Allocation Functions:
+| Function   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `malloc`   | Allocates specified bytes of heap memory.               |
+| `free`     | Deallocates previously allocated memory.                |
+
+### File I/O Functions:
+| Function   | Description                                                   |
+| ---------- | ------------------------------------------------------------- |
+| `write`    | Writes data to a file descriptor.                             |
+| `access`   | Checks calling process's permissions for a file or directory. |
+| `open`     | Opens a file or device, returning a file descriptor.         |
+| `read`     | Reads data from a file descriptor into a buffer.              |
+| `close`    | Closes a previously opened file descriptor.                   |
+
+### Process Control Functions:
+| Function      | Description                                                        |
+| ------------- | ------------------------------------------------------------------ |
+| `fork`        | Creates a new process by duplicating the calling process.         |
+| `wait`        | Suspends execution of the calling process until one of its children terminates. |
+| `waitpid`     | Waits for a specific child process to change state.               |
+| `wait3`       | Waits for any child process to change state.                      |
+| `wait4`       | Waits for a specific child process to change state.               |
+| `signal`      | Handles or ignores signals sent to the process.                   |
+| `sigaction`   | Handles or ignores signals sent to the process.                   |
+| `sigemptyset`| Initializes and adds signals to a signal set.                     |
+| `sigaddset`   | Initializes and adds signals to a signal set.                     |
+| `kill`        | Sends a signal to a process or a group of processes.              |
+| `exit`        | Terminates the calling process.                                    |
+
+### Directory Functions:
+| Function   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `getcwd`   | Gets the current working directory.                     |
+| `chdir`    | Changes the current working directory.                  |
+| `stat`     | Returns information about a file or a file descriptor. |
+| `lstat`    | Returns information about a file or a file descriptor. |
+| `fstat`    | Returns information about a file or a file descriptor. |
+| `unlink`   | Removes a link to a file.                               |
+| `execve`   | Replaces the current process image with a new process image. |
+
+### File Descriptor Functions:
+| Function   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `dup`      | Duplicates a file descriptor.                          |
+| `dup2`     | Duplicates a file descriptor.                          |
+| `pipe`     | Creates a pipe for inter-process communication.        |
+
+### Directory Functions:
+| Function   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `opendir`  | Manages directory streams.                              |
+| `readdir`  | Manages directory streams.                              |
+| `closedir` | Manages directory streams.                              |
+
+### Error Handling Functions:
+| Function   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `strerror` | Returns a pointer to the textual representation of an error code. |
+| `perror`   | Returns a pointer to the textual representation of an error code. |
+
+### Terminal Functions:
+| Function      | Description                                                        |
+| ------------- | ------------------------------------------------------------------ |
+| `isatty`      | Tests whether a file descriptor refers to a terminal.              |
+| `ttyname`     | Returns the name of the terminal associated with a file descriptor.|
+| `ttyslot`     | Returns the name of the terminal associated with a file descriptor.|
+| `ioctl`       | Controls device-specific input/output operations.                  |
+| `getenv`      | Returns the value of an environment variable.                      |
+| `tcsetattr`   | Sets and gets terminal attributes.                                 |
+| `tcgetattr`   | Sets and gets terminal attributes.                                 |
+| `tgetent`     | Terminal handling functions from the termcap library.              |
+| `tgetflag`    | Terminal handling functions from the termcap library.              |
+| `tgetnum`     | Terminal handling functions from the termcap library.              |
+| `tgetstr`     | Terminal handling functions from the termcap library.              |
+| `tgoto`       | Terminal handling functions from the termcap library.              |
+| `tput`        | Terminal handling functions from the termcap library.              |
 
 ### Step 3: Parsing and Input Management
 
