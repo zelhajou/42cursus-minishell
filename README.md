@@ -165,4 +165,50 @@ int main(void)
 ```
 [readline(3) - Linux manual page](https://man7.org/linux/man-pages/man3/readline.3.html)
 
-#### Input Parsing:
+#### Input Parsing Steps:
+
+##### Tokenization 
+The goal of the tokenization process is to break down the input string into a series of tokens that the parser can easily understand. These tokens represent commands, arguments, pipes, redirections, and other elements of the shell syntax.
+
+
+- **Token Structure**
+
+```c
+// Token type enumeration
+typedef enum e_token_type
+{
+    TOKEN_WORD,      // For commands and arguments
+    TOKEN_PIPE,      // For '|'
+    TOKEN_REDIR_IN,  // For '<'
+    TOKEN_REDIR_OUT, // For '>'
+    TOKEN_REDIR_APPEND, // For '>>'
+    TOKEN_REDIR_HEREDOC, // For '<<'
+    TOKEN_EOF       // For the end of input
+}   t_token_type;
+
+// Token structure
+typedef struct s_token
+{
+    t_token_type type;
+    char        *value;
+    struct s_token *next;
+}   t_token;
+```
+
+- **Tokenization Strategy**
+
+1. Whitespace Handling
+2. Quoting
+3. Redirections and Pipes
+4. Variable Expansion
+5. Escaping Characters
+6. Error Handling
+
+
+- **Tokenization Function**
+	- `new_token` Function: Allocates and initializes a new token.
+	- `add_token_to_list` Function: Adds the new token to the end of the tokens list.
+	- `tokenize_input` Function: Iterates through the input, creating tokens for words separated by spaces.
+	- `handle_quotes`
+	- `handle_special_chars`
+	- `handle_word`
