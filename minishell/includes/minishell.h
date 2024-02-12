@@ -11,4 +11,38 @@
 
 #include "libft.h"
 
+
+// Token Structure
+
+typedef enum e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_APPEND,
+	TOKEN_REDIR_HEREDOC,
+	TOKEN_EOF,
+	TOKEN_TYPE_COUNT
+}	t_token_type;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	char			*value;
+	struct s_token	*next;
+}	t_token;
+
+
+// Token Functions
+t_token *new_token(t_token_type type, char *value);
+void add_token_to_list(t_token **tokens, t_token *new_token);
+void handle_quotes(char **input, t_token **tokens);
+void handle_special_chars(char **input, t_token **tokens);
+void handle_word(char **input, t_token **tokens);
+t_token *tokenize_input(char *input);
+void display_tokens(t_token *tokens);
+
+
+
 #endif
