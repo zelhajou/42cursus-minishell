@@ -1,9 +1,8 @@
-# 42-minishell
 
-## Overview
+# Overview
 Our Minishell project represents a collaborative effort to build a custom shell program in C, inspired by the functionalities of [bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)), the Bourne Again SHell. As part of the 42 School curriculum, this project served as a unique opportunity for us to deepen our collective understanding of system processes, file descriptors, and the complexities of command-line interfaces. Through the development of our own shell, we engaged in a comprehensive exploration of Unix-based systems, gaining hands-on experience in process control, command interpretation, and environmental variable management.
 
-## Project Challenges
+# Project Challenges
 
 - **Parsing User Input**: Accurately parsing user input, including handling spaces, quotes, and special characters, while distinguishing between command arguments and options.
 - **Executing Commands**: Implementing logic to search for and execute the right executable based on the PATH environment variable or a specified path, and managing execution of built-in commands versus external commands.
@@ -15,14 +14,14 @@ Our Minishell project represents a collaborative effort to build a custom shell 
 - **Concurrency and Process Management**: Handling concurrency through process creation and management, using system calls like `fork`, `execve`, `wait`, and `pipe`, and ensuring robust process control and signal handling.
 - **Error Handling**: Developing comprehensive error handling strategies to deal with invalid commands, permissions issues, nonexistent files, and other runtime errors.
 
-## Team Development Steps for Minishell
-### Step 1: Initial Planning and Setup
+# Team Development Steps for Minishell
+## Step 1: Initial Planning and Setup
 - **Repository Setup**: Collaboratively set up the GitHub repository, ensuring a clear directory structure and branch strategy.
 - **Makefile Creation**: Makefile that includes rules for `all`, `clean`, `fclean`, `re`
 - Set up libft libray
 
-### Step 2: Research and Design Phase
-#### Shell Operations: 
+## Step 2: Research and Design Phase
+### Shell Operations: 
 - [What Happens When You Type a Command in Your Terminal](https://www.youtube.com/watch?v=2P7fcVHxA9o&list=LL&index=6) 📹
 - [Shell Code Explained](https://www.youtube.com/playlist?list=PLbtzT1TYeoMhF4hcpEiCsOeN13zqrzBJq) 📹
 
@@ -35,10 +34,10 @@ Our Minishell project represents a collaborative effort to build a custom shell 
 - [Tutorial - Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/) 📝
 
 
-#### External Functions:
+### External Functions:
 Reviewed the external functions allowed, dividing them among ourselves to research and explain their usage to the team.
 
-### Readline Functions:
+#### Readline Functions:
 | Function            | Description                                                   |
 | ------------------- | ------------------------------------------------------------- |
 | `readline`          | Reads a line from the standard input and returns it.         |
@@ -48,18 +47,18 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 | `rl_redisplay`      | Updates the display to reflect changes to the input line.    |
 | `add_history`       | Adds the most recent input to the readline history list.     |
 
-### Standard I/O Functions:
+#### Standard I/O Functions:
 | Function   | Description                                             |
 | ---------- | ------------------------------------------------------- |
 | `printf`   | Outputs formatted data to stdout.                       |
 
-### Memory Allocation Functions:
+#### Memory Allocation Functions:
 | Function   | Description                                             |
 | ---------- | ------------------------------------------------------- |
 | `malloc`   | Allocates specified bytes of heap memory.               |
 | `free`     | Deallocates previously allocated memory.                |
 
-### File I/O Functions:
+#### File I/O Functions:
 | Function   | Description                                                   |
 | ---------- | ------------------------------------------------------------- |
 | `write`    | Writes data to a file descriptor.                             |
@@ -68,7 +67,7 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 | `read`     | Reads data from a file descriptor into a buffer.              |
 | `close`    | Closes a previously opened file descriptor.                   |
 
-### Process Control Functions:
+#### Process Control Functions:
 | Function      | Description                                                        |
 | ------------- | ------------------------------------------------------------------ |
 | `fork`        | Creates a new process by duplicating the calling process.         |
@@ -83,7 +82,7 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 | `kill`        | Sends a signal to a process or a group of processes.              |
 | `exit`        | Terminates the calling process.                                    |
 
-### Directory Functions:
+#### Directory Functions:
 | Function   | Description                                             |
 | ---------- | ------------------------------------------------------- |
 | `getcwd`   | Gets the current working directory.                     |
@@ -94,27 +93,27 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 | `unlink`   | Removes a link to a file.                               |
 | `execve`   | Replaces the current process image with a new process image. |
 
-### File Descriptor Functions:
+#### File Descriptor Functions:
 | Function   | Description                                             |
 | ---------- | ------------------------------------------------------- |
 | `dup`      | Duplicates a file descriptor.                          |
 | `dup2`     | Duplicates a file descriptor.                          |
 | `pipe`     | Creates a pipe for inter-process communication.        |
 
-### Directory Functions:
+#### Directory Functions:
 | Function   | Description                                             |
 | ---------- | ------------------------------------------------------- |
 | `opendir`  | Manages directory streams.                              |
 | `readdir`  | Manages directory streams.                              |
 | `closedir` | Manages directory streams.                              |
 
-### Error Handling Functions:
+#### Error Handling Functions:
 | Function   | Description                                             |
 | ---------- | ------------------------------------------------------- |
 | `strerror` | Returns a pointer to the textual representation of an error code. |
 | `perror`   | Returns a pointer to the textual representation of an error code. |
 
-### Terminal Functions:
+#### Terminal Functions:
 | Function      | Description                                                        |
 | ------------- | ------------------------------------------------------------------ |
 | `isatty`      | Tests whether a file descriptor refers to a terminal.              |
@@ -131,9 +130,9 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 | `tgoto`       | Terminal handling functions from the termcap library.              |
 | `tput`        | Terminal handling functions from the termcap library.              |
 
-### Step 3: Parsing and Input Management
+## Step 3: Parsing and Input Management
 
-#### Command Reading:
+### Command Reading:
 Implemented readline and integrated add_history
 
 [GNU Readline](https://en.wikipedia.org/wiki/GNU_Readline)
@@ -165,4 +164,58 @@ int main(void)
 ```
 [readline(3) - Linux manual page](https://man7.org/linux/man-pages/man3/readline.3.html)
 
-#### Input Parsing:
+### Input Parsing Steps:
+
+#### Tokenization 
+The goal of the tokenization process is to break down the input string into a series of tokens that the parser can easily understand. These tokens represent commands, arguments, pipes, redirections, and other elements of the shell syntax.
+
+- **Quotations**: Distinguishing between single (`'`) and double (`"`) quotes.
+- **Redirections**: Recognizing input (`<`), output (`>`), append (`>>`), and here-documen(`<<`) redirections.
+- **Pipes** (`|`): Splitting commands to be executed in a pipeline.
+- **Environment variables**: Expanding variables starting with `$`.
+- **Command separation**: Identifying commands and their arguments.
+
+#### Token Structure:
+
+
+```c
+// Token type enumeration
+typedef enum e_token_type
+{
+    TOKEN_WORD,      // For commands and arguments
+    TOKEN_PIPE,      // For '|'
+    TOKEN_REDIR_IN,  // For '<'
+    TOKEN_REDIR_OUT, // For '>'
+    TOKEN_REDIR_APPEND, // For '>>'
+    TOKEN_REDIR_HEREDOC, // For '<<'
+    TOKEN_EOF       // For the end of input
+}   t_token_type;
+
+// Token structure
+typedef struct s_token
+{
+    t_token_type type;
+    char        *value;
+    struct s_token *next;
+}   t_token;
+```
+
+#### Tokenization Strategy:
+
+1. **Whitespace Handling**: Skip whitespace outside quotes to separate commands and arguments.
+2. **Quoting**: Correctly handle single (`'`) and double quotes (`"`), preserving the text exactly as is within single quotes and allowing for variable expansion and escaped characters within double quotes.
+3. **Redirections and Pipes**: Detect `>`, `>>`, `<`, `<<`, and `|`, treating them as separate tokens while managing any adjacent whitespace.
+4. **Variable Expansion**: Identify variables (`$VAR` or `${VAR}`) for later expansion. This might be more related to parsing after tokenization but be aware during tokenization.
+5. **Error Handling and Reporting**: Detect and report syntax errors, such as unclosed quotes or other issues.
+
+
+#### **Tokenization Function**
+The tokenization function will iterate through the input string, identifying and categorizing segments according to the shell syntax. 
+- `new_token` Function: Allocates and initializes a new token.
+- `add_token_to_list` Function: Adds the new token to the end of the tokens list.
+- `tokenize_input` Function: Iterates through the input, creating tokens for words separated by spaces.
+- `handle_quotes` Function : Handles the quotes in the input string.
+- `handle_special_chars` : Handles the special characters in the input string.
+- `handle_word` : Handles the words in the input string.
+
+#### Parsing

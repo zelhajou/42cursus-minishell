@@ -9,6 +9,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#include <fcntl.h>
+#include <sys/wait.h>
+
 #include "libft.h"
 
 
