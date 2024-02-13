@@ -1,3 +1,5 @@
+#include "../../includes/minishell.h"
+
 int	get_string_accurance(char **haystack, char *needle, int n_length)
 {
 	int		a;
