@@ -1,3 +1,5 @@
+#include "../../includes/minishell.h"
+
 void	open_next_output(s_tree *head, int _out_index, int *_piped, int *_fd)
 {
 	if (_piped[4] && head->left
