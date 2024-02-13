@@ -1,3 +1,5 @@
+#include "../../includes/minishell.h"
+
 void	exec_one(char **_cmd, int *_fd, char **env, int *_piped)
 {
 	pid_t						pid;
