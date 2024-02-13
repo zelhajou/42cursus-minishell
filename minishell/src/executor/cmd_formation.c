@@ -1,3 +1,5 @@
+#include "../../includes/minishell.h"
+
 char	*get_var_subpaths(char *env_var, char *file, int *indx_s)
 {
 	char		*tmp_path;
