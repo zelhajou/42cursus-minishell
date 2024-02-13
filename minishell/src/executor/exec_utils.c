@@ -1,3 +1,5 @@
+#include "../../includes/minishell.h"
+
 void		_standards_init(s_tree *head, int *_fd, int *_piped)
 {
 	_piped[2] = 1;
