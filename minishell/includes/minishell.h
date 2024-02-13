@@ -21,7 +21,7 @@ typedef  struct  tree
   struct tree    *left;
   struct tree    *prev;
   int            type;
-}
+}     s_tree;
 
               //// // // executer functions
 /// / general_utils
