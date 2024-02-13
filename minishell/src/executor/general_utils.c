@@ -1,3 +1,5 @@
+#include "../../includes/minishell.h"
+
 void	close_fd(int fd1, int fd2)
 {
 	close(fd1);
