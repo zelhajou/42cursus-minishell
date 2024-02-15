@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 22:53:36 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/14 16:16:33 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:31:36 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int		ft_isascii(int c);
 int		ft_isprint(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
+int		ft_isspace(int c);
 
 /* -----------------------------   <string.h>   ----------------------------- */
 

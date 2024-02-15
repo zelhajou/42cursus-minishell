@@ -6,7 +6,7 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/14 18:17:45 by zelhajou         ###   ########.fr        #
+#    Updated: 2024/02/15 14:27:57 by zelhajou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ READLINEDIR = ./lib/readline
 
 SRCS = $(SRCDIR)/main.c \
        $(SRCDIR)/parser/parser.c \
+	   $(SRCDIR)/parser/tokenizer.c \
 	   $(SRCDIR)/parser/syntax_checker.c \
 
 

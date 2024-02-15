@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:56:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/14 22:03:20 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/15 17:38:09 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	check_redir_pipe(const char *input)
 			return (1);
 		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == '\0')
 			return (1);
-		if (!isspace(input[i]) && input[i] != '|' && input[i] != '<' && input[i] != '>')
+		if (!ft_isspace(input[i]) && input[i] != '|' && input[i] != '<' && input[i] != '>')
 			cmd_found = 1;
 		i++;
 	}
