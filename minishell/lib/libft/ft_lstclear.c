@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 21:11:10 by zelhajou          #+#    #+#             */
-/*   Updated: 2022/11/19 21:31:50 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:19:57 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include "libft.h"
 
 void	ft_lstclear(t_list **lst, void (*del)(void*))
-{	
+{
 	t_list	*ptr;
 
 	if (!*lst)

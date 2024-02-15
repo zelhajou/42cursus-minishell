@@ -166,6 +166,9 @@ int main(void)
 
 ### Input Parsing Steps:
 
+
+#### 
+
 #### Tokenization 
 The goal of the tokenization process is to break down the input string into a series of tokens that the parser can easily understand. These tokens represent commands, arguments, pipes, redirections, and other elements of the shell syntax.
 
