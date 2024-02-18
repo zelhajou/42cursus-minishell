@@ -1,1 +1,1 @@
-// Functions for signal handling
+/* Functions for signal handling */
