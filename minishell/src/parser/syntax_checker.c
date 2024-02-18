@@ -6,59 +6,114 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:56:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/15 17:38:09 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:53:49 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int check_quotes(const char *input)
+int	syntax_error_checker(const char *input)
 {
-	int	i;
-	int	s_quote;
-	int	d_quote;
-
-	i = -1;
-	s_quote = 0;
-	d_quote = 0;
-	while (input[++i])
+	if (has_unclosed_quotes(input))
 	{
-		if (input[i] == '\'' && !d_quote)
-			s_quote = !s_quote;
-		else if (input[i] == '"' && !s_quote)
-			d_quote = !d_quote;
+		ft_putstr_fd("Syntax error: unclosed quote\n", STDERR_FILENO);
+		return (1);
 	}
-	if (s_quote || d_quote)
+	if (has_invalid_redirections(input))
+	{
+		ft_putstr_fd("Syntax error: invalid redirection\n", STDERR_FILENO);
+		return (1);
+	}
+	if (has_misplaced_operators(input))
+	{
+		ft_putstr_fd("Syntax error: misplaced operator\n", STDERR_FILENO);
+		return (1);
+	}
+	if (has_logical_operators(input))
+	{
+		ft_putstr_fd("Error: Logical operators '&&' and '||' \
+			are not supported.\n", STDERR_FILENO);
+		return (1);
+	}
+	return (0);
+}
+
+int	has_unclosed_quotes(const char *input)
+{
+	char	quote_type;
+
+	quote_type = 0;
+	while (*input)
+	{
+		if (*input == '\'' || *input == '\"')
+		{
+			if (quote_type == *input)
+				quote_type = 0;
+			else if (!quote_type)
+				quote_type = *input;
+		}
+		input++;
+	}
+	return (quote_type != 0);
+}
+
+int	has_invalid_redirections(const char *input)
+{
+	const char	*operator_start;
+
+	operator_start = input;
+	while (*input)
+	{
+		if (*input == '>' || *input == '<')
+		{
+			operator_start = input;
+			input++;
+			if (*operator_start == *input)
+				input++;
+			while (*input && (*input == ' ' || *input == '\t'))
+				input++;
+			if (*input == '\0' || *input == '>'
+				|| *input == '<' || *input == '|')
+				return (1);
+		}
+		else
+			input++;
+	}
+	return (0);
+}
+
+int	has_misplaced_operators(const char *input)
+{
+	int	expect_command_next;
+
+	expect_command_next = 0;
+	if (*input == '|' || *input == '&')
+		return (1);
+	while (*input)
+	{
+		if (*input == '|')
+		{
+			if (expect_command_next)
+				return (1);
+			expect_command_next = 1;
+		}
+		else if (!ft_isspace(*input))
+			expect_command_next = 0;
+		input++;
+	}
+	if (expect_command_next)
 		return (1);
 	return (0);
 }
 
-int	check_redir_pipe(const char *input)
+int	has_logical_operators(const char *input)
 {
-	int	i;
-	int	cmd_found;
-
-	i = 0;
-	cmd_found = 0;
-	while (input[i])
+	while (*input)
 	{
-		if (input[i] == '|' && (i == 0 || input[i + 1] == '\0' || input[i + 1] == '|'))
+		if ((*input == '&' && *(input + 1) == '&')
+			|| (*input == '|' && *(input + 1) == '|'))
 			return (1);
-		if ((input[i] == '<' || input[i] == '>') && input[i + 1] == '\0')
-			return (1);
-		if (!ft_isspace(input[i]) && input[i] != '|' && input[i] != '<' && input[i] != '>')
-			cmd_found = 1;
-		i++;
-	}
-	return (cmd_found ? 0 : 1);
-}
-
-int	syntax_error_checker(const char *input)
-{
-	if (check_quotes(input) || check_redir_pipe(input))
-	{
-		ft_putstr_fd("Syntax error\n", 2);
-		return (1);
+		input++;
 	}
 	return (0);
 }
