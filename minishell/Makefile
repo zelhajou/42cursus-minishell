@@ -6,16 +6,14 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/15 14:27:57 by zelhajou         ###   ########.fr        #
+#    Updated: 2024/02/20 16:35:17 by zelhajou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CC = cc
+CFLAGS = 
 INCLUDES = -I./includes -I./lib/libft
-
-
 SRCDIR = ./src
 OBJDIR = ./obj
 LIBFTDIR = ./lib/libft
@@ -25,13 +23,11 @@ SRCS = $(SRCDIR)/main.c \
        $(SRCDIR)/parser/parser.c \
 	   $(SRCDIR)/parser/tokenizer.c \
 	   $(SRCDIR)/parser/syntax_checker.c \
-
+	   $(SRCDIR)/utils/tokenizer_utils.c \
+	   $(SRCDIR)/utils/parser_utils.c \
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-
 LDFLAGS = -L$(LIBFTDIR) -lft -lreadline
-
-
 LIBFT = $(LIBFTDIR)/libft.a
 
 all: $(NAME)

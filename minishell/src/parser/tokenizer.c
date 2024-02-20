@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 14:26:48 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/18 17:05:02 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:49:48 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	handle_word(char **input, t_token **tokens)
 	char	*word;
 
 	start = *input;
-	while (**input && !ft_strchr(" \t\n\'\"<>|$", **input))
+	while (**input && !ft_strchr(" \t\n\'\"<>|", **input))
 		(*input)++;
 	if (*input > start)
 	{
@@ -85,23 +85,23 @@ void	handle_word(char **input, t_token **tokens)
 	}
 }
 
-void	handle_environment_variables(char **input, t_token **tokens)
-{
-	char	*start;
-	char	*var_name;
+// void	handle_environment_variables(char **input, t_token **tokens)
+// {
+// 	char	*start;
+// 	char	*var_name;
 
-	start = (*input)++;
-	while (**input && (ft_isalnum(**input) || **input == '_'))
-		(*input)++;
-	var_name = strndup(start, *input - start);
-	if (var_name)
-	{
-		add_token_to_list(tokens, new_token(TOKEN_ENV_VAR, var_name));
-		free(var_name);
-	}
-	else
-		ft_putstr_fd("Error: Malloc failed in handle env variables.\n", 2);
-}
+// 	start = (*input)++;
+// 	while (**input && (ft_isalnum(**input) || **input == '_'))
+// 		(*input)++;
+// 	var_name = strndup(start, *input - start);
+// 	if (var_name)
+// 	{
+// 		add_token_to_list(tokens, new_token(TOKEN_ENV_VAR, var_name));
+// 		free(var_name);
+// 	}
+// 	else
+// 		ft_putstr_fd("Error: Malloc failed in handle env variables.\n", 2);
+// }
 
 t_token	*tokenize_input(char *input)
 {
@@ -116,8 +116,8 @@ t_token	*tokenize_input(char *input)
 			handle_quotes(&input, &tokens);
 		else if (ft_strchr("><|", *input))
 			handle_special_chars(&input, &tokens);
-		else if (*input == '$')
-			handle_environment_variables(&input, &tokens);
+		// else if (*input == '$')
+		// 	handle_environment_variables(&input, &tokens);
 		else
 			handle_word(&input, &tokens);
 	}

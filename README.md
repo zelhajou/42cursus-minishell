@@ -289,7 +289,6 @@ typedef struct s_token
 2. **Quoting**: Correctly handle single (`'`) and double quotes (`"`), preserving the text exactly as is within single quotes and allowing for variable expansion and escaped characters within double quotes.
 3. **Redirections and Pipes**: Detect `>`, `>>`, `<`, `<<`, and `|`, treating them as separate tokens while managing any adjacent whitespace.
 4. **Variable Expansion**: Identify variables (`$VAR` or `${VAR}`) for later expansion. This might be more related to parsing after tokenization but be aware during tokenization.
-5. **Error Handling and Reporting**: Detect and report syntax errors, such as unclosed quotes or other issues.
 
 #### **Tokenization Function**
 
@@ -342,3 +341,8 @@ typedef struct s_ast_node
 ### Testing and Debugging
 
 - [Minishell Tests](https://docs.google.com/spreadsheets/d/1BLU6C9S7aoCl01x74GiW7s4xpEWWJ1cPrMTcLwISruk/edit#gid=1627853444)
+
+## Resources
+
+
+- https://www.youtube.com/watch?v=S2W3SXGPVyU&ab_channel=theroadmap

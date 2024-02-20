@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:56:46 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/18 17:05:45 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:30:00 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,17 @@ const char	*get_token_type_name(t_token_type type)
 	if (type >= 0 && type < TOKEN_TYPE_COUNT)
 		return (token_type_names[type]);
 	return ("UNKNOWN");
+}
+
+void	free_tokens(t_token *tokens)
+{
+	t_token	*tmp;
+
+	while (tokens)
+	{
+		tmp = tokens;
+		tokens = tokens->next;
+		free(tmp->value);
+		free(tmp);
+	}
 }
