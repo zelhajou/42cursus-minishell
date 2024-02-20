@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/21 22:55:32 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/15 11:20:05 by zelhajou         ###   ########.fr       */
+/*   Created: 2024/02/14 16:13:17 by zelhajou          #+#    #+#             */
+/*   Updated: 2024/02/14 16:15:37 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-	ft_memmove() copies len bytes from string src to string dst. The two strings 
-	may overlap; the copy is always done in a non-destructive manner.
-*/
-
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+char	*ft_strndup(const char *src, size_t n)
 {
-	unsigned char	*s1;
-	unsigned char	*s2;
+	size_t	i;
+	size_t	size;
+	char	*str;
 
-	s1 = (unsigned char *)src;
-	s2 = (unsigned char *)dst;
-	if (dst <= src)
-		dst = ft_memcpy(dst, src, len);
-	else
+	i = 0;
+	size = ft_strnlen(src, n);
+	str = malloc(size + 1);
+	if (str == NULL)
+		return (NULL);
+	while (i < size)
 	{
-		while (len--)
-			s2[len] = s1[len];
+		str[i] = src[i];
+		i++;
 	}
-	return (dst);
+	str[i] = '\0';
+	return (str);
 }

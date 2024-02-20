@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 22:53:36 by zelhajou          #+#    #+#             */
-/*   Updated: 2022/11/20 23:28:03 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:31:36 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@ int		ft_isascii(int c);
 int		ft_isprint(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
+int		ft_isspace(int c);
 
 /* -----------------------------   <string.h>   ----------------------------- */
 
 size_t	ft_strlen(const char *s);
+size_t	ft_strnlen(const char *s, size_t maxlen);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strnstr(const char *big, const char *little, size_t len);
@@ -54,6 +56,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(const char *s);
+char	*ft_strndup(const char *src, size_t n);
 
 /* Part 2 - Additional functions */
 

@@ -1,1 +1,1 @@
-// Functions for handling the shell prompt
+/* Functions for handling the shell prompt */

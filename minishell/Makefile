@@ -6,46 +6,50 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/10 21:46:59 by zelhajou         ###   ########.fr        #
+#    Updated: 2024/02/20 16:35:17 by zelhajou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -I includes -I lib/libft
-LDFLAGS = -L lib/libft -lft -lreadline
+CC = cc
+CFLAGS = 
+INCLUDES = -I./includes -I./lib/libft
+SRCDIR = ./src
+OBJDIR = ./obj
+LIBFTDIR = ./lib/libft
+READLINEDIR = ./lib/readline
 
-LIBFT_DIR = lib/libft
-LIBFT = $(LIBFT_DIR)/libft.a
+SRCS = $(SRCDIR)/main.c \
+       $(SRCDIR)/parser/parser.c \
+	   $(SRCDIR)/parser/tokenizer.c \
+	   $(SRCDIR)/parser/syntax_checker.c \
+	   $(SRCDIR)/utils/tokenizer_utils.c \
+	   $(SRCDIR)/utils/parser_utils.c \
 
-OBJS = obj/main.o \
-
+OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+LDFLAGS = -L$(LIBFTDIR) -lft -lreadline
+LIBFT = $(LIBFTDIR)/libft.a
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
 
-$(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
-
-obj/%.o: src/%.c includes/minishell.h
-	@mkdir -p obj
-	@mkdir -p obj/builtins
-	@mkdir -p obj/utils
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-# Clean workspace
-clean:
-	rm -rf obj
-	$(MAKE) -C $(LIBFT_DIR) clean
 
-# Full clean
+$(LIBFT):
+	$(MAKE) -C $(LIBFTDIR)
+
+clean:
+	rm -rf $(OBJDIR)
+	$(MAKE) -C $(LIBFTDIR) clean
+
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) -C $(LIBFTDIR) fclean
 
-# Rebuild
 re: fclean all
 
 .PHONY: all clean fclean re
