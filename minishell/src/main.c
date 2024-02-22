@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/20 16:30:57 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/22 21:11:52 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	main(void)
 			break ;
 		if (*input)
 			add_history(input);
-
 		trimmed_input = ft_strtrim(input,  " \t\n\v\f\r");
 		if (!trimmed_input)
 		{
@@ -49,11 +48,12 @@ int	main(void)
 		}
 		// TODO: Implement the parser
 		ast = parse_tokens(&tokens);
+		generate_ast_diagram(ast);
 		// TODO: Execute the AST
 		// TODO: Free the tokens and the AST
-		free_tokens(tokens);
+		// free_tokens(tokens);
 		free_ast(ast);
 		free(input);
 	}
-	return 0;
-}
+	return (0);
+	}

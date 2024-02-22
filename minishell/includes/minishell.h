@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/20 16:39:06 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/22 22:38:55 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,8 @@ t_ast_node	*parse_command(t_token **tokens);
 // Parser Utils
 t_ast_node	*new_ast_node(t_token_type type);
 void		free_ast(t_ast_node *node);
+
+
+void generate_ast_diagram(t_ast_node *root);
 
 #endif

@@ -6,13 +6,13 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/20 16:35:17 by zelhajou         ###   ########.fr        #
+#    Updated: 2024/02/22 22:28:44 by zelhajou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = 
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 INCLUDES = -I./includes -I./lib/libft
 SRCDIR = ./src
 OBJDIR = ./obj
@@ -25,6 +25,7 @@ SRCS = $(SRCDIR)/main.c \
 	   $(SRCDIR)/parser/syntax_checker.c \
 	   $(SRCDIR)/utils/tokenizer_utils.c \
 	   $(SRCDIR)/utils/parser_utils.c \
+	   $(SRCDIR)/utils/print.c \
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 LDFLAGS = -L$(LIBFTDIR) -lft -lreadline
