@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:56:46 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/20 16:30:00 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/22 22:36:49 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,38 +43,6 @@ void	add_token_to_list(t_token **tokens, t_token *new_token)
 			last = last->next;
 		last->next = new_token;
 	}
-}
-
-void	display_tokens(t_token *tokens)
-{
-	t_token	*token;
-
-	token = tokens;
-	while (token)
-	{
-		printf("Token: \033[0;36m %-20s \033[0m |\t \
-			Type: \033[0;35m %-18s \033[0m \n",
-			token->value, get_token_type_name(token->type));
-		printf("--------------------------------------------------\n");
-		token = token->next;
-	}
-}
-
-const char	*get_token_type_name(t_token_type type)
-{
-	const char	*token_type_names[TOKEN_TYPE_COUNT];
-
-	token_type_names[0] = "WORD";
-	token_type_names[1] = "PIPE";
-	token_type_names[2] = "REDIRECT_IN";
-	token_type_names[3] = "REDIRECT_OUT";
-	token_type_names[4] = "REDIRECT_APPEND";
-	token_type_names[5] = "REDIRECT_HEREDOC";
-	token_type_names[6] = "TOKEN_ENV_VAR";
-	token_type_names[7] = "EOF";
-	if (type >= 0 && type < TOKEN_TYPE_COUNT)
-		return (token_type_names[type]);
-	return ("UNKNOWN");
 }
 
 void	free_tokens(t_token *tokens)
