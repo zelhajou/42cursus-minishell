@@ -6,55 +6,62 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:43:46 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/20 16:34:01 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/22 22:28:19 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
 t_ast_node	*parse_command(t_token **tokens)
 {
-	t_ast_node	*node;
+	t_ast_node	*command_node;
 	t_token		*current;
+	t_token		*tmp;
 	int			arg_count;
 	int			i;
 
-	node = new_ast_node(TOKEN_WORD);
+	command_node = new_ast_node(TOKEN_WORD);
 	current = *tokens;
 	arg_count = 0;
 	i = 0;
-	while (current)
+	while (current && current->type == TOKEN_WORD)
 	{
 		arg_count++;
 		current = current->next;
 	}
-	node->args = malloc(sizeof(char *) * (arg_count + 1));
+	command_node->args = malloc(sizeof(char *) * (arg_count + 1));
+
 	while (i < arg_count)
 	{
-		node->args[i] = strdup((*tokens)->value);
+		command_node->args[i] = strdup((*tokens)->value);
+		tmp = *tokens;
 		*tokens = (*tokens)->next;
+		free((tmp)->value);
+		free((tmp));
 		i++;
 	}
-	node->args[arg_count] = NULL;
-	return (node);
+	command_node->args[arg_count] = NULL;
+	return (command_node);
 }
 
-t_ast_node	*new_ast_file(t_token *tokens)
-{
-	t_ast_node	*node;
-
-	node = malloc(sizeof(t_ast_node));
-	if (!node)
-		return (NULL);
-	node->type = tokens->type;
-	node->args = malloc(2);
-	node->args[0] = tokens->value;
-	node->args[1] = NULL;
-	node->left = NULL;
-	node->right = NULL;
-	free(tokens);
-	return (node);
+t_ast_node *new_ast_file(t_token *token) {
+    t_ast_node *node = malloc(sizeof(t_ast_node));
+    if (!node) return NULL;
+    node->type = token->type;
+    node->args = malloc(sizeof(char *) * 2);
+    if (!node->args) {
+        free(node);
+        return NULL;
+    }
+    node->args[0] = token->value;
+    node->args[1] = NULL;
+    node->left = NULL;
+    node->right = NULL;
+	free(token);
+    return node;
 }
+
 
 t_ast_node	*parse_redirection(t_token **tokens)
 {
@@ -62,7 +69,7 @@ t_ast_node	*parse_redirection(t_token **tokens)
 	t_ast_node	*redirect_node;
 	t_token		*next_token;
 
-	if (!tokens || !*tokens)
+	if (!*tokens)
 		return (NULL);
 	tmp = *tokens;
 	if ((*tokens)->type >= TOKEN_REDIR_IN
@@ -72,8 +79,8 @@ t_ast_node	*parse_redirection(t_token **tokens)
 		(*tokens) = (*tokens)->next->next;
 		redirect_node->left = parse_redirection(tokens);
 		redirect_node->right = new_ast_file(((tmp)->next));
-		free((*tokens)->value);
-		free((*tokens));
+		free((tmp)->value);
+		free(tmp);
 		return (redirect_node);
 	}
 	while (*tokens && (*tokens)->next)
@@ -111,6 +118,8 @@ t_ast_node	*parse_pipeline(t_token **tokens)
 			(*tokens)->next = NULL;
 			pipe_node->left = parse_redirection(&tmp);
 			pipe_node->right =  parse_pipeline(&(next_token->next));
+			free(next_token->value);
+			free(next_token);
 			return (pipe_node);
 		}
 		*tokens = next_token;
