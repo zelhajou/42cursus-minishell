@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	echo__(char **_cmd, int *_out_fd)
 {

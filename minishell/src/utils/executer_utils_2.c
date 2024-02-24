@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 char	*adapt_quoted_str(char *str)
 {
@@ -66,7 +66,7 @@ char	*corrected_statment(char *s_1, char *s_2, char *s_3)
 
 // a = a + 1 || a = (a + 1) + (a + 2)
 
-char	**adapt_export_statments(char **new_statment, char **_cmd, int b)
+char	**adapt_export_statments(char **new_statment, char **_cmd)
 {
 	int				a[2];
 	int				c;
@@ -92,7 +92,7 @@ char	**adapt_export_statments(char **new_statment, char **_cmd, int b)
 		}
 		else
 			new_statment[a[1]] = strcopy(_cmd[a[0]]);
-		printf("passed: .%s.\n",   new_statment[a[1]]);
+		//printf("passed: .%s.\n",   new_statment[a[1]]);
 		a[0]++;
 		a[1]++;
 	}
@@ -110,10 +110,10 @@ char	**misstatment_detector(char **_cmd)
 		return (_cmd);
 	new_statment = malloc((b + 1) * sizeof(char *));
 	new_statment[0] = strcopy(_cmd[0]);
-	new_statment = adapt_export_statments(new_statment, _cmd, b);
+	new_statment = adapt_export_statments(new_statment, _cmd);
 	//>
-	for (int i=0;new_statment[i];i++)
-		printf("new[%i]: .%s.\n", i, new_statment[i]);
+	//for (int i=0;new_statment[i];i++)
+	//	printf("new[%i]: .%s.\n", i, new_statment[i]);
 	free_multible(_cmd);
 	return (new_statment);
 }

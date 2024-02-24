@@ -6,11 +6,11 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:56:46 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/22 22:36:49 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/24 22:13:18 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 t_token	*new_token(t_token_type type, char *value)
 {

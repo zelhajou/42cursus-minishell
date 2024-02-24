@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	child_fds_managment(int *_piped, int *_fd, int *fd_)
 {

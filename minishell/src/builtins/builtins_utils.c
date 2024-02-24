@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 //// // // cd
 
@@ -10,6 +10,7 @@ void	update_pwd_env(char *new_, s_en *env, int c)
 
 	a = 0;
 	b = 4;
+	(void)c;
 	exp_pwd = malloc(3 * sizeof(char *));
 	exp_pwd[0] = strcopy("export");
 	exp_pwd[1] = malloc(sizeof_str(new_, '\0') + 5);

@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 char	*get_var_subpaths(char *env_var, char *file, int *indx_s)
 {

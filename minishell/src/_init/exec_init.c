@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	__files_permission(t_ast_node *head, char **env)
 {
@@ -6,6 +6,7 @@ int	__files_permission(t_ast_node *head, char **env)
 	char				*path_;
 
 	status = 1;
+	path_ = NULL;
 	if (head->args && !is_builtin(head->args[0])
 		&& (head->file_type == R_F || head->file_type == X_F))
 	{

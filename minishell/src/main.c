@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/22 21:11:52 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/24 23:07:26 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void	shell_loop(s_en *env)
 		if (check_line(&line))
 			continue;
 		add_history(line);
-		line = expand_it(line, env);
+		// 	line = expand_it(line, env);
+		// printf("%s\n", line);
 		tokens = syntax_check_and_tokenize(line);
 		if (!tokens)
 			continue;
-		//>
 		ast = parse_tokens(&tokens);
 		generate_ast_diagram(ast);
 		general_execution(ast, env, &status);
@@ -64,6 +64,7 @@ int main(int argc, char **argv, char **__env)
 	s_en					*env;
 
 	signal(SIGINT, ctrl_c_ha);
+	(void)argv;
 	env = malloc(sizeof(s_en));
 	if (argc == 1 && isatty(1)
 		&& __shell_init(env, __env))

@@ -6,11 +6,11 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:56:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/20 20:07:30 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/24 22:13:18 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	syntax_error_checker(const char *input)
 {

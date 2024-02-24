@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	env_replace_var(char *var, s_en *env)
 {
@@ -64,6 +64,7 @@ int	check_line(char **line)
 
 void	ctrl_c_ha(int a)
 {
+	(void)a;
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_redisplay();

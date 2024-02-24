@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	_piped_init(int *_piped, int f)
 {
@@ -70,6 +70,7 @@ int	builtins_child(char **_cmd_, s_en *env, int *_out_fd)
 {
 	int			status;
 
+	status = 0;
 	if (str_cmp(_cmd_[0], "echo", NULL))
 		status = echo__(_cmd_, _out_fd);
 	else if (str_cmp(_cmd_[0], "pwd", "env"))

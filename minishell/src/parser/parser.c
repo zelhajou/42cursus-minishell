@@ -6,12 +6,11 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:43:46 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/22 22:28:19 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/24 22:13:18 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 t_ast_node	*parse_command(t_token **tokens)
 {

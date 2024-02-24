@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	exec_builtins(char **_cmd_, int *_fd, s_en *env, int *_piped)
 {
@@ -51,6 +51,7 @@ int	exec_built_ins(char **_cmd_, int *_fd, s_en *env, int *_piped)
 {
 	int				status;
 
+	status = 0;
 	if (str_cmp(_cmd_[0], "exit", NULL))
 	{
 		free_multible(_cmd_);
