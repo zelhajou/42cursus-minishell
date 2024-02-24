@@ -1,4 +1,4 @@
-#include "../../includes/exec.h"
+#include "../../includes/minishell.h"
 
 int	string_to_int(char *str)
 {
@@ -28,5 +28,15 @@ int	int_size(int num)
 		num /= 10;
 		a++;
 	}
+	return (a);
+}
+
+int	sizeof_arr(char **arr)
+{
+	int			a;
+
+	a = 0;
+	while (arr[a] != 0)
+		a++;
 	return (a);
 }

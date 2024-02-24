@@ -1,4 +1,4 @@
-#include "../../includes/exec.h"
+#include "../../includes/minishell.h"
 
 char	*translate_var(char *line, s_en *env, int i_ndx)
 {

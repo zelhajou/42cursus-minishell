@@ -1,4 +1,4 @@
-#include "../../includes/exec.h"
+#include "../../includes/minishell.h"
 
 void	free_env(s_en *env)
 {
@@ -37,16 +37,6 @@ void	free_multible(char **arr)
 		a += 1;
 	}
 	free(arr);
-}
-
-void	free_tree(s_tree *head)
-{
-	free(head->val);
-	if (head->right)
-		free_tree(head->right);
-	if (head->left)
-		free_tree(head->left);
-	free(head);
 }
 
 void	close_pipe(int fd1, int fd2)

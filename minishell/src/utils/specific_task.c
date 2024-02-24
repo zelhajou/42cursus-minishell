@@ -1,4 +1,4 @@
-#include "../../includes/exec.h"
+#include "../../includes/minishell.h"
 
 void	env_replace_var(char *var, s_en *env)
 {

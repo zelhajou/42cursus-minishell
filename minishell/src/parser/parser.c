@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 t_ast_node	*parse_command(t_token **tokens)
 {

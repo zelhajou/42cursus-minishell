@@ -10,50 +10,63 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-int	main(void)
+t_token		*syntax_check_and_tokenize(char *input)
 {
-	char		*input;
-	char		*trimmed_input;
-	t_token		*tokens;
-	t_ast_node	*ast;
+	char					*trimmed_input;
+	t_token					*tokens;
+
+	trimmed_input = ft_strtrim(input, " \t\n\v\f\r");
+	free(input);
+	if (!trimmed_input)
+		return (NULL);
+	if (syntax_error_checker(trimmed_input))
+	{
+		free(trimmed_input);
+		return (NULL);
+	}
+	tokens = tokenize_input(trimmed_input);
+	free(trimmed_input);
+	return (tokens);
+}
+
+void	shell_loop(s_en *env)
+{
+	char					*line;
+	int					status;
+	t_token					*tokens;
+	t_ast_node				*ast;
 
 	while (1)
 	{
-		input = readline("minishell$ ");
-		if (!input)
-			break ;
-		if (*input)
-			add_history(input);
-		trimmed_input = ft_strtrim(input,  " \t\n\v\f\r");
-		if (!trimmed_input)
-		{
-			free(input);
-			continue ;
-		}
-		if (syntax_error_checker(trimmed_input))
-		{
-			free(input);
-			free(trimmed_input);
-			continue ;
-		}
-		tokens = tokenize_input(trimmed_input);
-		//display_tokens(tokens);
-		free(trimmed_input);
+		line = readline("\t> ");
+		if (!line)
+			break;
+		if (check_line(&line))
+			continue;
+		add_history(line);
+		line = expand_it(line, env);
+		tokens = syntax_check_and_tokenize(line);
 		if (!tokens)
-		{
-			free(input);
-			continue ;
-		}
-		// TODO: Implement the parser
+			continue;
+		//>
 		ast = parse_tokens(&tokens);
 		generate_ast_diagram(ast);
-		// TODO: Execute the AST
-		// TODO: Free the tokens and the AST
-		// free_tokens(tokens);
+		general_execution(ast, env, &status);
+		adapt_status_env(env, status, "?=");
 		free_ast(ast);
-		free(input);
 	}
-	return (0);
-	}
+}
+
+int main(int argc, char **argv, char **__env)
+{
+	s_en					*env;
+
+	signal(SIGINT, ctrl_c_ha);
+	env = malloc(sizeof(s_en));
+	if (argc == 1 && isatty(1)
+		&& __shell_init(env, __env))
+		shell_loop(env);
+	terminate(env);
+}

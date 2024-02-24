@@ -1,4 +1,4 @@
-#include "../../includes/exec.h"
+#include "../../includes/minishell.h"
 
 //// // // cd
 
@@ -18,7 +18,7 @@ void	update_pwd_env(char *new_, s_en *env, int c)
 		exp_pwd[1][b++] = new_[a++];
 	exp_pwd[1][b] = '\0';
 	exp_pwd[2] = 0;
-	env_modify(exp_pwd, env);
+	env_modify(exp_pwd, env, NULL, &a);
 	free_multible(exp_pwd);
 }
 
@@ -42,7 +42,7 @@ int		change_dir(char *path, s_en *env)
 
 // /// // PWD
 
-char	*current_abs_path(int size, int tries)
+char	*current_abs_path(int size, int tries, int fd)
 {
 	char				*buffer;
 
@@ -53,12 +53,32 @@ char	*current_abs_path(int size, int tries)
 	{
 		free(buffer);
 		if (tries < 10)
-			return (current_abs_path(size + 50, tries + 1));
+			return (current_abs_path(size + 50, tries + 1, fd));
 		else
 		{
-			printf("\tgetcwd() failure: you are lost\n");
+			ft_putendl_fd("\tgetcwd() failure: you are lost", fd);
 			return (NULL);
 		}
 	}
 	return (buffer);
+}
+
+/// /// // print
+
+void	env_print_fd(char *str_1, char *str_2, int fd)
+{
+	ft_putstr_fd(str_1, fd);
+	ft_putstr_fd(" : ", fd);
+	ft_putendl_fd(str_2, fd);
+}
+
+void	export_print_fd(char *str_1, char *str_2, int fd)
+{
+	ft_putstr_fd("declare -x ", fd);
+	ft_putstr_fd(str_1, fd);
+	write(fd, "=", 1);
+	ft_putchar_fd('"', fd);
+	ft_putstr_fd(str_2, fd);
+	ft_putchar_fd('"', fd);
+	write(fd, "\n", 1);
 }
