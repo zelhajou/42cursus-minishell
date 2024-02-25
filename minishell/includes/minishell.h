@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # define R_F 10
+# define R_FA 15
 # define W_F 20
 # define W_FA 30
 # define X_F 40
@@ -34,6 +35,7 @@
 # include <errno.h>
 # include <string.h>
 # include "../lib/libft/libft.h"
+# include "../lib/get_next_line/get_next_line.h"
 
 typedef enum e_token_type
 {
@@ -158,6 +160,7 @@ char		*ex_statment_misdefinition(char *line);
 
 int		exec_command(char **_cmd_, int *_fd, int *_piped, s_en *env);
 int		exec_built_ins(char **_cmd_, int *_fd, s_en *env, int *_piped);
+void	exec_here_doc(char *limiter, int *_piped, int *_fd);
 
 int		execute_pipe(t_ast_node *head, int *_piped, s_en *env, int *_fd);
 int		execute_redirection(t_ast_node *head, int *_piped, s_en *env, int *_fd);
