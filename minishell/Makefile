@@ -16,7 +16,7 @@ CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 # Update these paths according to your Readline installation
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 READLINE_LIB = $(shell brew --prefix readline)/lib
-INCLUDES = -I./includes -I./lib/libft -I$(READLINE_INCLUDE)
+INCLUDES = -I./includes -I./lib/libft -I./lib/get_next_line -I$(READLINE_INCLUDE)
 SRCDIR = ./src
 OBJDIR = ./obj
 LIBFTDIR = ./lib/libft
@@ -35,6 +35,7 @@ SRCS = $(SRCDIR)/main.c \
        $(SRCDIR)/utils/executer_utils.c \
        $(SRCDIR)/utils/general.c \
        $(SRCDIR)/utils/executer_utils_2.c \
+	   $(SRCDIR)/utils/executer_utils_3.c \
        $(SRCDIR)/utils/general_2.c \
        $(SRCDIR)/utils/specific_task.c \
        $(SRCDIR)/exec/exec_builtins.c \
@@ -47,6 +48,8 @@ SRCS = $(SRCDIR)/main.c \
        $(SRCDIR)/_init/exec_init.c \
 	   $(SRCDIR)/builtins/builtins.c \
 	   $(SRCDIR)/builtins/builtins_utils.c \
+	   ./lib/get_next_line/get_next_line.c \
+	   ./lib/get_next_line/get_next_line_utils.c \
 	   
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 LDFLAGS = -L$(LIBFTDIR) -lft -L$(READLINE_LIB) -lreadline

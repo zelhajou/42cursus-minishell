@@ -29,7 +29,7 @@ int	execute_pipe(t_ast_node *head, int *_piped, s_en *env, int *_fd)
 		|| head->type == TOKEN_REDIR_OUT
 		|| head->type == TOKEN_REDIR_APPEND
 		|| head->type == TOKEN_REDIR_HEREDOC)
-		return execute_redirection(head, _piped, env, _fd);
+		return (execute_redirection(head, _piped, env, _fd));
 	if (head->left)
 		status = execute_pipe(head->left, _piped, env, _fd);
 	if (head->right)

@@ -22,6 +22,11 @@ void	open_file(t_ast_node *head, int *_piped)
 		_piped[6] = 1;
 		_piped[1] = open(head->args[0], O_RDONLY);
 	}
+	else if (head->file_type == R_FA)
+	{
+		_piped[6] = 1;
+		exec_here_doc(head->args[0], _piped, NULL);
+	}
 	else
 	{
 		_piped[7] = 1;

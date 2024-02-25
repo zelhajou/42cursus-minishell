@@ -35,9 +35,10 @@ void	__adapt_nodes(t_ast_node *head)
 			head->right->file_type = W_F;
 		if (head->type == TOKEN_REDIR_APPEND && head->right)
 			head->right->file_type = W_FA;
-		if ((head->type == TOKEN_REDIR_IN
-			|| head->type == TOKEN_REDIR_HEREDOC) && head->right)
+		if (head->type == TOKEN_REDIR_IN && head->right)
 			head->right->file_type = R_F;
+		if (head->type == TOKEN_REDIR_HEREDOC && head->right)
+			head->right->file_type = R_FA;
 		if (head->type == TOKEN_PIPE)
 		{
 			if (head->right)
