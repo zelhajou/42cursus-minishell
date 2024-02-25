@@ -7,14 +7,14 @@ int	isvalid_var_start(char *str, int index, int con)
 		&& str[index + 1] != '$'
 		&& !ft_isspace(str[index + 1])
 		&& (ft_isalnum(str[index + 1])
-		|| str[index + 1] == '_')
-		|| str[index + 1] == '?')
+		|| str[index + 1] == '_'
+		|| str[index + 1] == '?'))
 		|| (!con && str[index]
 		&& str[index] != '$'
 		&& !ft_isspace(str[index])
 		&& (ft_isalnum(str[index])
-		|| str[index] == '_')
-		|| str[index] == '?'))
+		|| str[index] == '_'
+		|| str[index] == '?')))
 		return (1);
 	return (0);
 }
