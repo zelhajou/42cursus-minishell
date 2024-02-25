@@ -307,6 +307,8 @@ The tokenization function will iterate through the input string, identifying and
 
 #### AST Node Structure
 
+- https://github.com/os-moussao/Recursive-Descent-Parser/tree/master
+
 ```c
 
 typedef struct s_ast_node
