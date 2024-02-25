@@ -36,8 +36,8 @@ char	**merge_it(char **f_args, char **_cmd_)
 		new_args[a] = adapt_quoted_str(strcopy(_cmd_[a]));
 	new_args[a] = 0;
 	free_multible(f_args);
-	for (int i=0;new_args[i];i++)
-		printf("- args[%i]:.%s.\n",i, new_args[i]);
+	/*for (int i=0;new_args[i];i++)
+		printf("- args[%i]:.%s.\n",i, new_args[i]);*/
 	return (new_args);
 }
 
