@@ -78,6 +78,27 @@ void	env_minus_one(s_en *env, int c)
 	}
 }
 
+void	env_plus_value(s_en *env, char *cmd, int a, int con)
+{
+	int				b;
+	int				c;
+
+	b = sizeof_str(cmd, '=');
+	c = sizeof_str(cmd, '\0') - b;
+	if (con > 0)
+	{
+		env->env__[a][1] = malloc(c + 1);
+		s_strcopy(env->env__[a][1], cmd, b + 1, b + c);
+	}
+	else
+	{
+		env->env__[a][1] = malloc(3);
+		if (!con)
+			env->env__[a][1][0] = '\0';
+		else
+			s_strcopy(env->env__[a][1], "F1", 0, 2);
+	}
+}
 
 void	env_plus_one(s_en *env, char *cmd, int b, int con)
 {
@@ -93,21 +114,14 @@ void	env_plus_one(s_en *env, char *cmd, int b, int con)
 	env->env__ = env_copy(env, a, 2, -1);
 	env->__env = old_new_copy(env->__env, a, 2, -1);
 	env->__env[a] = malloc(b + c + 1);
-	//>
-	env->env__[a] = malloc(2 * sizeof(char **));
-	env->env__[a][0] = malloc((b + 1) * sizeof(char *));
-	env->env__[a][1] = malloc((c + 1) * sizeof(char *));
+	env->env__[a] = malloc(2 * sizeof(char *));
+	env->env__[a][0] = malloc(b + 1);
 	s_strcopy(env->env__[a][0], cmd, 0, b);
-	if (con)
-	{
-		s_strcopy(env->env__[a][1], cmd, b + 1, b + c);
+	if (con > 0)
 		s_strcopy(env->__env[a], cmd, 0, sizeof_str(cmd, '\0'));
-	}
 	else
-	{
-		s_strcopy(env->env__[a][1], "  ", 0, 2);
-		s_strcopy(env->__env[a], "  ", 0, 2);
-	}
+		s_strcopy(env->__env[a], "  ", 0, 1);
+	env_plus_value(env, cmd, a, con);
 	env->__env[a + 1] = 0;
 	env->env__[a + 1] = 0;
 }

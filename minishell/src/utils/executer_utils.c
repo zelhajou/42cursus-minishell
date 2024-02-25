@@ -32,23 +32,6 @@ void	open_file(t_ast_node *head, int *_piped)
 	}
 }
 
-void	___confirm_it(t_ast_node *head, int *_piped, int times)
-{
-	if (!times)
-		printf("%s\n---> the numbers: %i inputs, %i outputs and %i pipes\n",
-			"---------------------------------------------", _piped[3], _piped[4], _piped[5]);
-	if (head->file_type == X_F)
-		printf("-> executable: %s\n",  head->args ? head->args[0] : "null");
-	else if (head->file_type == W_F || head->file_type == W_FA)
-		printf("-> output file: %s\n", head->args ? head->args[0] : "null");
-	else if (head->file_type == R_F)
-		printf("-> input file: %s\n",  head->args ? head->args[0] : "null");
-	if (head->left)
-		___confirm_it(head->left, _piped, times + 1);
-	if (head->right)
-		___confirm_it(head->right, _piped, times + 1);
-}
-
 int	is_builtin(char *_cmd)
 {
 	char		*tmp_cmd;

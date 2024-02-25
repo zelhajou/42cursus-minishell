@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 # Update these paths according to your Readline installation
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 READLINE_LIB = $(shell brew --prefix readline)/lib

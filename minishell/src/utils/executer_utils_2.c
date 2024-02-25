@@ -37,83 +37,67 @@ char	**merge_it(char **f_args, char **_cmd_)
 	new_args[a] = 0;
 	free_multible(f_args);
 	for (int i=0;new_args[i];i++)
-		printf("args[%i]: .%s.\n", i, new_args[i]);
-	printf("\n");
+		printf("- args[%i]:.%s.\n",i, new_args[i]);
 	return (new_args);
 }
 
-char	*corrected_statment(char *s_1, char *s_2, char *s_3)
+char	*ex_new_line(char *line, int a, int b)
 {
-	char				*new_statment;
-	int				b[3];
-	int				c;
+	char				*new_line;
+
+	new_line = malloc(sizeof_str(line, '\0') + 1);
+	while (line[a])
+	{
+		if (line[a] != 34 && line[a] != 39)
+			new_line[b++] = line[a];
+		a++;
+	}
+	free(line);
+	new_line[b] = '\0';
+	return (new_line);
+}
+
+int	_statment_caution(char *line)
+{
 	int				a;
+	int				b[2];
+	int				res;
 
 	a = 0;
-	b[0] = sizeof_str(s_1, '\0');
-	b[1] = sizeof_str(s_2, '\0');
-	b[2] = 0;
-	if (s_3)
-		b[2] = sizeof_str(s_3, '\0');
-	c = b[0] + b[1] + b[2] + 3;
-	new_statment = malloc(c);
-	s_strcopy(new_statment, s_1, 0, b[0]);
-	s_strcopy(new_statment + b[0], s_2, 0, b[1]);
-	if (s_3)
-		s_strcopy(new_statment + b[0] + b[1], s_3, 0, b[2]);
-	return (new_statment);
-}
-
-// a = a + 1 || a = (a + 1) + (a + 2)
-
-char	**adapt_export_statments(char **new_statment, char **_cmd)
-{
-	int				a[2];
-	int				c;
-
-	a[0] = 1;
-	a[1] = 1;
-	while (_cmd[a[0]])
+	res = 0;
+	b[0] = 0;
+	b[1] = 0;
+	while (line[a])
 	{
-		c = sizeof_str(_cmd[a[0]], '\0');
-		if (_cmd[a[0]][c - 1] == '=' && _cmd[a[0] + 1]
-			&& !str_cmp(_cmd[a[0] + 1], "=", NULL))
+		if (line[a] == 34 || line[a] == 39)
 		{
-			new_statment[a[1]] = corrected_statment(_cmd[a[0]], _cmd[a[0] + 1], NULL);
-			a[0] += 1;
+			if (line[a] == 34)
+				b[0] += 1;
+			else
+				b[1] += 1;
+			res += 1;
 		}
-		else if (_cmd[a[0] + 1] && _cmd[a[0] + 2]
-			&& !str_cmp(_cmd[a[0]], "=", NULL) 
-			&& str_cmp(_cmd[a[0] + 1], "=", NULL) 
-			&& !str_cmp(_cmd[a[0] + 2], "=", NULL))
-		{
-			new_statment[a[1]] = corrected_statment(_cmd[a[0]], _cmd[a[0] + 1], _cmd[a[0] + 2]);
-			a[0] += 2;
-		}
-		else
-			new_statment[a[1]] = strcopy(_cmd[a[0]]);
-		//printf("passed: .%s.\n",   new_statment[a[1]]);
-		a[0]++;
-		a[1]++;
+		a++;
 	}
-	new_statment[a[1]] = 0;
-	return (new_statment);
+	if (res && !(b[0] % 2) && !(b[1] % 2))
+		return (1);
+	return (0);
 }
 
-char	**misstatment_detector(char **_cmd)
+char	*ex_statment_misdefinition(char *line)
 {
 	int				b;
-	char				**new_statment;
+	char				*new_line;
 
-	b = sizeof_arr(_cmd);
-	if (b <= 2)
-		return (_cmd);
-	new_statment = malloc((b + 1) * sizeof(char *));
-	new_statment[0] = strcopy(_cmd[0]);
-	new_statment = adapt_export_statments(new_statment, _cmd);
-	//>
-	//for (int i=0;new_statment[i];i++)
-	//	printf("new[%i]: .%s.\n", i, new_statment[i]);
-	free_multible(_cmd);
-	return (new_statment);
+	b = sizeof_str(line, ' ');
+	new_line = malloc(b + 1);
+	s_strcopy(new_line, line, 0, b);
+	if (str_cmp(new_line, "export", NULL)
+		&& _statment_caution(line))
+	{
+		free(new_line);
+		return (ex_new_line(line, 0, 0));
+	}
+	free(new_line);
+	return (line);
 }

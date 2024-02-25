@@ -1,75 +1,90 @@
 #include "minishell.h"
 
-char	*translate_var(char *line, s_en *env, int i_ndx)
+int	isvalid_var_start(char *str, int index, int con)
 {
-	int						a;
-	int						b;
-	char					*new_var;
+	if ((con && str[index] == '$'
+		&& str[index + 1]
+		&& str[index + 1] != '$'
+		&& !ft_isspace(str[index + 1])
+		&& ft_isalnum(str[index + 1]))
+		|| (!con && str[index]
+		&& str[index] != '$'
+		&& !ft_isspace(str[index])
+		&& ft_isalnum(str[index])))
+		return (1);
+	return (0);
+}
 
-	a = i_ndx;
-	while (line[a] && line[a] != ' '
-		&& line[a] != '$' && line[a] != '/')
-		a++;
-	new_var = malloc((a - i_ndx) + 1);
-	s_strcopy(new_var, line, i_ndx, a);
-	b = get_env_index(env, new_var);
+char	*_transformed_var(char *old_var, char *__new, int st, int end)
+{
+	int							size;
+	char						*new__;
+	int							unsize;
+
+	unsize = sizeof_str(__new, '\0');
+	size = st + (sizeof_str(old_var, '\0') - end) + unsize;
+	new__ = malloc(size + 1);
+	s_strcopy(new__, old_var, 0, st);
+	s_strcopy(new__ + st, __new, 0, unsize);
+	s_strcopy(new__ + st + unsize, old_var, end, sizeof_str(old_var, '\0'));
+	free(old_var);
+	return (new__);
+}
+
+char	*_transform_var(char *var, s_en *env, int a, int b)
+{
+	int							hole_size;
+	int							c;
+	char						*new_var;
+
+	hole_size = b - a;
+	new_var = malloc(hole_size + 1);
+	s_strcopy(new_var, var, a + 1, b);
+	c = get_env_index(env, new_var);
 	free(new_var);
-	if (b >= 0)
-		return (strcopy(env->env__[b][1]));
-	return (strcopy(" "));
+	if (c >= 0)
+		return (_transformed_var(var, env->env__[c][1], a, b));
+	else
+		return (_transformed_var(var, " ", a, b));
 }
 
-char	*replace_line(char *line, char *env_var, int index)
+char	*_catch_var(char *var, s_en *env)
 {
-	char					*new_line;
-	int						var_size;
-	int						hole_size;
-	int						v_in;
-	int						l_in;
-
-	v_in = 0;
-	l_in = index - 1;
-	hole_size = index;
-	while (line[hole_size] && line[hole_size] != ' '
-		&& line[hole_size] != '$' && line[hole_size] != '/')
-		hole_size += 1;
-	hole_size -= index;
-	var_size = sizeof_str(env_var, '\0');
-	new_line = malloc((sizeof_str(line, '\0') - hole_size) + var_size);
-	s_strcopy(new_line, line, 0, index - 1);
-	while (v_in < var_size)
-		new_line[l_in++] = env_var[v_in++];
-	while (line[index + hole_size])
-		new_line[l_in++] = line[index++ + hole_size];
-	new_line[l_in] = '\0';
-	return (new_line);
-}
-
-char	*expand_it(char *line, s_en *env)
-{
-	int						a;
-	int						s;
-	char					*env_var;
-	char					*new_line;
+	int							a;
+	int							b;
 
 	a = 0;
-	s = sizeof_str(line, '\0');
-	while (a < s)
+	while (var[a])
 	{
-		if (line[a] == '$'
-				&& line[a + 1]
-				&& line[a + 1] != ' '
-				&& line[a + 1] != '\n'
-				&& line[a + 1] != '\t'
-				&& line[a + 1] != '$')
+		if (isvalid_var_start(var, a, 1))
 		{
-			env_var = translate_var(line, env, a + 1);
-			new_line = replace_line(line, env_var, a + 1);
-			free(line);
-			free(env_var);
-			return (expand_it(new_line, env));
+			b = a + 1;
+			while (isvalid_var_start(var, b, 0))
+				b++;
+			return (_catch_var(
+					_transform_var(var, env, a, b),
+					env));
 		}
 		a++;
 	}
-	return (line);
+	return (var);
+}
+
+void	_expand_it(t_ast_node *head, s_en *env)
+{
+	int							a;
+
+	if (head->file_type != F_R && head->args)
+	{
+		a = 0;
+		while (head->args[a])
+		{
+			head->args[a] = _catch_var(head->args[a], env);
+			a++;
+		}
+	}
+	if (head->left)
+		_expand_it(head->left, env);
+	if (head->right)
+		_expand_it(head->right, env);
 }

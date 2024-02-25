@@ -46,8 +46,7 @@ void	shell_loop(s_en *env)
 		if (check_line(&line))
 			continue;
 		add_history(line);
-		// 	line = expand_it(line, env);
-		// printf("%s\n", line);
+		line = ex_statment_misdefinition(line);
 		tokens = syntax_check_and_tokenize(line);
 		if (!tokens)
 			continue;
@@ -64,6 +63,7 @@ int main(int argc, char **argv, char **__env)
 	s_en					*env;
 
 	signal(SIGINT, ctrl_c_ha);
+	signal(SIGQUIT, ctrl_q_ha);
 	(void)argv;
 	env = malloc(sizeof(s_en));
 	if (argc == 1 && isatty(1)

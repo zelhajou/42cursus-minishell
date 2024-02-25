@@ -86,6 +86,7 @@ void	general_execution(t_ast_node *head, s_en *env, int *status)
 	__redirection_count(head, _piped);
 	_piped_init(_piped, 0);
 	__adapt_nodes(head);
+	_expand_it(head, env);
 	if (__files_permission(head, env->__env))
 		*status = execution_circle(head, _piped, env);
 	else

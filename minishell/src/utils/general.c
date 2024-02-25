@@ -55,11 +55,3 @@ int		str_cmp(char *s_1, char *s_2, char *s_3)
 		return (str_cmp(s_1, s_3, NULL));
 	return (0);
 }
-
-int	is_red(char *str)
-{
-	if (str_cmp(str, "|", NULL) || str_cmp(str, ">", ">>")
-			|| str_cmp(str, "<", "<<"))
-		return (1);
-	return (0);
-}

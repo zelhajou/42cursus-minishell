@@ -15,8 +15,10 @@ void	env_replace_var(char *var, s_en *env)
 	free(env_var);
 	if (c > 0 && c < sizeof_str(var, '\0') - 1)
 		env_plus_one(env, var, c, 1);
-	else if (var[c] == '=' || c == sizeof_str(var, '\0'))
+	else if (var[c] == '=')
 		env_plus_one(env, var, c, 0);
+	else if (c == sizeof_str(var, '\0'))
+		env_plus_one(env, var, c, -1);
 }
 
 void	adapt_status_env(s_en *env, int status, char *start)

@@ -57,7 +57,7 @@ char	*current_abs_path(int size, int tries, int fd)
 			return (current_abs_path(size + 50, tries + 1, fd));
 		else
 		{
-			ft_putendl_fd("\tgetcwd() failure: you are lost", fd);
+			ft_putendl_fd("  err: cd() / pwd(): getcwd(): you are lost", fd);
 			return (NULL);
 		}
 	}
@@ -68,18 +68,27 @@ char	*current_abs_path(int size, int tries, int fd)
 
 void	env_print_fd(char *str_1, char *str_2, int fd)
 {
-	ft_putstr_fd(str_1, fd);
-	ft_putstr_fd(" : ", fd);
-	ft_putendl_fd(str_2, fd);
+	if (!str_cmp(str_2, "F1", NULL))
+	{
+		ft_putstr_fd(str_1, fd);
+		ft_putstr_fd(" : ", fd);
+		if (str_2[0])
+			ft_putstr_fd(str_2, fd);
+		write(fd, "\n", 1);
+	}
 }
 
 void	export_print_fd(char *str_1, char *str_2, int fd)
 {
 	ft_putstr_fd("declare -x ", fd);
 	ft_putstr_fd(str_1, fd);
-	write(fd, "=", 1);
-	ft_putchar_fd('"', fd);
-	ft_putstr_fd(str_2, fd);
-	ft_putchar_fd('"', fd);
+	if (!str_cmp(str_2, "F1", NULL))
+	{
+		write(fd, "=", 1);
+		ft_putchar_fd('"', fd);
+		if (str_2[0])
+			ft_putstr_fd(str_2, fd);
+		ft_putchar_fd('"', fd);
+	}
 	write(fd, "\n", 1);
 }
