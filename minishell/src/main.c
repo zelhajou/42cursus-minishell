@@ -51,7 +51,7 @@ void	shell_loop(s_en *env)
 		if (!tokens)
 			continue;
 		ast = parse_tokens(&tokens);
-		generate_ast_diagram(ast);
+		//generate_ast_diagram(ast);
 		general_execution(ast, env, &status);
 		adapt_status_env(env, status, "?=");
 		free_ast(ast);
