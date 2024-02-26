@@ -56,11 +56,16 @@ char	*_catch_var(char *var, s_en *env)
 {
 	int							a;
 	int							b;
+	int							si_q_count;
 
 	a = 0;
+	si_q_count = 0;
 	while (var[a])
 	{
-		if (isvalid_var_start(var, a, 1))
+		if (var[a] == 39)
+			si_q_count++;
+		if (!(si_q_count % 2)
+			&& isvalid_var_start(var, a, 1))
 		{
 			b = a + 1;
 			while (isvalid_var_start(var, b, 0))

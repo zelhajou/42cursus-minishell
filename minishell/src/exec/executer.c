@@ -75,6 +75,7 @@ int	execution_circle(t_ast_node *head, int *_piped, s_en *env)
 	}
 	if (head->file_type == X_F)
 		status = exec_command(head->args, _fd, _piped, env);
+	wait(NULL);
 	return (status);
 }
 
