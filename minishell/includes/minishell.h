@@ -123,7 +123,7 @@ int			get_string_accurance(char **haystack, char *needle, int n_length);
 int			check_path_access(char *path, int mode);
 void			increment_path_index(char *env_var, int *indx_s, int *a);
 int			get_strs_count(char *str, char del);
-void			terminate(s_en *env);
+void			terminate(s_en *env, int status);
 int			is_builtin(char *_cmd);
 void			free_env(s_en *env);
 int			is_space(char *line);

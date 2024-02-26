@@ -69,10 +69,11 @@ int main(int argc, char **argv, char **__env)
 	s_en					*env;
 
 	(void)argv;
+	printf("\t--[%i]--\n",   getpid());
 	ex_signals_handling();
 	env = malloc(sizeof(s_en));
 	if (argc == 1 && isatty(1)
 		&& __shell_init(env, __env))
 		shell_loop(env);
-	terminate(env);
+	terminate(env, 0);
 }

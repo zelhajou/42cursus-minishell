@@ -47,15 +47,37 @@ int	exec_simple_builtins(char **_cmd_, int *_fd, s_en *env, int *_piped)
 	return (status);
 }
 
+int	is_all_digit(char *s_1)
+{
+	int				a;
+
+	a = 0;
+	while (s_1[a])
+	{
+		if (!ft_isdigit(s_1[a]))
+			return (0);
+		a++;
+	}
+	return (1);
+}
+
 int	exec_built_ins(char **_cmd_, int *_fd, s_en *env, int *_piped)
 {
 	int				status;
+	int				ex_status;
 
 	status = 0;
 	if (str_cmp(_cmd_[0], "exit", NULL))
 	{
+		ex_status = 0;
+		if (_cmd_[1] && _cmd_[2])
+			return (1);
+		if (_cmd_[1] && !is_all_digit(_cmd_[1]))
+			ex_status = 255;
+		else if (_cmd_[1])
+			ex_status = string_to_int(_cmd_[1]);
 		free_multible(_cmd_);
-		terminate(env);
+		terminate(env, ex_status);
 	}
 	else if (!_piped[8])
 		status = exec_builtins(_cmd_, _fd, env, _piped);

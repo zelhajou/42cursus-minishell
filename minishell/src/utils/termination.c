@@ -16,14 +16,14 @@ void	free_env(s_en *env)
 	free(env);
 }
 
-void	terminate(s_en *env)
+void	terminate(s_en *env, int status)
 {
 	if (env)
 	{
 		free_multible(env->__env);
 		free_env(env);
 	}
-	exit(0);
+	exit(status);
 }
 
 void	free_multible(char **arr)
