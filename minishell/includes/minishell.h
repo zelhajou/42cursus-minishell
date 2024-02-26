@@ -26,14 +26,14 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <fcntl.h>
 # include <dirent.h>
 # include <sys/wait.h>
 # include <signal.h>
 # include <errno.h>
 # include <string.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "../lib/libft/libft.h"
 # include "../lib/get_next_line/get_next_line.h"
 

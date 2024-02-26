@@ -67,7 +67,8 @@ int	check_line(char **line)
 void	ctrl_c_ha(int a)
 {
 	(void)a;
-	printf("\n");
 	rl_replace_line("", 0);
+	printf("\n");
+	rl_on_new_line();
 	rl_redisplay();
 }

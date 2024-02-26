@@ -48,5 +48,5 @@ void	close_pipe(int fd1, int fd2)
 void	ctrl_q_ha(int a)
 {
 	(void)a;
-	rl_redisplay();
+	rl_forced_update_display();
 }
