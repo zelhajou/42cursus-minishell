@@ -58,13 +58,18 @@ void	shell_loop(s_en *env)
 	}
 }
 
+void	ex_signals_handling(void)
+{
+	signal(SIGINT, ctrl_c_ha);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 int main(int argc, char **argv, char **__env)
 {
 	s_en					*env;
 
-	signal(SIGINT, ctrl_c_ha);
-	signal(SIGQUIT, ctrl_q_ha);
 	(void)argv;
+	ex_signals_handling();
 	env = malloc(sizeof(s_en));
 	if (argc == 1 && isatty(1)
 		&& __shell_init(env, __env))

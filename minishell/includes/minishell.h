@@ -129,7 +129,6 @@ void			free_env(s_en *env);
 int			is_space(char *line);
 int			check_line(char **line);
 void			ctrl_c_ha(int a);
-void			ctrl_q_ha(int a);
 int			string_to_int(char *str);
 int			int_size(int num);
 void			env_print_fd(char *str_1, char *str_2, int fd);
