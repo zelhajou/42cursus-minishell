@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_builtins.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 11:16:59 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	exec_builtins(char **_cmd_, int *_fd, s_en *env, int *_piped)
+int	exec_builtins(char **_cmd_, int *_fd, t_en *env, int *_piped)
 {
 	int				status;
 	int				_out_fd[2];
@@ -8,9 +20,7 @@ int	exec_builtins(char **_cmd_, int *_fd, s_en *env, int *_piped)
 	_out_fd[1] = 1;
 	if (_piped[0] > 1)
 		pipe(_out_fd);
-	//>
 	status = builtins_child(_cmd_, env, _out_fd);
-	//<
 	if (_piped[0] > 1)
 	{
 		close(_out_fd[1]);
@@ -19,7 +29,7 @@ int	exec_builtins(char **_cmd_, int *_fd, s_en *env, int *_piped)
 	return (status);
 }
 
-int	exec_simple_builtins(char **_cmd_, int *_fd, s_en *env, int *_piped)
+int	exec_simple_builtins(char **_cmd_, int *_fd, t_en *env, int *_piped)
 {
 	int				status;
 	int				_out_fd[2];
@@ -29,9 +39,7 @@ int	exec_simple_builtins(char **_cmd_, int *_fd, s_en *env, int *_piped)
 		_out_fd[1] = _piped[2];
 	if (_piped[0] > 1 && (!_piped[8] || !_piped[7]))
 		pipe(_out_fd);
-	//>
 	status = builtins_child(_cmd_, env, _out_fd);
-	//<
 	if (_piped[8] && _piped[7])
 	{
 		close(_out_fd[1]);
@@ -61,12 +69,14 @@ int	is_all_digit(char *s_1)
 	return (1);
 }
 
-int	exec_built_ins(char **_cmd_, int *_fd, s_en *env, int *_piped)
+int	exec_built_ins(char **_cmd_, int *_fd, t_en *env, int *_piped)
 {
 	int				status;
 	int				ex_status;
 
 	status = 0;
+	if (_piped[0])
+		return (0);
 	if (str_cmp(_cmd_[0], "exit", NULL))
 	{
 		ex_status = 0;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:50:43 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	echo__(char **_cmd, int *_out_fd)
@@ -11,6 +23,7 @@ int	echo__(char **_cmd, int *_out_fd)
 		op_n = 1;
 	a = op_n + 1;
 	if (_cmd[a] || sizeof_str(_cmd[a], '\0'))
+	{
 		while (1)
 		{
 			ft_putstr_fd(_cmd[a], _out_fd[1]);
@@ -20,18 +33,20 @@ int	echo__(char **_cmd, int *_out_fd)
 			else
 				break ;
 		}
+	}
 	if (!op_n)
 		write(_out_fd[1], "\n", 1);
 	return (0);
 }
 
-int	env_print(char *_cmd, s_en *env, int con, int *_out_fd)
+int	env_print(char *_cmd, t_en *env, int con, int *_out_fd)
 {
 	int					a;
 	char				*abs_pwd;
 
 	a = 0;
 	if (str_cmp(_cmd, "env", NULL))
+	{
 		while (env->env__[a])
 		{
 			if (con && !str_cmp(env->env__[a][0], "?", NULL))
@@ -40,27 +55,25 @@ int	env_print(char *_cmd, s_en *env, int con, int *_out_fd)
 				env_print_fd(env->env__[a][0], env->env__[a][1], _out_fd[1]);
 			a++;
 		}
-	else
-	{
-		abs_pwd = current_abs_path(100, 5, _out_fd[1]);
-		if (abs_pwd)
-		{
-			ft_putendl_fd(abs_pwd, _out_fd[1]);
-			free(abs_pwd);
-		}
-		else
-			return (1);
+		return (0);
 	}
-	return (0);
+	abs_pwd = current_abs_path(100, 5, _out_fd[1]);
+	if (abs_pwd)
+	{
+		ft_putendl_fd(abs_pwd, _out_fd[1]);
+		free(abs_pwd);
+		return (0);
+	}
+	return (1);
 }
 
-char	**export__(char **_cmd, s_en *env, int *_out_fd, int **s)
+char	**export__(char **_cmd, t_en *env, int *_out_fd, int **s)
 {
 	int				a;
 
 	a = 1;
-	//_cmd = misstatment_detector(_cmd);
 	if (_cmd[a])
+	{
 		while (_cmd[a])
 		{
 			if (sizeof_str(_cmd[a], '='))
@@ -74,12 +87,13 @@ char	**export__(char **_cmd, s_en *env, int *_out_fd, int **s)
 			}
 			a++;
 		}
+	}
 	else
 		env_print("env", env, 1, _out_fd);
 	return (_cmd);
 }
 
-char	**env_modify(char **_cmd, s_en *env, int *_out_fd, int *s)
+char	**env_modify(char **_cmd, t_en *env, int *_out_fd, int *s)
 {
 	int				a;
 	int				c;
@@ -87,6 +101,7 @@ char	**env_modify(char **_cmd, s_en *env, int *_out_fd, int *s)
 	a = 1;
 	*s = 0;
 	if (_cmd[a] && str_cmp(_cmd[0], "unset", NULL) && env->env__[0])
+	{
 		while (_cmd[a])
 		{
 			c = get_env_index(env, _cmd[a]);
@@ -96,12 +111,13 @@ char	**env_modify(char **_cmd, s_en *env, int *_out_fd, int *s)
 				*s = 1;
 			a++;
 		}
+	}
 	else if (str_cmp(_cmd[0], "export", NULL))
 		_cmd = export__(_cmd, env, _out_fd, &s);
 	return (_cmd);
 }
 
-int	cd__(char **_cmd, s_en *env, int *_out_fd)
+int	cd__(char **_cmd, t_en *env, int *_out_fd)
 {
 	int					a;
 	char				*new_path;
@@ -111,7 +127,8 @@ int	cd__(char **_cmd, s_en *env, int *_out_fd)
 	else
 	{
 		if (change_dir(_cmd[1], env) < 0)
-			ft_putendl_fd("  err: cd(): Only EXISTING destinations", _out_fd[1]);
+			ft_putendl_fd(
+				"  err: cd(): Only EXISTING destinations", _out_fd[1]);
 		else
 		{
 			a = get_env_index(env, "PWD");

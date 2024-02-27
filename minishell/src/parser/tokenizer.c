@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 14:26:48 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/24 22:13:18 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:56:36 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,6 @@ t_token	*tokenize_input(char *input)
 			handle_quotes(&input, &tokens);
 		else if (ft_strchr("><|", *input))
 			handle_special_chars(&input, &tokens);
-		// else if (*input == '$')
-		// 	handle_environment_variables(&input, &tokens);
 		else
 			handle_word(&input, &tokens);
 	}

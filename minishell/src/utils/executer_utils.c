@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executer_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:11:10 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	_piped_init(int *_piped, int f)
@@ -33,14 +45,14 @@ void	open_file(t_ast_node *head, int *_piped)
 		mode = O_TRUNC;
 		if (head->file_type == W_FA)
 			mode = O_APPEND;
-		_piped[2] = open(head->args[0], O_WRONLY| O_CREAT| mode, 0666);
+		_piped[2] = open(head->args[0], O_WRONLY | O_CREAT | mode, 0666);
 	}
 }
 
 int	is_builtin(char *_cmd)
 {
 	char		*tmp_cmd;
-	int		status;
+	int			status;
 
 	status = 0;
 	tmp_cmd = malloc(sizeof_str(_cmd, ' ') + 1);
@@ -54,7 +66,7 @@ int	is_builtin(char *_cmd)
 	return (status);
 }
 
-int	builtins_child(char **_cmd_, s_en *env, int *_out_fd)
+int	builtins_child(char **_cmd_, t_en *env, int *_out_fd)
 {
 	int			status;
 

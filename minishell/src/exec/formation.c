@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   formation.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:03:19 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:04:11 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*get_var_subpaths(char *env_var, char *file, int *indx_s)
@@ -32,7 +44,7 @@ char	*get_var_subpaths(char *env_var, char *file, int *indx_s)
 char	*check_without_env(char *file, int mode)
 {
 	char				*tmp_path;
-	int				b;
+	int					b;
 
 	b = sizeof_str(file, ' ');
 	tmp_path = malloc(b + 1);
@@ -48,13 +60,13 @@ char	*check_without_env(char *file, int mode)
 char	*get_file_path(char *file, char **envp, char *env_var, int mode)
 {
 	char				*tmp_path;
-	int				indx_s[4];
+	int					indx_s[4];
 
 	indx_s[3] = 0;
 	indx_s[1] = sizeof_str(env_var, '\0');
 	indx_s[0] = get_string_accurance(envp, env_var, indx_s[1]);
-	if (indx_s[0] < 0 || 
-		(file[0] && file[1] && file[0] == '.' && file[1] == '/'))
+	if (indx_s[0] < 0
+		|| (file[0] && file[1] && file[0] == '.' && file[1] == '/'))
 		return (check_without_env(file, mode));
 	indx_s[2] = sizeof_str(envp[indx_s[0]], '\0');
 	while (envp[indx_s[0]][indx_s[1]])

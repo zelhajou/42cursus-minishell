@@ -6,13 +6,13 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/24 23:07:26 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:05:37 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_token		*syntax_check_and_tokenize(char *input)
+t_token	*syntax_check_and_tokenize(char *input)
 {
 	char					*trimmed_input;
 	t_token					*tokens;
@@ -31,7 +31,7 @@ t_token		*syntax_check_and_tokenize(char *input)
 	return (tokens);
 }
 
-void	shell_loop(s_en *env)
+void	shell_loop(t_en *env)
 {
 	char					*line;
 	int						status;
@@ -42,14 +42,14 @@ void	shell_loop(s_en *env)
 	{
 		line = readline("\t> ");
 		if (!line)
-			break;
+			break ;
 		if (check_line(&line))
-			continue;
+			continue ;
 		add_history(line);
 		line = handle_special_misdefinitions(line, env);
 		tokens = syntax_check_and_tokenize(line);
 		if (!tokens)
-			continue;
+			continue ;
 		ast = parse_tokens(&tokens);
 		general_execution(ast, env, &status);
 		adapt_status_env(env, status, "?=");
@@ -57,13 +57,13 @@ void	shell_loop(s_en *env)
 	}
 }
 
-int main(int argc, char **argv, char **__env)
+int	main(int argc, char **argv, char **__env)
 {
-	s_en					*env;
+	t_en					*env;
 
 	(void)argv;
 	special_signals_handlers();
-	env = malloc(sizeof(s_en));
+	env = malloc(sizeof(t_en));
 	if (argc == 1 && isatty(1)
 		&& __shell_init(env, __env))
 		shell_loop(env);

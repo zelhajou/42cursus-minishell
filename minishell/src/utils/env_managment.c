@@ -1,24 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_managment.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:08:31 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:10:08 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-int	get_env_index(s_en *env, char *name)
-{
-	int				a;
-
-	a = 0;
-	while (env->env__[a] != 0)
-	{
-		if (str_cmp(env->env__[a][0], name, NULL))
-			return (a);
-		a++;
-	}
-	return (-1);
-}
 
 char	**old_new_copy(char **env, int a, int a_2, int d)
 {
 	char				**new_thing;
-	int				b;
-	int				c;
+	int					b;
+	int					c;
 
 	b = 0;
 	c = 0;
@@ -35,11 +33,11 @@ char	**old_new_copy(char **env, int a, int a_2, int d)
 	return (new_thing);
 }
 
-char	***env_copy(s_en *env, int a, int a_2, int d)
+char	***env_copy(t_en *env, int a, int a_2, int d)
 {
 	int				b;
 	int				c;
-	char				***new_thing;
+	char			***new_thing;
 
 	b = 0;
 	c = 0;
@@ -64,7 +62,7 @@ char	***env_copy(s_en *env, int a, int a_2, int d)
 	return (new_thing);
 }
 
-void	env_minus_one(s_en *env, int c)
+void	env_minus_one(t_en *env, int c)
 {
 	int				a;
 
@@ -78,7 +76,7 @@ void	env_minus_one(s_en *env, int c)
 	}
 }
 
-void	env_plus_value(s_en *env, char *cmd, int a, int con)
+void	env_plus_value(t_en *env, char *cmd, int a, int con)
 {
 	int				b;
 	int				c;
@@ -100,7 +98,7 @@ void	env_plus_value(s_en *env, char *cmd, int a, int con)
 	}
 }
 
-void	env_plus_one(s_en *env, char *cmd, int b, int con)
+void	env_plus_one(t_en *env, char *cmd, int b, int con)
 {
 	int				a;
 	int				c;

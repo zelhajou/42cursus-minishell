@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   formation_2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:03:32 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:03:34 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	get_string_accurance(char **haystack, char *needle, int n_length)
@@ -23,7 +35,6 @@ int	get_string_accurance(char **haystack, char *needle, int n_length)
 	}
 	return (-1);
 }
-#include <errno.h>
 
 int	check_path_access(char *path, int mode)
 {

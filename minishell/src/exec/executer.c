@@ -1,22 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executer.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:02:24 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 ///// 	the rules
 ///
-///	_piped[0]: executed pipes index
+///		_piped[0]: executed pipes index
 ///
-///	_piped[3]: input files_count
-///	_piped[4]: output files count
-///	_piped[5]: pipes count
+///		_piped[3]: input files_count
+///		_piped[4]: output files count
+///		_piped[5]: pipes count
 ///
-///	_piped[1]: current input file fd
-///	_piped[2]: current output file fd
+///		_piped[1]: current input file fd
+///		_piped[2]: current output file fd
 ///
-///	_piped[6]: if there is an in file to dup, close and shit
-///	_piped[7]: if there is an out file
-///	_piped[8]: if its a redirection/piped execute
+///		_piped[6]: if there is an in file to dup, close and shit
+///		_piped[7]: if there is an out file
+///		_piped[8]: if its a redirection/piped execute
 /////
 
-int	execute_pipe(t_ast_node *head, int *_piped, s_en *env, int *_fd)
+int	execute_pipe(t_ast_node *head, int *_piped, t_en *env, int *_fd)
 {
 	int				status;
 
@@ -37,7 +49,7 @@ int	execute_pipe(t_ast_node *head, int *_piped, s_en *env, int *_fd)
 	return (status);
 }
 
-int	execute_redirection(t_ast_node *head, int *_piped, s_en *env, int *_fd)
+int	execute_redirection(t_ast_node *head, int *_piped, t_en *env, int *_fd)
 {
 	int				status;
 
@@ -51,14 +63,14 @@ int	execute_redirection(t_ast_node *head, int *_piped, s_en *env, int *_fd)
 	if (head->left && head->left->type == TOKEN_PIPE)
 		status = execute_pipe(head->left, _piped, env, _fd);
 	if (head->left && (head->left->type == TOKEN_REDIR_IN
-		|| head->left->type == TOKEN_REDIR_OUT
-		|| head->left->type == TOKEN_REDIR_APPEND
-		|| head->left->type == TOKEN_REDIR_HEREDOC))
+			|| head->left->type == TOKEN_REDIR_OUT
+			|| head->left->type == TOKEN_REDIR_APPEND
+			|| head->left->type == TOKEN_REDIR_HEREDOC))
 		status = execute_redirection(head->left, _piped, env, _fd);
 	return (status);
 }
 
-int	execution_circle(t_ast_node *head, int *_piped, s_en *env)
+int	execution_circle(t_ast_node *head, int *_piped, t_en *env)
 {
 	int					_fd[2];
 	int					status;
@@ -78,7 +90,7 @@ int	execution_circle(t_ast_node *head, int *_piped, s_en *env)
 	return (status);
 }
 
-void	general_execution(t_ast_node *head, s_en *env, int *status)
+void	general_execution(t_ast_node *head, t_en *env, int *status)
 {
 	int				_piped[10];
 
@@ -91,7 +103,7 @@ void	general_execution(t_ast_node *head, s_en *env, int *status)
 		*status = execution_circle(head, _piped, env);
 	else
 	{
-		*status = B_FILE_ERR(errno);
+		*status = b_file_error(errno);
 		printf("\terr: %s\n", strerror(errno));
 	}
 }

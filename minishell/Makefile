@@ -6,13 +6,13 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/24 22:15:58 by zelhajou         ###   ########.fr        #
+#    Updated: 2024/02/27 10:23:52 by beddinao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 # Update these paths according to your Readline installation
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 READLINE_LIB = $(shell brew --prefix readline)/lib
@@ -28,7 +28,6 @@ SRCS = $(SRCDIR)/main.c \
        $(SRCDIR)/parser/syntax_checker.c \
        $(SRCDIR)/utils/tokenizer_utils.c \
        $(SRCDIR)/utils/parser_utils.c \
-       $(SRCDIR)/utils/print.c \
        $(SRCDIR)/utils/env_managment.c \
        $(SRCDIR)/utils/expand.c \
        $(SRCDIR)/utils/termination.c \
@@ -38,6 +37,7 @@ SRCS = $(SRCDIR)/main.c \
 	   $(SRCDIR)/utils/executer_utils_3.c \
        $(SRCDIR)/utils/general_2.c \
        $(SRCDIR)/utils/specific_task.c \
+	   $(SRCDIR)/utils/specific_task_2.c \
        $(SRCDIR)/exec/exec_builtins.c \
        $(SRCDIR)/exec/executer.c \
        $(SRCDIR)/exec/formation.c \

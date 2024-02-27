@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   specific_task.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:20:26 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:20:27 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	env_replace_var(char *var, s_en *env)
+void	env_replace_var(char *var, t_en *env)
 {
 	int				c;
 	int				o;
@@ -21,10 +33,10 @@ void	env_replace_var(char *var, s_en *env)
 		env_plus_one(env, var, c, -1);
 }
 
-void	adapt_status_env(s_en *env, int status, char *start)
+void	adapt_status_env(t_en *env, int status, char *start)
 {
 	char					*var;
-	int					a;
+	int						a;
 
 	a = int_size(status) + sizeof_str(start, '\0') + 1;
 	var = malloc(a);

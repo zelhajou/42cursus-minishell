@@ -1,58 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   termination.c                                      :+:      :+:    :+:   */
+/*   specific_task_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 10:20:49 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:20:52 by beddinao         ###   ########.fr       */
+/*   Created: 2024/02/27 10:15:13 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:15:14 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
-void	free_env(t_en *env)
+int	get_env_index(t_en *env, char *name)
 {
 	int				a;
 
 	a = 0;
-	while (env->env__[a])
+	while (env->env__[a] != 0)
 	{
-		free(env->env__[a][0]);
-		free(env->env__[a][1]);
-		free(env->env__[a]);
-		a += 1;
+		if (str_cmp(env->env__[a][0], name, NULL))
+			return (a);
+		a++;
 	}
-	free(env->env__);
-	free(env);
+	return (-1);
 }
 
-void	terminate(t_en *env, int status)
+char	*adapt_quoted_str(char *str)
 {
-	if (env)
-	{
-		free_multible(env->__env);
-		free_env(env);
-	}
-	exit(status);
-}
-
-void	free_multible(char **arr)
-{
-	int				a;
+	char				*new_str;
+	int					a;
+	int					b;
 
 	a = 0;
-	while (arr[a] != 0)
+	b = sizeof_str(str, '\0');
+	if (str && str[0] == '"' && str[b - 1] == '"')
 	{
-		free(arr[a]);
 		a += 1;
+		b -= 1;
 	}
-	free(arr);
-}
-
-void	close_pipe(int fd1, int fd2)
-{
-	close(fd1);
-	close(fd2);
+	new_str = malloc((b - a) + 1);
+	s_strcopy(new_str, str, a, b);
+	free(str);
+	return (new_str);
 }

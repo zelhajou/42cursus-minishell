@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_init.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 09:56:04 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 09:56:07 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	__files_permission(t_ast_node *head, char **env)
 {
 	int				status;
-	char				*path_;
+	char			*path_;
 
 	status = 1;
 	path_ = NULL;

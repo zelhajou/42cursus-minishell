@@ -1,20 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:18:55 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	isvalid_var_start(char *str, int index, int con)
 {
 	if ((con && str[index] == '$'
-		&& str[index + 1]
-		&& str[index + 1] != '$'
-		&& !ft_isspace(str[index + 1])
-		&& (ft_isalnum(str[index + 1])
-		|| str[index + 1] == '_'
-		|| str[index + 1] == '?'))
+			&& str[index + 1]
+			&& str[index + 1] != '$'
+			&& !ft_isspace(str[index + 1])
+			&& (ft_isalnum(str[index + 1])
+				|| str[index + 1] == '_'
+				|| str[index + 1] == '?'))
 		|| (!con && str[index]
-		&& str[index] != '$'
-		&& !ft_isspace(str[index])
-		&& (ft_isalnum(str[index])
-		|| str[index] == '_'
-		|| str[index] == '?')))
+			&& str[index] != '$'
+			&& !ft_isspace(str[index])
+			&& (ft_isalnum(str[index])
+				|| str[index] == '_'
+				|| str[index] == '?')))
 		return (1);
 	return (0);
 }
@@ -35,7 +47,7 @@ char	*_transformed_var(char *old_var, char *__new, int st, int end)
 	return (new__);
 }
 
-char	*_transform_var(char *var, s_en *env, int a, int b)
+char	*_transform_var(char *var, t_en *env, int a, int b)
 {
 	int							hole_size;
 	int							c;
@@ -52,7 +64,7 @@ char	*_transform_var(char *var, s_en *env, int a, int b)
 		return (_transformed_var(var, "", a, b));
 }
 
-char	*_catch_var(char *var, s_en *env)
+char	*_catch_var(char *var, t_en *env)
 {
 	int							a;
 	int							b;
@@ -79,7 +91,7 @@ char	*_catch_var(char *var, s_en *env)
 	return (var);
 }
 
-void	_expand_it(t_ast_node *head, s_en *env)
+void	_expand_it(t_ast_node *head, t_en *env)
 {
 	int							a;
 

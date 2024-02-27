@@ -6,33 +6,33 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 23:26:44 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/24 22:13:18 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:58:47 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ast_node *new_ast_node(t_token_type type)
+t_ast_node	*new_ast_node(t_token_type type)
 {
-    t_ast_node *node;
-	
+	t_ast_node		*node;
+
 	node = malloc(sizeof(t_ast_node));
-    if (!node)
+	if (!node)
 		return (NULL);
-    node->type = type;
-    node->args = NULL;
-    node->left = NULL;
-    node->right = NULL;
-    return (node);
+	node->type = type;
+	node->args = NULL;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
 }
 
-void free_ast(t_ast_node *node)
+void	free_ast(t_ast_node *node)
 {
-	int i;
+	int				i;
 
 	i = 0;
 	if (!node)
-		return;
+		return ;
 	if (node->type == TOKEN_WORD && node->args)
 	{
 		while (node->args && node->args[i])
@@ -40,9 +40,9 @@ void free_ast(t_ast_node *node)
 			free(node->args[i]);
 			i++;
 		}
-        free(node->args);
-    }
-    free_ast(node->left);
-    free_ast(node->right);
-    free(node);
+		free(node->args);
+	}
+	free_ast(node->left);
+	free_ast(node->right);
+	free(node);
 }

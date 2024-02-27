@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   general.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 10:14:59 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:19:32 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	sizeof_str(char *str, char end)
@@ -40,7 +52,7 @@ void	s_strcopy(char *s_1, char *s_2, int st, int en)
 	s_1[a] = '\0';
 }
 
-int		str_cmp(char *s_1, char *s_2, char *s_3)
+int	str_cmp(char *s_1, char *s_2, char *s_3)
 {
 	int					a;
 
@@ -49,7 +61,6 @@ int		str_cmp(char *s_1, char *s_2, char *s_3)
 		a += 1;
 	if (a == sizeof_str(s_1, '\0')
 		&& a == sizeof_str(s_2, '\0'))
-
 		return (1);
 	if (s_3)
 		return (str_cmp(s_1, s_3, NULL));

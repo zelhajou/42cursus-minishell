@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 09:59:58 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/27 10:00:01 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 //// // // cd
 
-void	update_pwd_env(char *new_, s_en *env, int c)
+void	update_pwd_env(char *new_, t_en *env, int c)
 {
 	char				**exp_pwd;
-	int				a;
-	int				b;
+	int					a;
+	int					b;
 
 	a = 0;
 	b = 4;
@@ -23,7 +35,7 @@ void	update_pwd_env(char *new_, s_en *env, int c)
 	free_multible(exp_pwd);
 }
 
-int		change_dir(char *path, s_en *env)
+int	change_dir(char *path, t_en *env)
 {
 	int					status;
 	int					a;
