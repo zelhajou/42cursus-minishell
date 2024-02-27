@@ -155,7 +155,9 @@ void		_piped_init(int *_piped, int f);
 void		open_file(t_ast_node *head, int *_piped);
 int		builtins_child(char **_cmd_, s_en *env, int *_out_fd);
 char		**merge_it(char **f_args, char **_cmd_);
-char		*ex_statment_misdefinition(char *line);
+char		*handle_special_misdefinitions(char *line, s_en *env);
+char		*_catch_var(char *var, s_en *env);
+void		special_signals_handlers(void);
 
 int		exec_command(char **_cmd_, int *_fd, int *_piped, s_en *env);
 int		exec_built_ins(char **_cmd_, int *_fd, s_en *env, int *_piped);

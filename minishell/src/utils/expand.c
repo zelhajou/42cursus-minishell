@@ -49,7 +49,7 @@ char	*_transform_var(char *var, s_en *env, int a, int b)
 	if (c >= 0)
 		return (_transformed_var(var, env->env__[c][1], a, b));
 	else
-		return (_transformed_var(var, " ", a, b));
+		return (_transformed_var(var, "", a, b));
 }
 
 char	*_catch_var(char *var, s_en *env)

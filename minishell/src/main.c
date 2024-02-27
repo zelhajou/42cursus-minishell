@@ -34,7 +34,7 @@ t_token		*syntax_check_and_tokenize(char *input)
 void	shell_loop(s_en *env)
 {
 	char					*line;
-	int					status;
+	int						status;
 	t_token					*tokens;
 	t_ast_node				*ast;
 
@@ -46,22 +46,15 @@ void	shell_loop(s_en *env)
 		if (check_line(&line))
 			continue;
 		add_history(line);
-		line = ex_statment_misdefinition(line);
+		line = handle_special_misdefinitions(line, env);
 		tokens = syntax_check_and_tokenize(line);
 		if (!tokens)
 			continue;
 		ast = parse_tokens(&tokens);
-		//generate_ast_diagram(ast);
 		general_execution(ast, env, &status);
 		adapt_status_env(env, status, "?=");
 		free_ast(ast);
 	}
-}
-
-void	ex_signals_handling(void)
-{
-	signal(SIGINT, ctrl_c_ha);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 int main(int argc, char **argv, char **__env)
@@ -69,8 +62,7 @@ int main(int argc, char **argv, char **__env)
 	s_en					*env;
 
 	(void)argv;
-	printf("\t--[%i]--\n",   getpid());
-	ex_signals_handling();
+	special_signals_handlers();
 	env = malloc(sizeof(s_en));
 	if (argc == 1 && isatty(1)
 		&& __shell_init(env, __env))

@@ -33,7 +33,7 @@ char	**merge_it(char **f_args, char **_cmd_)
 	a = 0;
 	new_args[a] = adapt_quoted_str(strcopy(f_args[a]));
 	while (_cmd_[++a])
-		new_args[a] = adapt_quoted_str(strcopy(_cmd_[a]));
+			new_args[a] = adapt_quoted_str(strcopy(_cmd_[a]));
 	new_args[a] = 0;
 	free_multible(f_args);
 	return (new_args);
@@ -82,7 +82,30 @@ int	_statment_caution(char *line)
 	return (0);
 }
 
-char	*ex_statment_misdefinition(char *line)
+char	*echo_new_line(char *line, int a, int b, s_en *env)
+{
+	char				*new_line;
+	int					c;
+
+	line = _catch_var(line, env);
+	new_line = malloc(sizeof_str(line, '\0') + 3);
+	c = sizeof_str(line, ' ');
+	while (line[a])
+	{
+		if (a == c + 1)
+			new_line[b++] = '"';
+		if (line[a] != 34 && line[a] != 39)
+			new_line[b++] = line[a];
+		a++;
+	}
+	free(line);
+	new_line[b++] = '"';
+	new_line[b] = '\0';
+	printf("---> echo_fixed_statment: .%s.\n",  new_line);
+	return (new_line);
+}
+
+char	*handle_special_misdefinitions(char *line, s_en *env)
 {
 	int				b;
 	char				*new_line;
@@ -95,6 +118,12 @@ char	*ex_statment_misdefinition(char *line)
 	{
 		free(new_line);
 		return (ex_new_line(line, 0, 0));
+	}
+	else if (str_cmp(new_line, "echo", NULL)
+		&& _statment_caution(line))
+	{
+		free(new_line);
+		return (echo_new_line(line, 0, 0, env));
 	}
 	free(new_line);
 	return (line);

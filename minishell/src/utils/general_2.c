@@ -1,5 +1,11 @@
 #include "minishell.h"
 
+void	special_signals_handlers(void)
+{
+	signal(SIGINT, ctrl_c_ha);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 int	string_to_int(char *str)
 {
 	int					num;
