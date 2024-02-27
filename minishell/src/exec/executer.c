@@ -6,7 +6,7 @@
 /*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:02:24 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:53:36 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 ///		_piped[1]: current input file fd
 ///		_piped[2]: current output file fd
 ///
-///		_piped[6]: if there is an in file to dup, close and shit
+///		_piped[6]: if there is an in file
 ///		_piped[7]: if there is an out file
 ///		_piped[8]: if its a redirection/piped execute
 /////
