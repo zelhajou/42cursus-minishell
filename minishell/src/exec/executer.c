@@ -92,12 +92,12 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 	}
 	if (head->file_type == X_F)
 		status = prepare_and_execute_command(head->args, _fd, _piped, env);
-	return (status);
+	return (wait_for_children(status, _piped));
 }
 
 void	command_execution_manager(t_ast_node *head, t_env *env, int *status)
 {
-	int				_piped[10];
+	int				_piped[12];
 
 	initialize_or_reset_pipe_state(_piped, 1);
 	count_redirections_and_pipes(head, _piped);

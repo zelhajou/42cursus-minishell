@@ -166,6 +166,7 @@ void			initialize_or_reset_pipe_state(int *_piped, int f);
 void			open_file_for_redirection(t_ast_node *head, int *_piped);
 int				check_if_command_is_builtin(char *_cmd);
 int				execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd);
+int				wait_for_children(int status, int *_piped);
 
 
 void			count_redirections_and_pipes(t_ast_node *head, int *_piped);
