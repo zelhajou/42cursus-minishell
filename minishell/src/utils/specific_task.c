@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   specific_task.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:20:26 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:20:27 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:48:36 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env_replace_var(char *var, t_en *env)
+void	replace_env_var(char *var, t_env *env)
 {
 	int				c;
 	int				o;
@@ -23,22 +23,22 @@ void	env_replace_var(char *var, t_en *env)
 	s_strcopy(env_var, var, 0, c);
 	o = get_env_index(env, env_var);
 	if (o >= 0)
-		env_minus_one(env, o);
+		remove_env_entry(env, o);
 	free(env_var);
 	if (c > 0 && c < sizeof_str(var, '\0') - 1)
-		env_plus_one(env, var, c, 1);
+		add_env_entry(env, var, c, 1);
 	else if (var[c] == '=')
-		env_plus_one(env, var, c, 0);
+		add_env_entry(env, var, c, 0);
 	else if (c == sizeof_str(var, '\0'))
-		env_plus_one(env, var, c, -1);
+		add_env_entry(env, var, c, -1);
 }
 
-void	adapt_status_env(t_en *env, int status, char *start)
+void	update_env_status(t_env *env, int status, char *start)
 {
 	char					*var;
 	int						a;
 
-	a = int_size(status) + sizeof_str(start, '\0') + 1;
+	a = count_digits_in_int(status) + sizeof_str(start, '\0') + 1;
 	var = malloc(a);
 	s_strcopy(var, start, 0, sizeof_str(start, '\0'));
 	var[--a] = '\0';
@@ -49,7 +49,7 @@ void	adapt_status_env(t_en *env, int status, char *start)
 		var[--a] = (status % 10) + 48;
 		status /= 10;
 	}
-	env_replace_var(var, env);
+	replace_env_var(var, env);
 	free(var);
 }
 
@@ -76,7 +76,7 @@ int	check_line(char **line)
 	return (0);
 }
 
-void	ctrl_c_ha(int a)
+void	handle_ctrl_c(int a)
 {
 	(void)a;
 	rl_replace_line("", 0);

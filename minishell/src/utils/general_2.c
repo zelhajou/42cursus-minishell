@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   general_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:19:45 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:19:47 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/27 22:39:36 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	b_file_error(int err)
+int	get_shell_exit_status(int err)
 {
 	if (err == 2)
 		return (127);
@@ -21,9 +21,9 @@ int	b_file_error(int err)
 	return (err);
 }
 
-void	special_signals_handlers(void)
+void	setup_signal_handlers(void)
 {
-	signal(SIGINT, ctrl_c_ha);
+	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -43,7 +43,7 @@ int	string_to_int(char *str)
 	return (num);
 }
 
-int	int_size(int num)
+int	count_digits_in_int(int num)
 {
 	int			a;
 
@@ -58,7 +58,7 @@ int	int_size(int num)
 	return (a);
 }
 
-int	sizeof_arr(char **arr)
+int	count_strings_in_array(char **arr)
 {
 	int			a;
 

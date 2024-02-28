@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executer_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:11:10 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:48:36 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	_piped_init(int *_piped, int f)
+void	initialize_or_reset_pipe_state(int *_piped, int f)
 {
 	int			a;
 
@@ -25,7 +25,7 @@ void	_piped_init(int *_piped, int f)
 		_piped[0] += 1;
 }
 
-void	open_file(t_ast_node *head, int *_piped)
+void	open_file_for_redirection(t_ast_node *head, int *_piped)
 {
 	int			mode;
 
@@ -49,7 +49,7 @@ void	open_file(t_ast_node *head, int *_piped)
 	}
 }
 
-int	is_builtin(char *_cmd)
+int	check_if_command_is_builtin(char *_cmd)
 {
 	char		*tmp_cmd;
 	int			status;
@@ -66,7 +66,7 @@ int	is_builtin(char *_cmd)
 	return (status);
 }
 
-int	builtins_child(char **_cmd_, t_en *env, int *_out_fd)
+int	execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd)
 {
 	int			status;
 
@@ -79,6 +79,6 @@ int	builtins_child(char **_cmd_, t_en *env, int *_out_fd)
 		_cmd_ = env_modify(_cmd_, env, _out_fd, &status);
 	else if (str_cmp(_cmd_[0], "cd", NULL))
 		status = cd__(_cmd_, env, _out_fd);
-	free_multible(_cmd_);
+	free_string_array(_cmd_);
 	return (status);
 }

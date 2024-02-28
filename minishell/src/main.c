@@ -6,16 +6,16 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/27 10:05:37 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 00:06:51 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_token	*syntax_check_and_tokenize(char *input)
+t_token	*process_and_tokenize_input(char *input)
 {
-	char					*trimmed_input;
-	t_token					*tokens;
+	char		*trimmed_input;
+	t_token		*tokens;
 
 	trimmed_input = ft_strtrim(input, " \t\n\v\f\r");
 	free(input);
@@ -31,41 +31,41 @@ t_token	*syntax_check_and_tokenize(char *input)
 	return (tokens);
 }
 
-void	shell_loop(t_en *env)
+void	main_shell_execution_loop(t_env *env)
 {
-	char					*line;
-	int						status;
-	t_token					*tokens;
-	t_ast_node				*ast;
+	char		*line;
+	int			status;
+	t_token		*tokens;
+	t_ast_node	*ast;
 
 	while (1)
 	{
-		line = readline("\t> ");
+		line = readline("> ");
 		if (!line)
 			break ;
 		if (check_line(&line))
 			continue ;
 		add_history(line);
-		line = handle_special_misdefinitions(line, env);
-		tokens = syntax_check_and_tokenize(line);
+		line = preprocess_builtin_commands_input(line, env);
+		tokens = process_and_tokenize_input(line);
 		if (!tokens)
 			continue ;
 		ast = parse_tokens(&tokens);
-		general_execution(ast, env, &status);
-		adapt_status_env(env, status, "?=");
+		command_execution_manager(ast, env, &status);
+		update_env_status(env, status, "?=");
 		free_ast(ast);
 	}
 }
 
-int	main(int argc, char **argv, char **__env)
+int	main(int argc, char **argv, char **original_env)
 {
-	t_en					*env;
+	t_env	*env;
 
 	(void)argv;
-	special_signals_handlers();
-	env = malloc(sizeof(t_en));
+	setup_signal_handlers();
+	env = malloc(sizeof(t_env));
 	if (argc == 1 && isatty(1)
-		&& __shell_init(env, __env))
-		shell_loop(env);
-	terminate(env, 0);
+		&& initialize_shell_with_environment(env, original_env))
+		main_shell_execution_loop(env);
+	cleanup_and_exit_shell(env, 0);
 }

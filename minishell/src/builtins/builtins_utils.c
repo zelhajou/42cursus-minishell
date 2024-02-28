@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:59:58 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:00:01 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 00:06:15 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //// // // cd
 
-void	update_pwd_env(char *new_, t_en *env, int c)
+void	update_pwd_env(char *new_, t_env *env, int c)
 {
 	char				**exp_pwd;
 	int					a;
@@ -32,10 +32,10 @@ void	update_pwd_env(char *new_, t_en *env, int c)
 	exp_pwd[1][b] = '\0';
 	exp_pwd[2] = 0;
 	env_modify(exp_pwd, env, NULL, &a);
-	free_multible(exp_pwd);
+	free_string_array(exp_pwd);
 }
 
-int	change_dir(char *path, t_en *env)
+int	change_dir(char *path, t_env *env)
 {
 	int					status;
 	int					a;
@@ -44,7 +44,7 @@ int	change_dir(char *path, t_en *env)
 	{
 		a = get_env_index(env, "HOME");
 		if (a >= 0)
-			status = chdir(env->env__[a][1]);
+			status = chdir(env->parsed_env[a][1]);
 		else
 			status = -1;
 	}

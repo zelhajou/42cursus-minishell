@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   formation_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:03:32 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:03:34 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:27:28 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_string_accurance(char **haystack, char *needle, int n_length)
+int	find_substr_index(char **haystack, char *needle, int n_length)
 {
 	int		a;
 	int		b;
@@ -36,7 +36,7 @@ int	get_string_accurance(char **haystack, char *needle, int n_length)
 	return (-1);
 }
 
-int	check_path_access(char *path, int mode)
+int	is_path_accessible(char *path, int mode)
 {
 	if (access(path, mode) < 0)
 		return (0);
@@ -57,7 +57,7 @@ void	increment_path_index(char *env_var, int *indx_s, int *a)
 		*a = indx_s[1];
 }
 
-int	get_strs_count(char *str, char del)
+int	count_substrings(char *str, char del)
 {
 	int			a;
 	int			b;

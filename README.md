@@ -64,7 +64,7 @@ Our Minishell project represents a collaborative effort to build a custom shell 
 
 - [Unix terminals and shells](https://www.youtube.com/playlist?list=PLFAC320731F539902) 📹
 
-- [Terminal vs. Bash vs. Command line vs. Prompt](https://www.youtube.com/watch?v=hMSByvFHOro&ab_channel=LukeSmith) 📝
+- [Terminal vs. Bash vs. Command line vs. Prompt](https://www.youtube.com/watch?v=hMSByvFHOro&ab_channel=LukeSmith) 📹
 
 - [Tutorial - Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/) 📝
 

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   formation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:03:19 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:04:11 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:27:30 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_subpaths(char *env_var, char *file, int *indx_s)
+char	*create_subpath_from_var(char *env_var, char *file, int *indx_s)
 {
 	char		*tmp_path;
 	int			a;
@@ -41,7 +41,7 @@ char	*get_var_subpaths(char *env_var, char *file, int *indx_s)
 	return (tmp_path);
 }
 
-char	*check_without_env(char *file, int mode)
+char	*verify_path_without_env(char *file, int mode)
 {
 	char				*tmp_path;
 	int					b;
@@ -51,30 +51,30 @@ char	*check_without_env(char *file, int mode)
 	if (!tmp_path)
 		return (NULL);
 	s_strcopy(tmp_path, file, 0, b);
-	if (check_path_access(tmp_path, mode))
+	if (is_path_accessible(tmp_path, mode))
 		return (tmp_path);
 	free(tmp_path);
 	return (NULL);
 }
 
-char	*get_file_path(char *file, char **envp, char *env_var, int mode)
+char	*fetch_file_path(char *file, char **envp, char *env_var, int mode)
 {
 	char				*tmp_path;
 	int					indx_s[4];
 
 	indx_s[3] = 0;
 	indx_s[1] = sizeof_str(env_var, '\0');
-	indx_s[0] = get_string_accurance(envp, env_var, indx_s[1]);
+	indx_s[0] = find_substr_index(envp, env_var, indx_s[1]);
 	if (indx_s[0] < 0
 		|| (file[0] && file[1] && file[0] == '.' && file[1] == '/'))
-		return (check_without_env(file, mode));
+		return (verify_path_without_env(file, mode));
 	indx_s[2] = sizeof_str(envp[indx_s[0]], '\0');
 	while (envp[indx_s[0]][indx_s[1]])
 	{
-		tmp_path = get_var_subpaths(envp[indx_s[0]], file, indx_s);
+		tmp_path = create_subpath_from_var(envp[indx_s[0]], file, indx_s);
 		if (!tmp_path)
 			return (NULL);
-		if (check_path_access(tmp_path, mode))
+		if (is_path_accessible(tmp_path, mode))
 			return (tmp_path);
 		free(tmp_path);
 		if (!indx_s[3])
@@ -83,7 +83,7 @@ char	*get_file_path(char *file, char **envp, char *env_var, int mode)
 	return (NULL);
 }
 
-char	*get_next_substr(char *str, char del, int *index)
+char	*find_next_substring(char *str, char del, int *index)
 {
 	char		*sub;
 	int			size;
@@ -108,23 +108,23 @@ char	*get_next_substr(char *str, char del, int *index)
 	return (sub);
 }
 
-char	**generate_cmd_arr(char *cmd, char **envp, int c)
+char	**prepare_cmd_arguments(char *cmd, char **envp, int c)
 {
 	char		**cmd_arr;
 	char		*cmd_holder;
 	int			i[2];
 
-	i[1] = get_strs_count(cmd, ' ');
+	i[1] = count_substrings(cmd, ' ');
 	cmd_arr = malloc((i[1] + 1) * sizeof(char *));
 	if (!cmd_arr)
 		return (NULL);
 	i[0] = 0;
 	while (c < i[1])
 	{
-		cmd_holder = get_next_substr(cmd, ' ', i);
-		if (!c && !is_builtin(cmd_holder))
+		cmd_holder = find_next_substring(cmd, ' ', i);
+		if (!c && !check_if_command_is_builtin(cmd_holder))
 		{
-			cmd_arr[c] = get_file_path(cmd_holder, envp, "PATH", X_OK);
+			cmd_arr[c] = fetch_file_path(cmd_holder, envp, "PATH", X_OK);
 			free(cmd_holder);
 		}
 		else

@@ -3,42 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   termination.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:20:49 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:20:52 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 00:06:15 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_env(t_en *env)
+void	free_environment_variables(t_env *env)
 {
 	int				a;
 
 	a = 0;
-	while (env->env__[a])
+	while (env->parsed_env[a])
 	{
-		free(env->env__[a][0]);
-		free(env->env__[a][1]);
-		free(env->env__[a]);
+		free(env->parsed_env[a][0]);
+		free(env->parsed_env[a][1]);
+		free(env->parsed_env[a]);
 		a += 1;
 	}
-	free(env->env__);
+	free(env->parsed_env);
 	free(env);
 }
 
-void	terminate(t_en *env, int status)
+void	cleanup_and_exit_shell(t_env *env, int status)
 {
 	if (env)
 	{
-		free_multible(env->__env);
-		free_env(env);
+		free_string_array(env->original_env);
+		free_environment_variables(env);
 	}
 	exit(status);
 }
 
-void	free_multible(char **arr)
+void	free_string_array(char **arr)
 {
 	int				a;
 
@@ -51,7 +51,7 @@ void	free_multible(char **arr)
 	free(arr);
 }
 
-void	close_pipe(int fd1, int fd2)
+void	close_pipe_ends(int fd1, int fd2)
 {
 	close(fd1);
 	close(fd2);

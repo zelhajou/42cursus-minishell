@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executer_utils_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:12:09 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:13:03 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 02:10:25 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	**merge_it(char **f_args, char **_cmd_)
 	while (_cmd_[++a])
 		new_args[a] = adapt_quoted_str(strcopy(_cmd_[a]));
 	new_args[a] = 0;
-	free_multible(f_args);
+	free_string_array(f_args);
 	return (new_args);
 }
 
@@ -75,12 +75,12 @@ int	_statment_caution(char *line)
 	return (0);
 }
 
-char	*echo_new_line(char *line, int a, int b, t_en *env)
+char	*echo_new_line(char *line, int a, int b, t_env *env)
 {
 	char				*new_line;
 	int					c;
 
-	line = _catch_var(line, env);
+	line = recursively_expand_variables(line, env);
 	new_line = malloc(sizeof_str(line, '\0') + 3);
 	c = sizeof_str(line, ' ');
 	while (line[a])
@@ -97,7 +97,7 @@ char	*echo_new_line(char *line, int a, int b, t_en *env)
 	return (new_line);
 }
 
-char	*handle_special_misdefinitions(char *line, t_en *env)
+char	*preprocess_builtin_commands_input(char *line, t_env *env)
 {
 	int				b;
 	char			*new_line;

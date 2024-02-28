@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:18:55 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 00:06:15 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	isvalid_var_start(char *str, int index, int con)
+int	is_valid_variable_start(char *str, int index, int con)
 {
 	if ((con && str[index] == '$'
 			&& str[index + 1]
@@ -31,7 +31,7 @@ int	isvalid_var_start(char *str, int index, int con)
 	return (0);
 }
 
-char	*_transformed_var(char *old_var, char *__new, int st, int end)
+char	*replace_variable_with_value(char *old_var, char *__new, int st, int end)
 {
 	int							size;
 	char						*new__;
@@ -47,7 +47,7 @@ char	*_transformed_var(char *old_var, char *__new, int st, int end)
 	return (new__);
 }
 
-char	*_transform_var(char *var, t_en *env, int a, int b)
+char	*expand_variable_in_string(char *var, t_env *env, int a, int b)
 {
 	int							hole_size;
 	int							c;
@@ -59,12 +59,12 @@ char	*_transform_var(char *var, t_en *env, int a, int b)
 	c = get_env_index(env, new_var);
 	free(new_var);
 	if (c >= 0)
-		return (_transformed_var(var, env->env__[c][1], a, b));
+		return (replace_variable_with_value(var, env->parsed_env[c][1], a, b));
 	else
-		return (_transformed_var(var, "", a, b));
+		return (replace_variable_with_value(var, "", a, b));
 }
 
-char	*_catch_var(char *var, t_en *env)
+char	*recursively_expand_variables(char *var, t_env *env)
 {
 	int							a;
 	int							b;
@@ -77,13 +77,13 @@ char	*_catch_var(char *var, t_en *env)
 		if (var[a] == 39)
 			si_q_count++;
 		if (!(si_q_count % 2)
-			&& isvalid_var_start(var, a, 1))
+			&& is_valid_variable_start(var, a, 1))
 		{
 			b = a + 1;
-			while (isvalid_var_start(var, b, 0))
+			while (is_valid_variable_start(var, b, 0))
 				b++;
-			return (_catch_var(
-					_transform_var(var, env, a, b),
+			return (recursively_expand_variables(
+					expand_variable_in_string(var, env, a, b),
 					env));
 		}
 		a++;
@@ -91,7 +91,7 @@ char	*_catch_var(char *var, t_en *env)
 	return (var);
 }
 
-void	_expand_it(t_ast_node *head, t_en *env)
+void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 {
 	int							a;
 
@@ -100,12 +100,12 @@ void	_expand_it(t_ast_node *head, t_en *env)
 		a = 0;
 		while (head->args[a])
 		{
-			head->args[a] = _catch_var(head->args[a], env);
+			head->args[a] = recursively_expand_variables(head->args[a], env);
 			a++;
 		}
 	}
 	if (head->left)
-		_expand_it(head->left, env);
+		expand_variables_in_ast(head->left, env);
 	if (head->right)
-		_expand_it(head->right, env);
+		expand_variables_in_ast(head->right, env);
 }

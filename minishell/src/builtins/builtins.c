@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:50:43 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 00:06:15 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	echo__(char **_cmd, int *_out_fd)
 	return (0);
 }
 
-int	env_print(char *_cmd, t_en *env, int con, int *_out_fd)
+int	env_print(char *_cmd, t_env *env, int con, int *_out_fd)
 {
 	int					a;
 	char				*abs_pwd;
@@ -47,12 +47,12 @@ int	env_print(char *_cmd, t_en *env, int con, int *_out_fd)
 	a = 0;
 	if (str_cmp(_cmd, "env", NULL))
 	{
-		while (env->env__[a])
+		while (env->parsed_env[a])
 		{
-			if (con && !str_cmp(env->env__[a][0], "?", NULL))
-				export_print_fd(env->env__[a][0], env->env__[a][1], _out_fd[1]);
-			else if (!str_cmp(env->env__[a][0], "?", NULL))
-				env_print_fd(env->env__[a][0], env->env__[a][1], _out_fd[1]);
+			if (con && !str_cmp(env->parsed_env[a][0], "?", NULL))
+				export_print_fd(env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
+			else if (!str_cmp(env->parsed_env[a][0], "?", NULL))
+				env_print_fd(env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
 			a++;
 		}
 		return (0);
@@ -67,7 +67,7 @@ int	env_print(char *_cmd, t_en *env, int con, int *_out_fd)
 	return (1);
 }
 
-char	**export__(char **_cmd, t_en *env, int *_out_fd, int **s)
+char	**export__(char **_cmd, t_env *env, int *_out_fd, int **s)
 {
 	int				a;
 
@@ -77,7 +77,7 @@ char	**export__(char **_cmd, t_en *env, int *_out_fd, int **s)
 		while (_cmd[a])
 		{
 			if (sizeof_str(_cmd[a], '='))
-				env_replace_var(_cmd[a], env);
+				replace_env_var(_cmd[a], env);
 			else
 			{
 				if (_cmd[a][0] == '=')
@@ -93,20 +93,20 @@ char	**export__(char **_cmd, t_en *env, int *_out_fd, int **s)
 	return (_cmd);
 }
 
-char	**env_modify(char **_cmd, t_en *env, int *_out_fd, int *s)
+char	**env_modify(char **_cmd, t_env *env, int *_out_fd, int *s)
 {
 	int				a;
 	int				c;
 
 	a = 1;
 	*s = 0;
-	if (_cmd[a] && str_cmp(_cmd[0], "unset", NULL) && env->env__[0])
+	if (_cmd[a] && str_cmp(_cmd[0], "unset", NULL) && env->parsed_env[0])
 	{
 		while (_cmd[a])
 		{
 			c = get_env_index(env, _cmd[a]);
 			if (c >= 0)
-				env_minus_one(env, c);
+				remove_env_entry(env, c);
 			else
 				*s = 1;
 			a++;
@@ -117,7 +117,7 @@ char	**env_modify(char **_cmd, t_en *env, int *_out_fd, int *s)
 	return (_cmd);
 }
 
-int	cd__(char **_cmd, t_en *env, int *_out_fd)
+int	cd__(char **_cmd, t_env *env, int *_out_fd)
 {
 	int					a;
 	char				*new_path;
@@ -133,7 +133,7 @@ int	cd__(char **_cmd, t_en *env, int *_out_fd)
 		{
 			a = get_env_index(env, "PWD");
 			if (a >= 0)
-				env_minus_one(env, a);
+				remove_env_entry(env, a);
 			new_path = current_abs_path(100, 5, _out_fd[1]);
 			if (new_path)
 			{

@@ -3,42 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   exec_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:56:04 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 09:56:07 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:02:20 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	__files_permission(t_ast_node *head, char **env)
+int	verify_command_file_permissions(t_ast_node *head, char **env)
 {
 	int				status;
 	char			*path_;
 
 	status = 1;
 	path_ = NULL;
-	if (head->args && !is_builtin(head->args[0])
+	if (head->args && !check_if_command_is_builtin(head->args[0])
 		&& (head->file_type == R_F || head->file_type == X_F))
 	{
 		if (head->file_type == R_F)
-			path_ = get_file_path(head->args[0], env, "PWD", R_OK);
+			path_ = fetch_file_path(head->args[0], env, "PWD", R_OK);
 		else if (head->file_type == X_F)
-			path_ = get_file_path(head->args[0], env, "PATH", X_OK);
+			path_ = fetch_file_path(head->args[0], env, "PATH", X_OK);
 		if (!path_)
 			status = 0;
 		else
 			free(path_);
 	}
 	if (status && head->left)
-		status = __files_permission(head->left, env);
+		status = verify_command_file_permissions(head->left, env);
 	if (status && head->right)
-		status = __files_permission(head->right, env);
+		status = verify_command_file_permissions(head->right, env);
 	return (status);
 }
 
-void	__adapt_nodes(t_ast_node *head)
+void	adjust_ast_nodes_for_execution(t_ast_node *head)
 {
 	if (head->type != TOKEN_WORD)
 	{
@@ -62,12 +62,12 @@ void	__adapt_nodes(t_ast_node *head)
 	if (!head->file_type)
 		head->file_type = X_F;
 	if (head->left)
-		__adapt_nodes(head->left);
+		adjust_ast_nodes_for_execution(head->left);
 	if (head->right)
-		__adapt_nodes(head->right);
+		adjust_ast_nodes_for_execution(head->right);
 }
 
-void	__redirection_count(t_ast_node *head, int *_piped)
+void	count_redirections_and_pipes(t_ast_node *head, int *_piped)
 {
 	head->file_type = 0;
 	if (head->type == TOKEN_REDIR_OUT
@@ -79,7 +79,7 @@ void	__redirection_count(t_ast_node *head, int *_piped)
 	else if (head->type == TOKEN_PIPE)
 		_piped[5] += 1;
 	if (head->left)
-		__redirection_count(head->left, _piped);
+		count_redirections_and_pipes(head->left, _piped);
 	if (head->right)
-		__redirection_count(head->right, _piped);
+		count_redirections_and_pipes(head->right, _piped);
 }

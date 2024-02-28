@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   specific_task_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:15:13 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:15:14 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 02:33:18 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-int	get_env_index(t_en *env, char *name)
+int	get_env_index(t_env *env, char *name)
 {
 	int				a;
 
 	a = 0;
-	while (env->env__[a] != 0)
+	while (env->parsed_env[a] != 0)
 	{
-		if (str_cmp(env->env__[a][0], name, NULL))
+		if (str_cmp(env->parsed_env[a][0], name, NULL))
 			return (a);
 		a++;
 	}

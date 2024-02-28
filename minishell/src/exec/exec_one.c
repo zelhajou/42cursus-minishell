@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_one.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:55:31 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 00:05:45 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //// /// /// / execution part
 
-int	exec_one(char **_cmd_, int *_fd, char **env, int *_piped)
+int	execute_command_with_redirection(char **_cmd_, int *_fd, char **env, int *_piped)
 {
 	pid_t				pid;
 	int					status;
@@ -30,11 +30,11 @@ int	exec_one(char **_cmd_, int *_fd, char **env, int *_piped)
 			dup2(fd_[1], 1);
 		else
 			close(_fd[0]);
-		close_pipe(fd_[0], fd_[1]);
+		close_pipe_ends(fd_[0], fd_[1]);
 		execve(_cmd_[0], _cmd_, env);
 		exit(EXIT_FAILURE);
 	}
-	close_pipe(fd_[1], _fd[0]);
+	close_pipe_ends(fd_[1], _fd[0]);
 	if (_piped[0] > 1)
 		_fd[0] = fd_[0];
 	else
@@ -43,7 +43,7 @@ int	exec_one(char **_cmd_, int *_fd, char **env, int *_piped)
 	return (WEXITSTATUS(status));
 }
 
-int	exec_simple_one(char **_cmd_, int *_fd, char **env, int *_piped)
+int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 {
 	pid_t				pid;
 	int					fd_[2];
@@ -59,29 +59,29 @@ int	exec_simple_one(char **_cmd_, int *_fd, char **env, int *_piped)
 	}
 	waitpid(pid, &status, 0);
 	parent_fds_managment(_piped, _fd, fd_);
-	free_multible(_cmd_);
+	free_string_array(_cmd_);
 	return (WEXITSTATUS(status));
 }
 
-int	exec_command(char **_cmd_, int *_fd, int *_piped, t_en *env)
+int	prepare_and_execute_command(char **_cmd_, int *_fd, int *_piped, t_env *env)
 {
 	char				**cmd_args;
 	char				**f_args;
 	int					status;
 
-	f_args = generate_cmd_arr(_cmd_[0], env->__env, 0);
+	f_args = prepare_cmd_arguments(_cmd_[0], env->original_env, 0);
 	cmd_args = merge_it(f_args, _cmd_);
 	if (!cmd_args)
 		return (0);
-	if (is_builtin(cmd_args[0]))
-		status = exec_built_ins(cmd_args, _fd, env, _piped);
+	if (check_if_command_is_builtin(cmd_args[0]))
+		status = manage_builtin_execution(cmd_args, _fd, env, _piped);
 	else if (!_piped[8])
 	{
-		status = exec_one(cmd_args, _fd, env->__env, _piped);
-		free_multible(cmd_args);
+		status = execute_command_with_redirection(cmd_args, _fd, env->original_env, _piped);
+		free_string_array(cmd_args);
 	}
 	else
-		status = exec_simple_one(cmd_args, _fd, env->__env, _piped);
+		status = execute_command_basic(cmd_args, _fd, env->original_env, _piped);
 	if (_piped[0] > 1)
 		_piped[0] -= 1;
 	return (status);
