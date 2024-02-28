@@ -70,14 +70,21 @@ int	env_print(char *_cmd, t_env *env, int con, int *_out_fd)
 char	**export__(char **_cmd, t_env *env, int *_out_fd, int **s)
 {
 	int				a;
+	int				b;
 
 	a = 1;
 	if (_cmd[a])
 	{
 		while (_cmd[a])
 		{
-			if (sizeof_str(_cmd[a], '='))
-				replace_env_var(_cmd[a], env);
+			b = sizeof_str(_cmd[a], '=');
+			if (b)
+			{
+				if (b > 1 && _cmd[a][b - 1] == '+')
+					append_env_var(_cmd[a], env);
+				else
+					replace_env_var(_cmd[a], env);
+			}
 			else
 			{
 				if (_cmd[a][0] == '=')

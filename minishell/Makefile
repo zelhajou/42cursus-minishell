@@ -29,6 +29,7 @@ SRCS = $(SRCDIR)/main.c \
        $(SRCDIR)/utils/parser_utils/tokenizer_utils.c \
        $(SRCDIR)/utils/parser_utils/parser_utils.c \
        $(SRCDIR)/utils/env_managment.c \
+       $(SRCDIR)/utils/env_managment_2.c \
        $(SRCDIR)/utils/expand.c \
        $(SRCDIR)/utils/termination.c \
        $(SRCDIR)/utils/execution_utils/executer_utils.c \

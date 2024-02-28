@@ -124,6 +124,7 @@ char			**env_modify(char **_cmd, t_env *env, int *_out_fd, int *s);
 char			*current_abs_path(int size, int tries, int fd);
 char			*strcopy(char *src);
 char			**merge_it(char **f_args, char **_cmd_);
+char			*str_without_char(char *str, char del);
 
 
 char			***duplicate_env_structure(t_env *env, int a, int a_2, int d);
@@ -166,6 +167,7 @@ void			initialize_or_reset_pipe_state(int *_piped, int f);
 void			open_file_for_redirection(t_ast_node *head, int *_piped);
 int				check_if_command_is_builtin(char *_cmd);
 int				execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd);
+int				wait_for_children(int status, int *_piped);
 
 
 void			count_redirections_and_pipes(t_ast_node *head, int *_piped);
@@ -188,6 +190,7 @@ int				manage_builtin_execution(char **_cmd_, int *_fd, t_env *env, int *_piped)
 int				get_shell_exit_status(int err);
 int				count_digits_in_int(int num);
 void			replace_env_var(char *var, t_env *env);
+void			append_env_var(char *var, t_env *env);
 
 
 char			**prepare_cmd_arguments(char *cmd, char **envp, int c);

@@ -31,6 +31,33 @@ int	is_valid_variable_start(char *str, int index, int con)
 	return (0);
 }
 
+void	append_env_var(char *var, t_env *env)
+{
+	int				b;
+	int				c;
+	int				d;
+	int				o;
+	char				*env_var;
+
+	c = sizeof_str(var, '+');
+	d = sizeof_str(var, '\0') - c - 1;
+	env_var = malloc(c + 1);
+	s_strcopy(env_var, var, 0, c);
+	o = get_env_index(env, env_var);
+	free(env_var);
+	if (o >= 0)
+	{
+		b = sizeof_str(env->original_env[o], '\0');
+		env_var = malloc(b + d + 1);
+		s_strcopy(env_var, env->original_env[o], 0, b);
+		s_strcopy(env_var + b, var, c + 2, sizeof_str(var, '\0'));
+	}
+	else
+		env_var = str_without_char(var, '+');
+	replace_env_var(env_var, env);
+	free(env_var);
+}
+
 int	get_env_index(t_env *env, char *name)
 {
 	int				a;

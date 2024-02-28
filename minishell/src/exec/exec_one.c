@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 00:05:45 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 06:54:45 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 int	execute_command_with_redirection(char **_cmd_, int *_fd, char **env, int *_piped)
 {
 	pid_t				pid;
-	int					status;
 	int					fd_[2];
 
 	pipe(fd_);
@@ -39,15 +38,13 @@ int	execute_command_with_redirection(char **_cmd_, int *_fd, char **env, int *_p
 		_fd[0] = fd_[0];
 	else
 		close(fd_[0]);
-	waitpid(pid, &status, 0);
-	return (WEXITSTATUS(status));
+	return (1);
 }
 
 int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 {
 	pid_t				pid;
 	int					fd_[2];
-	int					status;
 
 	pipe(fd_);
 	pid = fork();
@@ -57,10 +54,9 @@ int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 		execve(_cmd_[0], _cmd_, env);
 		exit(EXIT_FAILURE);
 	}
-	waitpid(pid, &status, 0);
 	parent_fds_managment(_piped, _fd, fd_);
 	free_string_array(_cmd_);
-	return (WEXITSTATUS(status));
+	return (1);
 }
 
 int	prepare_and_execute_command(char **_cmd_, int *_fd, int *_piped, t_env *env)
@@ -75,14 +71,34 @@ int	prepare_and_execute_command(char **_cmd_, int *_fd, int *_piped, t_env *env)
 		return (0);
 	if (check_if_command_is_builtin(cmd_args[0]))
 		status = manage_builtin_execution(cmd_args, _fd, env, _piped);
-	else if (!_piped[8])
-	{
-		status = execute_command_with_redirection(cmd_args, _fd, env->original_env, _piped);
-		free_string_array(cmd_args);
-	}
 	else
-		status = execute_command_basic(cmd_args, _fd, env->original_env, _piped);
+	{
+		_piped[10] += 1;
+		if (!_piped[8])
+		{
+			status = execute_command_with_redirection(cmd_args, _fd, env->original_env, _piped);
+			free_string_array(cmd_args);
+		}
+		else
+			status = execute_command_basic(cmd_args, _fd, env->original_env, _piped);
+	}
 	if (_piped[0] > 1)
 		_piped[0] -= 1;
+	return (status);
+}
+
+/// /// /// waiting part
+
+int	wait_for_children(int status, int *_piped)
+{
+	if (status && _piped[10])
+	{
+		while (_piped[10])
+		{
+			wait(&status);
+			_piped[10] -= 1;
+		}
+		return (WEXITSTATUS(status));
+	}
 	return (status);
 }
