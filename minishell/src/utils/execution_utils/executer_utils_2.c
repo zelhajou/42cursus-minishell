@@ -6,13 +6,13 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:12:09 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 02:10:25 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:54:33 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**merge_it(char **f_args, char **_cmd_)
+char	**merge_command_args(char **f_args, char **_cmd_)
 {
 	int				a;
 	char			**new_args;
@@ -32,7 +32,7 @@ char	**merge_it(char **f_args, char **_cmd_)
 	return (new_args);
 }
 
-char	*ex_new_line(char *line, int a, int b)
+char	*remove_quotes_from_line(char *line, int a, int b)
 {
 	char				*new_line;
 
@@ -48,7 +48,7 @@ char	*ex_new_line(char *line, int a, int b)
 	return (new_line);
 }
 
-int	_statment_caution(char *line)
+int	is_quotation_balanced(char *line)
 {
 	int				a;
 	int				b[2];
@@ -75,7 +75,7 @@ int	_statment_caution(char *line)
 	return (0);
 }
 
-char	*echo_new_line(char *line, int a, int b, t_env *env)
+char	*preprocess_echo_input(char *line, int a, int b, t_env *env)
 {
 	char				*new_line;
 	int					c;
@@ -97,7 +97,7 @@ char	*echo_new_line(char *line, int a, int b, t_env *env)
 	return (new_line);
 }
 
-char	*preprocess_builtin_commands_input(char *line, t_env *env)
+char	*preprocess_input_for_builtins(char *line, t_env *env)
 {
 	int				b;
 	char			*new_line;
@@ -106,16 +106,16 @@ char	*preprocess_builtin_commands_input(char *line, t_env *env)
 	new_line = malloc(b + 1);
 	s_strcopy(new_line, line, 0, b);
 	if (str_cmp(new_line, "export", NULL)
-		&& _statment_caution(line))
+		&& is_quotation_balanced(line))
 	{
 		free(new_line);
-		return (ex_new_line(line, 0, 0));
+		return (remove_quotes_from_line(line, 0, 0));
 	}
 	else if (str_cmp(new_line, "echo", NULL)
-		&& _statment_caution(line))
+		&& is_quotation_balanced(line))
 	{
 		free(new_line);
-		return (echo_new_line(line, 0, 0, env));
+		return (preprocess_echo_input(line, 0, 0, env));
 	}
 	free(new_line);
 	return (line);

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 00:05:45 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:48:38 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	handle_piped_command_execution(t_ast_node *head, int *_piped, t_env *env, in
 {
 	int				status;
 
-	if (head->file_type == X_F)
+	if (head->file_type == EXECUTE_FILE)
 	{
 		_piped[8] = 0;
 		status = prepare_and_execute_command(head->args, _fd, _piped, env);
@@ -57,7 +57,7 @@ int	handle_command_redirection(t_ast_node *head, int *_piped, t_env *env, int *_
 
 	if (head->right)
 		open_file_for_redirection(head->right, _piped);
-	if (head->left && head->left->file_type == X_F
+	if (head->left && head->left->file_type == EXECUTE_FILE
 		&& _piped[9])
 	{
 		_piped[8] = 1;
@@ -80,7 +80,7 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 	int					_fd[2];
 	int					status;
 
-	if (head->file_type == F_R)
+	if (head->file_type == FILE_READY)
 	{
 		if (head->type == TOKEN_PIPE)
 			status = handle_piped_command_execution(head, _piped, env, _fd);
@@ -90,7 +90,7 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 			|| head->type == TOKEN_REDIR_HEREDOC)
 			status = handle_command_redirection(head, _piped, env, _fd);
 	}
-	if (head->file_type == X_F)
+	if (head->file_type == EXECUTE_FILE)
 		status = prepare_and_execute_command(head->args, _fd, _piped, env);
 	return (wait_for_children(status, _piped));
 }

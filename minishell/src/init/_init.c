@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:55:35 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 00:06:15 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:36:28 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ int	initialize_shell_with_environment(t_env *env, char **original_env)
 	if (!env)
 		return (0);
 	status = initialize_shell_environment_structure(env, original_env, 0);
-	a = get_env_index(env, "SHLVL");
+	a = find_env_var_index(env, "SHLVL");
 	__index = 0;
 	if (a >= 0)
 		__index = string_to_int(env->parsed_env[a][1]);
 	update_env_status(env, __index + 1, "SHLVL=");
-	a = get_env_index(env, "SHELL");
+	a = find_env_var_index(env, "SHELL");
 	if (a >= 0)
 		remove_env_entry(env, a);
 	replace_env_var("SHELL=minishell", env);

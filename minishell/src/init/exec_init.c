@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:56:04 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 23:02:20 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:48:38 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	verify_command_file_permissions(t_ast_node *head, char **env)
 	status = 1;
 	path_ = NULL;
 	if (head->args && !check_if_command_is_builtin(head->args[0])
-		&& (head->file_type == R_F || head->file_type == X_F))
+		&& (head->file_type == READ_FILE || head->file_type == EXECUTE_FILE))
 	{
-		if (head->file_type == R_F)
+		if (head->file_type == READ_FILE)
 			path_ = fetch_file_path(head->args[0], env, "PWD", R_OK);
-		else if (head->file_type == X_F)
+		else if (head->file_type == EXECUTE_FILE)
 			path_ = fetch_file_path(head->args[0], env, "PATH", X_OK);
 		if (!path_)
 			status = 0;
@@ -42,25 +42,25 @@ void	adjust_ast_nodes_for_execution(t_ast_node *head)
 {
 	if (head->type != TOKEN_WORD)
 	{
-		head->file_type = F_R;
+		head->file_type = FILE_READY;
 		if (head->type == TOKEN_REDIR_OUT && head->right)
-			head->right->file_type = W_F;
+			head->right->file_type = WRITE_FILE;
 		if (head->type == TOKEN_REDIR_APPEND && head->right)
-			head->right->file_type = W_FA;
+			head->right->file_type = WRITE_FILE_APPEND;
 		if (head->type == TOKEN_REDIR_IN && head->right)
-			head->right->file_type = R_F;
+			head->right->file_type = READ_FILE;
 		if (head->type == TOKEN_REDIR_HEREDOC && head->right)
-			head->right->file_type = R_FA;
+			head->right->file_type = READ_FROM_APPEND;
 		if (head->type == TOKEN_PIPE)
 		{
 			if (head->right)
-				head->right->file_type = X_F;
+				head->right->file_type = EXECUTE_FILE;
 			if (head->left)
-				head->left->file_type = X_F;
+				head->left->file_type = EXECUTE_FILE;
 		}
 	}
 	if (!head->file_type)
-		head->file_type = X_F;
+		head->file_type = EXECUTE_FILE;
 	if (head->left)
 		adjust_ast_nodes_for_execution(head->left);
 	if (head->right)

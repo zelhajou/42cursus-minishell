@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:15:13 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 02:33:18 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:36:28 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	append_env_var(char *var, t_env *env)
 	d = sizeof_str(var, '\0') - c - 1;
 	env_var = malloc(c + 1);
 	s_strcopy(env_var, var, 0, c);
-	o = get_env_index(env, env_var);
+	o = find_env_var_index(env, env_var);
 	free(env_var);
 	if (o >= 0)
 	{
@@ -58,7 +58,7 @@ void	append_env_var(char *var, t_env *env)
 	free(env_var);
 }
 
-int	get_env_index(t_env *env, char *name)
+int	find_env_var_index(t_env *env, char *name)
 {
 	int				a;
 
@@ -72,7 +72,7 @@ int	get_env_index(t_env *env, char *name)
 	return (-1);
 }
 
-void	q_strcopy(char *new_str, char *old_str, int size)
+void	copy_str_without_quotes(char *new_str, char *old_str, int size)
 {
 	int					a;
 	int					b;
@@ -88,7 +88,7 @@ void	q_strcopy(char *new_str, char *old_str, int size)
 	new_str[a] = '\0';
 }
 
-char	*adapt_quoted_str(char *str)
+char	*remove_quotes_from_str(char *str)
 {
 	char				*new_str;
 	int					b;
@@ -105,7 +105,7 @@ char	*adapt_quoted_str(char *str)
 		a++;
 	}
 	new_str = malloc(size + 1);
-	q_strcopy(new_str, str, size);
+	copy_str_without_quotes(new_str, str, size);
 	free(str);
 	return (new_str);
 }

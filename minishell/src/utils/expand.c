@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 00:06:15 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:48:38 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*expand_variable_in_string(char *var, t_env *env, int a)
 	hole_size = b - a;
 	new_var = malloc(hole_size + 1);
 	s_strcopy(new_var, var, a + 1, b);
-	c = get_env_index(env, new_var);
+	c = find_env_var_index(env, new_var);
 	free(new_var);
 	if (c >= 0)
 		return (replace_variable_with_value(var, env->parsed_env[c][1], a, b));
@@ -113,13 +113,13 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 {
 	int							a;
 
-	if (head->file_type != F_R && head->args)
+	if (head->file_type != FILE_READY && head->args)
 	{
 		a = 0;
 		while (head->args[a])
 		{
 			head->args[a] = recursively_expand_variables(head->args[a], env);
-			head->args[a] = adapt_quoted_str(head->args[a]);
+			head->args[a] = remove_quotes_from_str(head->args[a]);
 			a++;
 		}
 		head->args = clean_args_array(head->args);

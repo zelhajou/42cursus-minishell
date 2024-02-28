@@ -6,13 +6,11 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 06:54:45 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:56:00 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//// /// /// / execution part
 
 int	execute_command_with_redirection(char **_cmd_, int *_fd, char **env, int *_piped)
 {
@@ -66,7 +64,7 @@ int	prepare_and_execute_command(char **_cmd_, int *_fd, int *_piped, t_env *env)
 	int					status;
 
 	f_args = prepare_cmd_arguments(_cmd_[0], env->original_env, 0);
-	cmd_args = merge_it(f_args, _cmd_);
+	cmd_args = merge_command_args(f_args, _cmd_);
 	if (!cmd_args)
 		return (0);
 	if (check_if_command_is_builtin(cmd_args[0]))
@@ -86,8 +84,6 @@ int	prepare_and_execute_command(char **_cmd_, int *_fd, int *_piped, t_env *env)
 		_piped[0] -= 1;
 	return (status);
 }
-
-/// /// /// waiting part
 
 int	wait_for_children(int status, int *_piped)
 {

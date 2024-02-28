@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 23:48:36 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:58:05 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	open_file_for_redirection(t_ast_node *head, int *_piped)
 	int			mode;
 
 	_piped[9] = 1;
-	if (head->file_type == R_F)
+	if (head->file_type == READ_FILE)
 	{
 		_piped[6] = 1;
 		_piped[1] = open(head->args[0], O_RDONLY);
 	}
-	else if (head->file_type == R_FA)
+	else if (head->file_type == READ_FROM_APPEND)
 	{
 		_piped[6] = 1;
 		exec_here_doc(head->args[0], _piped, NULL);
@@ -44,7 +44,7 @@ void	open_file_for_redirection(t_ast_node *head, int *_piped)
 	{
 		_piped[7] = 1;
 		mode = O_TRUNC;
-		if (head->file_type == W_FA)
+		if (head->file_type == WRITE_FILE_APPEND)
 			mode = O_APPEND;
 		_piped[2] = open(head->args[0], O_WRONLY | O_CREAT | mode, 0666);
 	}
@@ -73,13 +73,13 @@ int	execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd)
 
 	status = 0;
 	if (str_cmp(_cmd_[0], "echo", NULL))
-		status = echo__(_cmd_, _out_fd);
+		status = echo_cmd(_cmd_, _out_fd);
 	else if (str_cmp(_cmd_[0], "pwd", "env"))
-		status = env_print(_cmd_[0], env, 0, _out_fd);
+		status = env_or_pwd_cmd(_cmd_[0], env, 0, _out_fd);
 	else if (str_cmp(_cmd_[0], "export", "unset"))
-		_cmd_ = env_modify(_cmd_, env, _out_fd, &status);
+		_cmd_ = unset_or_export_cmd(_cmd_, env, _out_fd, &status);
 	else if (str_cmp(_cmd_[0], "cd", NULL))
-		status = cd__(_cmd_, env, _out_fd);
+		status = cd_cmd(_cmd_, env, _out_fd);
 	free_string_array(_cmd_);
 	return (status);
 }

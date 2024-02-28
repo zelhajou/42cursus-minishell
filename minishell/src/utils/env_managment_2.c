@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_managment_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 11:53:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 11:53:46 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:12:23 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.c"
+#include "minishell.h"
 
 char	*str_without_char(char *str, char del)
 {

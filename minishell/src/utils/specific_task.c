@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:20:26 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 23:48:36 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:36:28 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	replace_env_var(char *var, t_env *env)
 	c = sizeof_str(var, '=');
 	env_var = malloc(c + 1);
 	s_strcopy(env_var, var, 0, c);
-	o = get_env_index(env, env_var);
+	o = find_env_var_index(env, env_var);
 	if (o >= 0)
 		remove_env_entry(env, o);
 	free(env_var);
