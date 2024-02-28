@@ -6,14 +6,11 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:16:55 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 16:26:38 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 23:44:12 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_allowed_heredoc = 1;
-int	stdi_in = 0;
 
 int	str_compare(char *s_1, char *s_2, int max)
 {
@@ -31,23 +28,22 @@ int	str_compare(char *s_1, char *s_2, int max)
 
 void	quite_heredoc(int a)
 {
-	g_allowed_heredoc = 0;
-	handle_ctrl_c(a);
+	exit(a);
 }
 
-void	read_and_write(int stdin_fd, int stdout_fd, char *limiter)
+void	read_and_write(int std_out, char *limiter)
 {
 	char							*buf;
 
-	while (g_allowed_heredoc)
+	while (1)
 	{
-		buf = get_next_line(stdin_fd);
+		buf = readline("\t\t>> ");
 		if (!buf || str_compare(limiter, buf, sizeof_str(buf, '\n')))
 		{
 			free(buf);
 			break ;
 		}
-		write(stdout_fd, buf, sizeof_str(buf, '\0'));
+		write(std_out, buf, sizeof_str(buf, '\0'));
 		free(buf);
 	}
 }
@@ -55,17 +51,20 @@ void	read_and_write(int stdin_fd, int stdout_fd, char *limiter)
 void	exec_here_doc(char *limiter, int *_piped, int *_fd)
 {
 	int							_out_fd_[2];
+	pid_t						pid;
 
 	(void)_fd;
-	signal(SIGINT, quite_heredoc);
 	pipe(_out_fd_);
-	read_and_write(0, _out_fd_[1], limiter);
+	pid = fork();
+	if (!pid)
+	{
+		signal(SIGINT, quite_heredoc);
+		signal(SIGQUIT, SIG_IGN);
+		close(_out_fd_[0]);
+		read_and_write(_out_fd_[1], limiter);
+		exit(0);
+	}
 	close(_out_fd_[1]);
-	_piped[9] = g_allowed_heredoc;
-	if (_piped[9])
-		_piped[1] = _out_fd_[0];
-	else
-		close_pipe_ends(_out_fd_[0], _out_fd_[1]);
-	signal(SIGINT, handle_ctrl_c);
-	g_allowed_heredoc = 1;
+	_piped[1] = _out_fd_[0];
+	_piped[9] += 1;
 }

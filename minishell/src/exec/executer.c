@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 15:48:38 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 23:42:40 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 ///		_piped[7]: if there is an out file
 ///		_piped[8]: if its a redirection/piped execute
 ///
-///		_piped[9]: latest open_file status
+///		_piped[9]: heredoc status
+///		_piped[10]: children count
 /////
 
 int	handle_piped_command_execution(t_ast_node *head, int *_piped, t_env *env, int *_fd)
@@ -57,21 +58,18 @@ int	handle_command_redirection(t_ast_node *head, int *_piped, t_env *env, int *_
 
 	if (head->right)
 		open_file_for_redirection(head->right, _piped);
-	if (head->left && head->left->file_type == EXECUTE_FILE
-		&& _piped[9])
+	if (head->left && head->left->file_type == EXECUTE_FILE)
 	{
 		_piped[8] = 1;
 		status = prepare_and_execute_command(head->left->args, _fd, _piped, env);
 	}
-	if (head->left && head->left->type == TOKEN_PIPE
-		&& _piped[9])
+	if (head->left && head->left->type == TOKEN_PIPE)
 		status = handle_piped_command_execution(head->left, _piped, env, _fd);
 	if (head->left && (head->left->type == TOKEN_REDIR_IN
 			|| head->left->type == TOKEN_REDIR_OUT
 			|| head->left->type == TOKEN_REDIR_APPEND
 			|| head->left->type == TOKEN_REDIR_HEREDOC))
 		status = handle_command_redirection(head->left, _piped, env, _fd);
-	_piped[9] = 1;
 	return (status);
 }
 
@@ -92,7 +90,10 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 	}
 	if (head->file_type == EXECUTE_FILE)
 		status = prepare_and_execute_command(head->args, _fd, _piped, env);
-	return (wait_for_children(status, _piped));
+	status = wait_for_children(status, _piped);
+	if (_piped[9])
+		close(_piped[1]);
+	return (status);
 }
 
 void	command_execution_manager(t_ast_node *head, t_env *env, int *status)

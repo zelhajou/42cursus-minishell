@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:56:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/24 22:13:18 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 22:23:54 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,20 @@ int	has_unclosed_quotes(const char *input)
 int	has_invalid_redirections(const char *input)
 {
 	const char	*operator_start;
+	int				s_q_count;
+	int				d_q_count;
 
+	s_q_count = 0;
+	d_q_count = 0;
 	operator_start = input;
 	while (*input)
 	{
-		if (*input == '>' || *input == '<')
+		if (*input == 34)
+			d_q_count++;
+		else if (*input == 39)
+			s_q_count++;
+		if ((!(s_q_count % 2) && !(d_q_count % 2))
+			&& (*input == '>' || *input == '<'))
 		{
 			operator_start = input;
 			input++;
@@ -85,13 +94,21 @@ int	has_invalid_redirections(const char *input)
 int	has_misplaced_operators(const char *input)
 {
 	int	expect_command_next;
+	int				s_q_count;
+	int				d_q_count;
 
+	s_q_count = 0;
+	d_q_count = 0;
 	expect_command_next = 0;
 	if (*input == '|' || *input == '&')
 		return (1);
 	while (*input)
 	{
-		if (*input == '|')
+		if (*input == 34)
+			d_q_count++;
+		else if (*input == 39)
+			s_q_count++;
+		if (*input == '|' && !(s_q_count % 2) && !(d_q_count % 2))
 		{
 			if (expect_command_next)
 				return (1);
@@ -108,10 +125,20 @@ int	has_misplaced_operators(const char *input)
 
 int	has_logical_operators(const char *input)
 {
+	int							si_q_count;
+	int							do_q_count;
+
+	si_q_count = 0;
+	do_q_count = 0;
 	while (*input)
 	{
-		if ((*input == '&' && *(input + 1) == '&')
-			|| (*input == '|' && *(input + 1) == '|'))
+		if (*input == 34)
+			do_q_count++;
+		else if (*input == 39)
+			si_q_count++;
+		if (!(do_q_count % 2) && !(si_q_count % 2)
+			&& ((*input == '&' && *(input + 1) == '&')
+			|| (*input == '|' && *(input + 1) == '|')))
 			return (1);
 		input++;
 	}

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 16:58:05 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/28 23:30:07 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	open_file_for_redirection(t_ast_node *head, int *_piped)
 	else if (head->file_type == READ_FROM_APPEND)
 	{
 		_piped[6] = 1;
+		_piped[10] += 1;
 		exec_here_doc(head->args[0], _piped, NULL);
 	}
 	else
