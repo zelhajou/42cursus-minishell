@@ -196,5 +196,6 @@ char			*fetch_file_path(char *file, char **envp, char *env_var, int mode);
 char			*create_subpath_from_var(char *env_var, char *file, int *indx_s);
 int				find_substr_index(char **haystack, char *needle, int n_length);
 int				count_substrings(char *str, char del);
+int				is_valid_variable_start(char *str, int index, int con);
 
 #endif

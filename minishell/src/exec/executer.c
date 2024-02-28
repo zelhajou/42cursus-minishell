@@ -26,6 +26,8 @@
 ///		_piped[6]: if there is an in file
 ///		_piped[7]: if there is an out file
 ///		_piped[8]: if its a redirection/piped execute
+///
+///		_piped[9]: latest open_file status
 /////
 
 int	handle_piped_command_execution(t_ast_node *head, int *_piped, t_env *env, int *_fd)
@@ -55,18 +57,21 @@ int	handle_command_redirection(t_ast_node *head, int *_piped, t_env *env, int *_
 
 	if (head->right)
 		open_file_for_redirection(head->right, _piped);
-	if (head->left && head->left->file_type == X_F)
+	if (head->left && head->left->file_type == X_F
+		&& _piped[9])
 	{
 		_piped[8] = 1;
 		status = prepare_and_execute_command(head->left->args, _fd, _piped, env);
 	}
-	if (head->left && head->left->type == TOKEN_PIPE)
+	if (head->left && head->left->type == TOKEN_PIPE
+		&& _piped[9])
 		status = handle_piped_command_execution(head->left, _piped, env, _fd);
 	if (head->left && (head->left->type == TOKEN_REDIR_IN
 			|| head->left->type == TOKEN_REDIR_OUT
 			|| head->left->type == TOKEN_REDIR_APPEND
 			|| head->left->type == TOKEN_REDIR_HEREDOC))
 		status = handle_command_redirection(head->left, _piped, env, _fd);
+	_piped[9] = 1;
 	return (status);
 }
 

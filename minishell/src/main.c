@@ -40,13 +40,12 @@ void	main_shell_execution_loop(t_env *env)
 
 	while (1)
 	{
-		line = readline("> ");
+		line = readline("\t> ");
 		if (!line)
 			break ;
 		if (check_line(&line))
 			continue ;
 		add_history(line);
-		line = preprocess_builtin_commands_input(line, env);
 		tokens = process_and_tokenize_input(line);
 		if (!tokens)
 			continue ;

@@ -12,25 +12,6 @@
 
 #include "minishell.h"
 
-int	is_valid_variable_start(char *str, int index, int con)
-{
-	if ((con && str[index] == '$'
-			&& str[index + 1]
-			&& str[index + 1] != '$'
-			&& !ft_isspace(str[index + 1])
-			&& (ft_isalnum(str[index + 1])
-				|| str[index + 1] == '_'
-				|| str[index + 1] == '?'))
-		|| (!con && str[index]
-			&& str[index] != '$'
-			&& !ft_isspace(str[index])
-			&& (ft_isalnum(str[index])
-				|| str[index] == '_'
-				|| str[index] == '?')))
-		return (1);
-	return (0);
-}
-
 char	*replace_variable_with_value(char *old_var, char *__new, int st, int end)
 {
 	int							size;
@@ -47,12 +28,16 @@ char	*replace_variable_with_value(char *old_var, char *__new, int st, int end)
 	return (new__);
 }
 
-char	*expand_variable_in_string(char *var, t_env *env, int a, int b)
+char	*expand_variable_in_string(char *var, t_env *env, int a)
 {
 	int							hole_size;
 	int							c;
+	int							b;
 	char						*new_var;
 
+	b = a + 1;
+	while (is_valid_variable_start(var, b, 0))
+		b++;
 	hole_size = b - a;
 	new_var = malloc(hole_size + 1);
 	s_strcopy(new_var, var, a + 1, b);
@@ -67,28 +52,61 @@ char	*expand_variable_in_string(char *var, t_env *env, int a, int b)
 char	*recursively_expand_variables(char *var, t_env *env)
 {
 	int							a;
-	int							b;
 	int							si_q_count;
+	int							do_q_count;
 
 	a = 0;
 	si_q_count = 0;
+	do_q_count = 0;
 	while (var[a])
 	{
 		if (var[a] == 39)
-			si_q_count++;
-		if (!(si_q_count % 2)
-			&& is_valid_variable_start(var, a, 1))
 		{
-			b = a + 1;
-			while (is_valid_variable_start(var, b, 0))
-				b++;
-			return (recursively_expand_variables(
-					expand_variable_in_string(var, env, a, b),
-					env));
+			a++;
+			si_q_count++;
+			while (!(do_q_count % 2) && var[a] && var[a] != 39)
+				a++;
 		}
+		if (var[a] == 34)
+			do_q_count++;
+		if (is_valid_variable_start(var, a, 1))
+			return (recursively_expand_variables(
+					expand_variable_in_string(var, env, a),
+					env));
 		a++;
 	}
 	return (var);
+}
+
+// /// remove empty string arguments
+
+char	**clean_args_array(char **args)
+{
+	int							a;
+	int							b;
+	int							size;
+	char							**new_args;
+
+	a = 0;
+	size = 0;
+	while (args[a] != 0)
+	{
+		if (sizeof_str(args[a], '\0'))
+			size++;
+		a++;
+	}
+	a = 0;
+	b = 0;
+	new_args = malloc((size + 1) * sizeof(char **));
+	while (b < size)
+	{
+		if (sizeof_str(args[a], '\0'))
+			new_args[b++] = strcopy(args[a]);
+		a++;
+	}
+	new_args[b] = 0;
+	free_string_array(args);
+	return (new_args);
 }
 
 void	expand_variables_in_ast(t_ast_node *head, t_env *env)
@@ -101,8 +119,10 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 		while (head->args[a])
 		{
 			head->args[a] = recursively_expand_variables(head->args[a], env);
+			head->args[a] = adapt_quoted_str(head->args[a]);
 			a++;
 		}
+		head->args = clean_args_array(head->args);
 	}
 	if (head->left)
 		expand_variables_in_ast(head->left, env);

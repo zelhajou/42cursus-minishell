@@ -23,12 +23,14 @@ void	initialize_or_reset_pipe_state(int *_piped, int f)
 			_piped[a++] = 0;
 	else if (_piped[5])
 		_piped[0] += 1;
+	_piped[9] = 1;
 }
 
 void	open_file_for_redirection(t_ast_node *head, int *_piped)
 {
 	int			mode;
 
+	_piped[9] = 1;
 	if (head->file_type == R_F)
 	{
 		_piped[6] = 1;

@@ -70,7 +70,7 @@ void	handle_word(char **input, t_token **tokens)
 	char	*word;
 
 	start = *input;
-	while (**input && !ft_strchr(" \t\n\'\"<>|", **input))
+	while (**input && !ft_strchr(" \t\n<>|", **input))
 		(*input)++;
 	if (*input > start)
 	{
@@ -112,9 +112,9 @@ t_token	*tokenize_input(char *input)
 	{
 		while (*input && ft_strchr(" \t\n", *input))
 			input++;
-		if (ft_strchr("\'\"", *input))
+		/*if (ft_strchr("\'\"", *input))
 			handle_quotes(&input, &tokens);
-		else if (ft_strchr("><|", *input))
+		else */if (ft_strchr("><|", *input))
 			handle_special_chars(&input, &tokens);
 		else
 			handle_word(&input, &tokens);

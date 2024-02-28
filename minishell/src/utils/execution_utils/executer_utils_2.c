@@ -24,9 +24,9 @@ char	**merge_it(char **f_args, char **_cmd_)
 		a++;
 	new_args = malloc((a + 1) * sizeof(char *));
 	a = 0;
-	new_args[a] = adapt_quoted_str(strcopy(f_args[a]));
+	new_args[a] = strcopy(f_args[a]);
 	while (_cmd_[++a])
-		new_args[a] = adapt_quoted_str(strcopy(_cmd_[a]));
+		new_args[a] = strcopy(_cmd_[a]);
 	new_args[a] = 0;
 	free_string_array(f_args);
 	return (new_args);
