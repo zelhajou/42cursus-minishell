@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 23:42:40 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 00:09:59 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,21 @@ int	handle_command_redirection(t_ast_node *head, int *_piped, t_env *env, int *_
 
 	if (head->right)
 		open_file_for_redirection(head->right, _piped);
-	if (head->left && head->left->file_type == EXECUTE_FILE)
+	if (head->left && head->left->file_type == EXECUTE_FILE
+		&& _piped[11])
 	{
 		_piped[8] = 1;
 		status = prepare_and_execute_command(head->left->args, _fd, _piped, env);
 	}
-	if (head->left && head->left->type == TOKEN_PIPE)
+	if (head->left && head->left->type == TOKEN_PIPE
+		&& _piped[11])
 		status = handle_piped_command_execution(head->left, _piped, env, _fd);
 	if (head->left && (head->left->type == TOKEN_REDIR_IN
 			|| head->left->type == TOKEN_REDIR_OUT
 			|| head->left->type == TOKEN_REDIR_APPEND
 			|| head->left->type == TOKEN_REDIR_HEREDOC))
 		status = handle_command_redirection(head->left, _piped, env, _fd);
+	_piped[11] = 1;
 	return (status);
 }
 
@@ -98,7 +101,7 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 
 void	command_execution_manager(t_ast_node *head, t_env *env, int *status)
 {
-	int				_piped[12];
+	int				_piped[13];
 
 	initialize_or_reset_pipe_state(_piped, 1);
 	count_redirections_and_pipes(head, _piped);

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:16:55 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 23:44:12 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 00:23:45 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ int	str_compare(char *s_1, char *s_2, int max)
 
 void	quite_heredoc(int a)
 {
-	exit(a);
+	(void)a;
+	printf("\n");
+	exit(0);
 }
 
 void	read_and_write(int std_out, char *limiter)
@@ -44,6 +46,7 @@ void	read_and_write(int std_out, char *limiter)
 			break ;
 		}
 		write(std_out, buf, sizeof_str(buf, '\0'));
+		write(std_out, "\n", 1);
 		free(buf);
 	}
 }
@@ -52,6 +55,7 @@ void	exec_here_doc(char *limiter, int *_piped, int *_fd)
 {
 	int							_out_fd_[2];
 	pid_t						pid;
+	int 						status;
 
 	(void)_fd;
 	pipe(_out_fd_);
@@ -62,9 +66,11 @@ void	exec_here_doc(char *limiter, int *_piped, int *_fd)
 		signal(SIGQUIT, SIG_IGN);
 		close(_out_fd_[0]);
 		read_and_write(_out_fd_[1], limiter);
-		exit(0);
+		exit(1);
 	}
+	waitpid(pid, &status, 0);
 	close(_out_fd_[1]);
 	_piped[1] = _out_fd_[0];
 	_piped[9] += 1;
+	_piped[11] = status;
 }

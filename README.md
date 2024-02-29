@@ -176,12 +176,17 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 
 #### Command Reading
 
-**Command Reading**:
-
 **Readline Library**: Implemented readline and integrated add_history ( [GNU Readline](https://en.wikipedia.org/wiki/GNU_Readline))
 
 ```bash
 brew install readline
+```
+
+Add the following to the Makefile:
+```makefile
+READLINE_INCLUDE = $(shell brew --prefix readline)/include
+READLINE_LIB = $(shell brew --prefix readline)/lib
+INCLUDES = -I./includes -I./lib/libft -I$(READLINE_INCLUDE)
 ```
 
 ```c
@@ -237,17 +242,17 @@ the syntax error checker will be responsible for identifying and reporting synta
 
 #### Syntax Error Checker Function
 
+```bash
+minishell/src/parser/syntax_checker.c
+```
+
 - `syntax_error_checker` Function: Iterates through the input string, checking for syntax errors and reporting them if found.
 - `has_unclosed_quotes` Function: Checks for unclosed quotes in the input string.
 - `has_misplaced_operators` Function: Detects misplaced pipes and redirections.
 - `has_invalid_redirections` Function: Detects invalid redirections, such as multiple consecutive redirections or redirections at the start or end of the input.
 - `has_logical_operators` Function: Detects logical operators such as `&&` and `||` and reports them as not supported.
 
-Directory:
 
-```bash
-minishell/src/parser/syntax_checker.c
-```
 
 #### Tokenization
 
@@ -271,7 +276,6 @@ typedef enum e_token_type
     TOKEN_REDIR_OUT, // For '>'
     TOKEN_REDIR_APPEND, // For '>>'
     TOKEN_REDIR_HEREDOC, // For '<<'
-    TOKEN_EOF       // For the end of input
 }   t_token_type;
 
 // Token structure
@@ -303,7 +307,15 @@ The tokenization function will iterate through the input string, identifying and
 
 #### Parsing
 
+The parsing process involves analyzing the tokens to understand their syntactical relationship. This step constructs a representation of the input that reflects the user's intention.
+
 #### Parsing Function
+
+- `parse_input` Function: Iterates through the tokens, building an abstract syntax tree (AST) that represents the input string.
+- `parse_command` Function: Parses a command and its arguments, creating a command node in the AST.
+- `parse_redirection` Function: Parses redirection tokens, creating redirection nodes in the AST.
+- `parse_pipeline` Function: Parses pipeline tokens, creating pipeline nodes in the AST.
+
 
 #### AST Node Structure
 

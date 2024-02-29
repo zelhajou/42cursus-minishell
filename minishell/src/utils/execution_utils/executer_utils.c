@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 23:30:07 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 00:23:05 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	initialize_or_reset_pipe_state(int *_piped, int f)
 			_piped[a++] = 0;
 	else if (_piped[5])
 		_piped[0] += 1;
+	_piped[11] = 1;
 }
 
 void	open_file_for_redirection(t_ast_node *head, int *_piped)
@@ -38,8 +39,9 @@ void	open_file_for_redirection(t_ast_node *head, int *_piped)
 	else if (head->file_type == READ_FROM_APPEND)
 	{
 		_piped[6] = 1;
-		_piped[10] += 1;
+		signal(SIGINT, SIG_IGN);
 		exec_here_doc(head->args[0], _piped, NULL);
+		signal(SIGINT, handle_ctrl_c);
 	}
 	else
 	{
