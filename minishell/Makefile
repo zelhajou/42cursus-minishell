@@ -6,7 +6,7 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/29 07:07:37 by zelhajou         ###   ########.fr        #
+#    Updated: 2024/02/29 09:21:50 by beddinao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,9 @@ SRCS = $(SRCDIR)/main.c \
 	   $(SRCDIR)/initialization/command_execution_init.c \
        $(SRCDIR)/initialization/environment_init.c \
 	   $(SRCDIR)/execution/builtin_command_execution.c \
+	   $(SRCDIR)/execution/builtin_command_execution_2.c \
        $(SRCDIR)/execution/command_execution_adv.c \
-       $(SRCDIR)/execution/command_execution.c \
+       $(SRCDIR)/execution/executer.c \
        $(SRCDIR)/execution/process_pipeline_management.c \
 	   $(SRCDIR)/execution/formation.c \
        $(SRCDIR)/execution/formation_2.c \

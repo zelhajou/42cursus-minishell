@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 04:00:00 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:09:28 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 ///
 ///		_piped[9]: heredoc status
 ///		_piped[10]: children count
+///		_piped[11]: second heredoc status
 /////
 
 int	handle_piped_command_execution(t_ast_node *head, int *_piped, t_env *env, int *_fd)

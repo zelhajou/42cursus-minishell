@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/29 06:09:23 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:25:04 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int			find_env_var_index(t_env *env, char *name);
 void		free_environment_variables(t_env *env);
 void		replace_env_var(char *var, t_env *env);
 void		append_env_var(char *var, t_env *env);
+int			is_string_numeric(char *s_1);
 
 /* ------------------ Printing and Utility Functions ------------------ */
 
@@ -149,6 +150,7 @@ int			open_file_for_redirection(t_ast_node *head, int *piped);
 
 int			check_if_command_is_builtin(char *cmd);
 int			manage_builtin_execution(char **cmd, int *fd, t_env *env, int *piped);
+int			manage_single_builtin_execution(char **cmd, int *fd, t_env *env, int *piped);
 int			execute_builtin_command_in_child(char **cmd, t_env *env, int *out_fd);
 
 /* ------------------ Path and Environment Variable Handling ------------------ */

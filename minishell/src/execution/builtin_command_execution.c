@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_builtins.c                                    :+:      :+:    :+:   */
+/*   builtin_command_execution.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 03:48:10 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:27:39 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,16 @@ int	is_string_numeric(char *s_1)
 int	manage_builtin_execution(char **_cmd_, int *_fd, t_env *env, int *_piped)
 {
 	int				status;
-	int				ex_status;
 
 	status = 0;
-	if (str_cmp(_cmd_[0], "exit", NULL))
+	if (_piped[0])
 	{
-		ex_status = 0;
-		if (_cmd_[1] && _cmd_[2])
-			return (1);
-		if (_cmd_[1] && !is_string_numeric(_cmd_[1]))
-			ex_status = 255;
-		else if (_cmd_[1])
-			ex_status = string_to_int(_cmd_[1]);
-		free_string_array(_cmd_);
-		cleanup_and_exit_shell(env, ex_status);
+		if (!_piped[8])
+			status = simple_child_for_builtins(_cmd_, _fd, env, _piped);
+		else
+			status = execute_child_with_redirections(_cmd_, _fd, env, _piped);
 	}
-	else if (!_piped[8])
-		status = simple_child_for_builtins(_cmd_, _fd, env, _piped);
 	else
-		status = execute_child_with_redirections(_cmd_, _fd, env, _piped);
+		status = manage_single_builtin_execution(_cmd_, _fd, env, _piped);
 	return (status);
 }
