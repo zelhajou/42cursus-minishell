@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:55:35 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 10:12:42 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:34:05 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ char	**duplicate_environment_variables(char **env)
 	return (new_old);
 }
 
-int	initialize_shell_environment_structure(t_env *env, char **original_env, int a)
+int	initialize_shell_environment_structure(
+		t_env *env, char **original_env, int a)
 {
 	int				b;
 	int				c;

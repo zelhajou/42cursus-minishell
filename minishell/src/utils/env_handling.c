@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 06:53:11 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/29 06:53:17 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:26:55 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	append_env_var(char *var, t_env *env)
 	int				c;
 	int				d;
 	int				o;
-	char				*env_var;
+	char			*env_var;
 
 	c = sizeof_str(var, '+');
 	d = sizeof_str(var, '\0') - c - 1;

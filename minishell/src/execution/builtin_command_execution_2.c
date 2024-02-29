@@ -6,7 +6,7 @@
 /*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 12:53:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 12:53:44 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:44:31 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	execute_builtin_with_piping(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	return (status);
 }
 
-int	execute_builtin_with_simple_piping(char **_cmd_, int *_fd, t_env *env, int *_piped)
+int	execute_builtin_with_simple_piping(
+		char **_cmd_, int *_fd, t_env *env, int *_piped)
 {
 	int				status;
 	int				_out_fd[2];
@@ -55,7 +56,8 @@ int	execute_builtin_with_simple_piping(char **_cmd_, int *_fd, t_env *env, int *
 	return (status);
 }
 
-int	manage_single_builtin_execution(char **_cmd_, int *_fd, t_env *env, int *_piped)
+int	manage_single_builtin_execution(
+		char **_cmd_, int *_fd, t_env *env, int *_piped)
 {
 	int				status;
 	int				ex_status;

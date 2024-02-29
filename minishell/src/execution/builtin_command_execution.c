@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 09:27:39 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:36:57 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	return (1);
 }
 
-int	execute_child_with_redirections(char **_cmd_, int *_fd, t_env *env, int *_piped)
+int	execute_child_with_redirections(
+		char **_cmd_, int *_fd, t_env *env, int *_piped)
 {
 	pid_t			pid;
 	int				_out_fd[2];

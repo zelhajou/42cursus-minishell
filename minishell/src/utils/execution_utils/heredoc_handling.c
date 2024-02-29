@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:16:55 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 13:28:52 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:20:16 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	exec_here_doc(char *limiter, int *_piped, int *_fd)
 {
 	int							_out_fd_[2];
 	pid_t						pid;
-	int 						status;
+	int							status;
 
 	(void)_fd;
 	pipe(_out_fd_);

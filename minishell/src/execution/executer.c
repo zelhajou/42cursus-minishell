@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 12:44:47 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:46:07 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@
 ///		_piped[11]: second heredoc status
 /////
 
-int	handle_piped_command_execution(t_ast_node *head, int *_piped, t_env *env, int *_fd)
+int	handle_piped_command_execution(
+		t_ast_node *head, int *_piped, t_env *env, int *_fd)
 {
 	int				status;
 
@@ -53,7 +54,8 @@ int	handle_piped_command_execution(t_ast_node *head, int *_piped, t_env *env, in
 	return (status);
 }
 
-int	handle_command_redirection(t_ast_node *head, int *_piped, t_env *env, int *_fd)
+int	handle_command_redirection(
+		t_ast_node *head, int *_piped, t_env *env, int *_fd)
 {
 	int				status;
 
@@ -64,7 +66,8 @@ int	handle_command_redirection(t_ast_node *head, int *_piped, t_env *env, int *_
 		&& _piped[11])
 	{
 		_piped[8] = 1;
-		status = prepare_and_execute_command(head->left->args, _fd, _piped, env);
+		status = prepare_and_execute_command(
+				head->left->args, _fd, _piped, env);
 	}
 	if (head->left && head->left->type == TOKEN_PIPE
 		&& _piped[11])

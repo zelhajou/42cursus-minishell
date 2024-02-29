@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   builtin_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 17:13:42 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:42:11 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,11 @@ int	env_or_pwd_cmd(char *_cmd, t_env *env, int con, int *_out_fd)
 		while (env->parsed_env[a])
 		{
 			if (con && !str_cmp(env->parsed_env[a][0], "?", NULL))
-				print_export_declaration_to_fd(env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
+				print_export_declaration_to_fd(
+					env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
 			else if (!str_cmp(env->parsed_env[a][0], "?", NULL))
-				print_env_var_to_fd(env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
+				print_env_var_to_fd(
+					env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
 			a++;
 		}
 		return (0);

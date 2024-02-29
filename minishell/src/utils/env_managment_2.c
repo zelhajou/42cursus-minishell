@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 11:53:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 10:10:57 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:22:35 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	update_env_status(t_env *env, int status, char *start)
 {
 	char					*var;
 	int						a;
-	
+
 	a = count_digits_in_int(status) + sizeof_str(start, '\0') + 1;
 	var = malloc(a);
 	s_strcopy(var, start, 0, sizeof_str(start, '\0'));
@@ -80,7 +80,7 @@ char	*str_without_char(char *str, char del)
 {
 	int				a;
 	int				b;
-	char				*new_str;
+	char			*new_str;
 
 	a = 0;
 	b = 0;

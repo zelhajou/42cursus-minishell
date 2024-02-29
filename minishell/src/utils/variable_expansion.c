@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   variable_expansion.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 06:43:07 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:23:47 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*replace_variable_with_value(char *old_var, char *__new, int st, int end)
+char	*replace_variable_with_value(
+		char *old_var, char *__new, int st, int end)
 {
 	int							size;
 	char						*new__;
@@ -83,7 +84,7 @@ char	**clean_args_array(char **args)
 	int							a;
 	int							b;
 	int							size;
-	char							**new_args;
+	char						**new_args;
 
 	a = 0;
 	size = 0;
