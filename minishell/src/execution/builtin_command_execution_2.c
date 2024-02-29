@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_command_execution_2.c                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/29 12:53:43 by beddinao          #+#    #+#             */
+/*   Updated: 2024/02/29 12:53:44 by beddinao         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	execute_builtin_with_piping(char **_cmd_, int *_fd, t_env *env, int *_piped)

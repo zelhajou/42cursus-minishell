@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/29 02:37:09 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 13:28:04 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	main_shell_execution_loop(t_env *env)
 
 	while (1)
 	{
-		line = readline("\t> ");
+		line = readline("  > ");
 		if (!line)
 			break ;
 		if (check_line(&line))
@@ -53,6 +53,7 @@ void	main_shell_execution_loop(t_env *env)
 		command_execution_manager(ast, env, &status);
 		update_env_status(env, status, "?=");
 		free_ast(ast);
+		rl_redisplay();
 	}
 }
 

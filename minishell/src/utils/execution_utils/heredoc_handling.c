@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:16:55 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 12:42:03 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 13:28:52 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	read_and_write(int std_out, char *limiter)
 
 	while (1)
 	{
-		buf = readline("\t\t>> ");
+		buf = readline(" >> ");
 		if (!buf || str_compare(limiter, buf, sizeof_str(buf, '\n')))
 		{
 			free(buf);
