@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 14:26:48 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/28 22:29:18 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 02:30:32 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,31 @@ void	handle_word(char **input, t_token **tokens)
 {
 	char	*start;
 	char	*word;
+   	int		in_quote;
+	char	quote_char;
 
+	in_quote = 0;
+	quote_char = '\0';
 	start = *input;
-	while (**input && !ft_strchr(" \t\n<>|", **input))
-		(*input)++;
+  	while (**input) {
+        if (!in_quote && (**input == '\'' || **input == '\"')) 
+		{
+            in_quote = 1;
+            quote_char = **input;
+        } 
+		else if (in_quote && **input == quote_char)
+		{
+            in_quote = 0;
+            if (*(*input + 1) == quote_char)
+                in_quote = 1;
+        }
+		else if (!in_quote && ft_strchr(" \t\n><|", **input))
+            break;
+        (*input)++;
+    }
 	if (*input > start)
 	{
-		word = strndup(start, *input - start);
+		word = ft_strndup(start, *input - start);
 		if (word)
 		{
 			add_token_to_list(tokens, new_token(TOKEN_WORD, word));
