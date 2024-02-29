@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _init.c                                            :+:      :+:    :+:   */
+/*   environment_init.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:55:35 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 15:36:28 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 10:12:42 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ int	initialize_shell_with_environment(t_env *env, char **original_env)
 	if (a >= 0)
 		remove_env_entry(env, a);
 	replace_env_var("SHELL=minishell", env);
+	replace_env_var("?=0", env);
 	return (status);
 }

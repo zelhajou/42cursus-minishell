@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executer_utils_3.c                                 :+:      :+:    :+:   */
+/*   heredoc_handling.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:16:55 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 03:58:12 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:39:29 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ int	exec_here_doc(char *limiter, int *_piped, int *_fd)
 	waitpid(pid, &status, 0);
 	close(_out_fd_[1]);
 	_piped[1] = _out_fd_[0];
-	_piped[9] = status * -1;
+	_piped[9] = (WEXITSTATUS(status)) - 1;
+	if (_piped[9] < 0)
+		_piped[9] += 2;
 	_piped[11] = status;
 	return (_piped[9]);
 }
