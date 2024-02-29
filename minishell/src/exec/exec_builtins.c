@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 23:48:36 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 01:57:25 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,23 @@ int	is_string_numeric(char *s_1)
 	return (1);
 }
 
+int	is_builtin_to_output(char **_cmd_)
+{
+	if (str_cmp(_cmd_[0], "env", "pwd")
+			|| str_cmp(_cmd_[0], "echo", NULL)
+			|| (str_cmp(_cmd_[0], "export", NULL)
+				&& !_cmd_[1]))
+			return (1);
+	return (0);
+}
+
 int	manage_builtin_execution(char **_cmd_, int *_fd, t_env *env, int *_piped)
 {
 	int				status;
 	int				ex_status;
 
 	status = 0;
-	if (_piped[0])
+	if (_piped[0] && !is_builtin_to_output(_cmd_))
 		return (0);
 	if (str_cmp(_cmd_[0], "exit", NULL))
 	{
