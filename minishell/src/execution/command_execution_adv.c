@@ -6,13 +6,15 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 12:40:41 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:21:29 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_command_with_redirection(char **_cmd_, int *_fd, char **env, int *_piped)
+
+// execute_command_basic
+int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 {
 	pid_t				pid;
 	int					fd_[2];
@@ -39,7 +41,8 @@ int	execute_command_with_redirection(char **_cmd_, int *_fd, char **env, int *_p
 	return (1);
 }
 
-int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
+// execute_command_with_redirection
+int	execute_command_with_redirection(char **_cmd_, int *_fd, char **env, int *_piped)
 {
 	pid_t				pid;
 	int					fd_[2];
@@ -74,11 +77,11 @@ int	prepare_and_execute_command(char **_cmd_, int *_fd, int *_piped, t_env *env)
 	{
 		if (!_piped[8])
 		{
-			status = execute_command_with_redirection(cmd_args, _fd, env->original_env, _piped);
+			status = execute_command_basic(cmd_args, _fd, env->original_env, _piped);
 			free_string_array(cmd_args);
 		}
 		else
-			status = execute_command_basic(cmd_args, _fd, env->original_env, _piped);
+			status = execute_command_with_redirection(cmd_args, _fd, env->original_env, _piped);
 	}
 	if (_piped[0] > 1)
 		_piped[0] -= 1;
