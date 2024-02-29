@@ -6,7 +6,7 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/29 09:21:50 by beddinao         ###   ########.fr        #
+#    Updated: 2024/02/29 17:37:26 by beddinao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRCS = $(SRCDIR)/main.c \
 	   $(SRCDIR)/utils/variable_expansion.c \
 	   $(SRCDIR)/builtin/builtin_commands.c \
 	   $(SRCDIR)/builtin/environment_management.c \
+	   $(SRCDIR)/builtin/environment_management_2.c \
 	   $(LIBGNTLDIR)/get_next_line.c \
 	   $(LIBGNTLDIR)/get_next_line_utils.c
 	   

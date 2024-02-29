@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 16:42:11 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:35:03 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,10 @@ int	echo_cmd(char **_cmd, int *_out_fd)
 
 int	env_or_pwd_cmd(char *_cmd, t_env *env, int con, int *_out_fd)
 {
-	int					a;
 	char				*abs_pwd;
 
-	a = 0;
 	if (str_cmp(_cmd, "env", NULL))
-	{
-		while (env->parsed_env[a])
-		{
-			if (con && !str_cmp(env->parsed_env[a][0], "?", NULL))
-				print_export_declaration_to_fd(
-					env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
-			else if (!str_cmp(env->parsed_env[a][0], "?", NULL))
-				print_env_var_to_fd(
-					env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
-			a++;
-		}
-		return (0);
-	}
+		return (env_just_print(env, con, _out_fd));
 	abs_pwd = get_current_working_directory(100, 5, _out_fd[1]);
 	if (abs_pwd)
 	{
@@ -75,30 +61,25 @@ char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
 	int				b;
 
 	a = 1;
-	if (_cmd[a])
+	while (_cmd[a])
 	{
-		while (_cmd[a])
+		b = sizeof_str(_cmd[a], '=');
+		if (b)
 		{
-			b = sizeof_str(_cmd[a], '=');
-			if (b)
-			{
-				if (b > 1 && _cmd[a][b - 1] == '+')
-					append_env_var(_cmd[a], env);
-				else
-					replace_env_var(_cmd[a], env);
-			}
+			if (b > 1 && _cmd[a][b - 1] == '+')
+				append_env_var(_cmd[a], env);
 			else
-			{
-				if (_cmd[a][0] == '=')
-					ft_putendl_fd("  err: export(): misplaced stuff",
-						_out_fd[1]);
-				**s = 1;
-			}
-			a++;
+				replace_env_var(_cmd[a], env);
 		}
+		else
+		{
+			if (_cmd[a][0] == '=')
+				ft_putendl_fd("  err: export(): misplaced stuff",
+					_out_fd[1]);
+			**s = 1;
+		}
+		a++;
 	}
-	else
-		env_or_pwd_cmd("env", env, 1, _out_fd);
 	return (_cmd);
 }
 
@@ -122,7 +103,12 @@ char	**unset_or_export_cmd(char **_cmd, t_env *env, int *_out_fd, int *s)
 		}
 	}
 	else if (str_cmp(_cmd[0], "export", NULL))
-		_cmd = export_cmd(_cmd, env, _out_fd, &s);
+	{
+		if (_cmd[1])
+			_cmd = export_cmd(_cmd, env, _out_fd, &s);
+		else
+			env_or_pwd_cmd("env", env, 1, _out_fd);
+	}
 	return (_cmd);
 }
 
