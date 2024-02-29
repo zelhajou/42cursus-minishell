@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:43:46 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/27 11:09:58 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:48:37 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_ast_node	*parse_command(t_token **tokens)
 	command_node->args = malloc(sizeof(char *) * (arg_count + 1));
 	while (i < arg_count)
 	{
-		command_node->args[i] = strdup((*tokens)->value);
+		command_node->args[i] = ft_strdup((*tokens)->value);
 		tmp = *tokens;
 		*tokens = (*tokens)->next;
 		free((tmp)->value);
