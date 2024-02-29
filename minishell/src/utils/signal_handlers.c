@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:20:26 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 10:09:38 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:42:26 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	handle_ctrl_c(int a)
 {
 	(void)a;
 	rl_replace_line("", 0);
-	printf("\n");
+	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
 }

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:16:55 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 09:39:29 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:42:03 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	str_compare(char *s_1, char *s_2, int max)
 void	quite_heredoc(int a)
 {
 	(void)a;
-	printf("\n");
+	write(1, "\n", 1);
 	exit(0);
 }
 

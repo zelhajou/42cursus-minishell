@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 10:10:35 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:44:47 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	command_execution_manager(t_ast_node *head, t_env *env, int *status)
 	else
 	{
 		*status = get_shell_exit_status(errno);
-		printf("\terr: %s\n", strerror(errno));
+		ft_putstr_fd("\terr: ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 	}
 }
