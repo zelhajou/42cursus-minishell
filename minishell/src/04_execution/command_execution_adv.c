@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 16:45:17 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:39:43 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ int	prepare_and_execute_command(
 
 	f_args = prepare_cmd_arguments(_cmd_[0], env->original_env, 0);
 	cmd_args = merge_command_args(f_args, _cmd_);
-	if (!cmd_args)
-		return (0);
 	_piped[10] += 1;
 	if (check_if_command_is_builtin(cmd_args[0]))
 		status = manage_builtin_execution(cmd_args, _fd, env, _piped);
