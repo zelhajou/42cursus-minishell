@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/29 03:58:28 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 06:09:23 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ typedef enum e_token_type
 
 typedef struct s_token
 {
-	t_token_type	type;
-	char			*value;
-	struct s_token	*next;
+	t_token_type		type;
+	char				*value;
+	struct s_token		*next;
 }	t_token;
 
 typedef struct s_ast_node
@@ -59,13 +59,13 @@ typedef struct s_ast_node
 	char				**args;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
-}		t_ast_node;
+}	t_ast_node;
 
 typedef struct s_env
 {
-	char			**original_env;
-	char			***parsed_env;
-}		t_env;
+	char				**original_env;
+	char				***parsed_env;
+}	t_env;
 
 /* ------------------ Main Shell Functionality ------------------ */
 
@@ -175,7 +175,8 @@ int			count_strings_in_array(char **arr);
 int			wait_for_children(int status, int *piped);
 void		count_redirections_and_pipes(t_ast_node *head, int *piped);
 void		close_pipe_ends(int fd_1, int fd_2);
-
+void		child_fds_managment(int *_piped, int *_fd, int *fd_);
+void		parent_fds_managment(int *_piped, int *_fd, int *fd_);
 
 /* ------------------ Variable Expansion and Replacement ------------------ */
 
@@ -204,8 +205,5 @@ int 		get_shell_exit_status(int error_code);
 int			count_digits_in_int(int num);
 char		**prepare_cmd_arguments(char *cmd, char **envp, int condition);
 int			verify_command_file_permissions(t_ast_node *head, char **env);
-void		child_fds_managment(int *_piped, int *_fd, int *fd_);
-void		parent_fds_managment(int *_piped, int *_fd, int *fd_);
-
 
 #endif

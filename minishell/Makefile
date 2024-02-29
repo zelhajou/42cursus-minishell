@@ -6,7 +6,7 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/28 02:10:54 by zelhajou         ###   ########.fr        #
+#    Updated: 2024/02/29 07:07:37 by zelhajou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,31 +26,32 @@ SRCS = $(SRCDIR)/main.c \
        $(SRCDIR)/parser/parser.c \
        $(SRCDIR)/parser/tokenizer.c \
        $(SRCDIR)/parser/syntax_checker.c \
-       $(SRCDIR)/utils/parser_utils/tokenizer_utils.c \
+	   $(SRCDIR)/utils/parser_utils/tokenizer_utils.c \
        $(SRCDIR)/utils/parser_utils/parser_utils.c \
+	   $(SRCDIR)/initialization/command_execution_init.c \
+       $(SRCDIR)/initialization/environment_init.c \
+	   $(SRCDIR)/execution/builtin_command_execution.c \
+       $(SRCDIR)/execution/command_execution_adv.c \
+       $(SRCDIR)/execution/command_execution.c \
+       $(SRCDIR)/execution/process_pipeline_management.c \
+	   $(SRCDIR)/execution/formation.c \
+       $(SRCDIR)/execution/formation_2.c \
+       $(SRCDIR)/utils/execution_utils/command_execution_control.c \
+	   $(SRCDIR)/utils/execution_utils/command_input_preprocessing.c \
+	   $(SRCDIR)/utils/execution_utils/heredoc_handling.c \
+	   $(SRCDIR)/utils/env_handling.c \
+	   $(SRCDIR)/utils/env_managment_2.c \
        $(SRCDIR)/utils/env_managment.c \
-       $(SRCDIR)/utils/env_managment_2.c \
-       $(SRCDIR)/utils/expand.c \
-       $(SRCDIR)/utils/termination.c \
-       $(SRCDIR)/utils/execution_utils/executer_utils.c \
        $(SRCDIR)/utils/general.c \
-       $(SRCDIR)/utils/execution_utils/executer_utils_2.c \
-	   $(SRCDIR)/utils/execution_utils/executer_utils_3.c \
        $(SRCDIR)/utils/general_2.c \
-       $(SRCDIR)/utils/specific_task.c \
-	   $(SRCDIR)/utils/specific_task_2.c \
-       $(SRCDIR)/exec/exec_builtins.c \
-       $(SRCDIR)/exec/executer.c \
-       $(SRCDIR)/exec/formation.c \
-       $(SRCDIR)/exec/exec_one.c \
-       $(SRCDIR)/exec/fds_managment.c \
-       $(SRCDIR)/exec/formation_2.c \
-       $(SRCDIR)/init/_init.c \
-       $(SRCDIR)/init/exec_init.c \
-	   $(SRCDIR)/builtins/builtins.c \
-	   $(SRCDIR)/builtins/builtins_utils.c \
+	   $(SRCDIR)/utils/signal_handlers.c \
+	   $(SRCDIR)/utils/string_utilities.c \
+       $(SRCDIR)/utils/termination.c \
+	   $(SRCDIR)/utils/variable_expansion.c \
+	   $(SRCDIR)/builtin/builtin_commands.c \
+	   $(SRCDIR)/builtin/environment_management.c \
 	   $(LIBGNTLDIR)/get_next_line.c \
-	   $(LIBGNTLDIR)/get_next_line_utils.c \
+	   $(LIBGNTLDIR)/get_next_line_utils.c
 	   
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 LDFLAGS = -L$(LIBFTDIR) -lft -L$(READLINE_LIB) -lreadline

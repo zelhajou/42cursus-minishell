@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 15:48:38 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 06:43:07 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ char	*recursively_expand_variables(char *var, t_env *env)
 	}
 	return (var);
 }
-
-// /// remove empty string arguments
 
 char	**clean_args_array(char **args)
 {

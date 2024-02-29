@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   general.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:14:59 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 10:19:32 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 06:54:24 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,36 +20,6 @@ int	sizeof_str(char *str, char end)
 	while (str && str[a] != '\0' && str[a] != end)
 		a += 1;
 	return (a);
-}
-
-char	*strcopy(char *src)
-{
-	int					a;
-	int					b;
-	char				*dest;
-
-	b = 0;
-	while (src[b])
-		b += 1;
-	dest = malloc(b + 1);
-	a = 0;
-	while (a < b)
-	{
-		dest[a] = src[a];
-		a += 1;
-	}
-	dest[a] = '\0';
-	return (dest);
-}
-
-void	s_strcopy(char *s_1, char *s_2, int st, int en)
-{
-	int				a;
-
-	a = 0;
-	while (st < en)
-		s_1[a++] = s_2[st++];
-	s_1[a] = '\0';
 }
 
 int	str_cmp(char *s_1, char *s_2, char *s_3)

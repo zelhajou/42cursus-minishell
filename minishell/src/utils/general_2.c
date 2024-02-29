@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:19:45 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 22:39:36 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 06:55:10 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@ int	get_shell_exit_status(int err)
 	else if (err == 13)
 		return (126);
 	return (err);
-}
-
-void	setup_signal_handlers(void)
-{
-	signal(SIGINT, handle_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 int	string_to_int(char *str)
