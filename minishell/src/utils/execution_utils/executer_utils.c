@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 00:23:05 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 03:57:37 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ void	initialize_or_reset_pipe_state(int *_piped, int f)
 	_piped[11] = 1;
 }
 
-void	open_file_for_redirection(t_ast_node *head, int *_piped)
+int	open_file_for_redirection(t_ast_node *head, int *_piped)
 {
 	int			mode;
+	int			status;
 
-	_piped[9] = 1;
+	status = 1;
 	if (head->file_type == READ_FILE)
 	{
 		_piped[6] = 1;
@@ -40,7 +41,7 @@ void	open_file_for_redirection(t_ast_node *head, int *_piped)
 	{
 		_piped[6] = 1;
 		signal(SIGINT, SIG_IGN);
-		exec_here_doc(head->args[0], _piped, NULL);
+		status = exec_here_doc(head->args[0], _piped, NULL);
 		signal(SIGINT, handle_ctrl_c);
 	}
 	else
@@ -51,6 +52,7 @@ void	open_file_for_redirection(t_ast_node *head, int *_piped)
 			mode = O_APPEND;
 		_piped[2] = open(head->args[0], O_WRONLY | O_CREAT | mode, 0666);
 	}
+	return (status);
 }
 
 int	check_if_command_is_builtin(char *_cmd)

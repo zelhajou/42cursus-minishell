@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/28 23:37:38 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 04:00:39 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ int	prepare_and_execute_command(char **_cmd_, int *_fd, int *_piped, t_env *env)
 	cmd_args = merge_command_args(f_args, _cmd_);
 	if (!cmd_args)
 		return (0);
+	_piped[10] += 1;
 	if (check_if_command_is_builtin(cmd_args[0]))
 		status = manage_builtin_execution(cmd_args, _fd, env, _piped);
 	else
 	{
-		_piped[10] += 1;
 		if (!_piped[8])
 		{
 			status = execute_command_with_redirection(cmd_args, _fd, env->original_env, _piped);
@@ -87,7 +87,7 @@ int	prepare_and_execute_command(char **_cmd_, int *_fd, int *_piped, t_env *env)
 
 int	wait_for_children(int status, int *_piped)
 {
-	if (status && _piped[10])
+	if (status && _piped[10] && _piped[11])
 	{
 		while (_piped[10])
 		{

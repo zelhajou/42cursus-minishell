@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 00:09:59 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 04:00:00 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ int	handle_command_redirection(t_ast_node *head, int *_piped, t_env *env, int *_
 {
 	int				status;
 
+	_piped[11] = 1;
 	if (head->right)
-		open_file_for_redirection(head->right, _piped);
+		status = open_file_for_redirection(head->right, _piped);
 	if (head->left && head->left->file_type == EXECUTE_FILE
 		&& _piped[11])
 	{
@@ -72,7 +73,6 @@ int	handle_command_redirection(t_ast_node *head, int *_piped, t_env *env, int *_
 			|| head->left->type == TOKEN_REDIR_APPEND
 			|| head->left->type == TOKEN_REDIR_HEREDOC))
 		status = handle_command_redirection(head->left, _piped, env, _fd);
-	_piped[11] = 1;
 	return (status);
 }
 
@@ -94,8 +94,6 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 	if (head->file_type == EXECUTE_FILE)
 		status = prepare_and_execute_command(head->args, _fd, _piped, env);
 	status = wait_for_children(status, _piped);
-	if (_piped[9])
-		close(_piped[1]);
 	return (status);
 }
 

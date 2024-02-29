@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/29 01:58:47 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 02:37:09 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,6 @@ void	main_shell_execution_loop(t_env *env)
 			continue ;
 		add_history(line);
 		tokens = process_and_tokenize_input(line);
-		while (tokens)
-		{
-
-			printf("token: %s\n", tokens->value);
-			tokens = tokens->next;
-			
-		}
-		exit(0);
 		if (!tokens)
 			continue ;
 		ast = parse_tokens(&tokens);

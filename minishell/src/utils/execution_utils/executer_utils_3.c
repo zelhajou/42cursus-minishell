@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:16:55 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 00:23:45 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 03:58:12 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	read_and_write(int std_out, char *limiter)
 	}
 }
 
-void	exec_here_doc(char *limiter, int *_piped, int *_fd)
+int	exec_here_doc(char *limiter, int *_piped, int *_fd)
 {
 	int							_out_fd_[2];
 	pid_t						pid;
@@ -71,6 +71,7 @@ void	exec_here_doc(char *limiter, int *_piped, int *_fd)
 	waitpid(pid, &status, 0);
 	close(_out_fd_[1]);
 	_piped[1] = _out_fd_[0];
-	_piped[9] += 1;
+	_piped[9] = status * -1;
 	_piped[11] = status;
+	return (_piped[9]);
 }

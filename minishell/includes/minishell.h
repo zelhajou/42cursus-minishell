@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/28 22:00:22 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 03:58:28 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,9 +143,9 @@ int			prepare_and_execute_command(char **cmd, int *fd, int *piped, t_env *env);
 
 int			handle_command_redirection(t_ast_node *head, int *piped, t_env *env, int *fd);
 int			handle_piped_command_execution(t_ast_node *head, int *piped, t_env *env, int *fd);
-void		exec_here_doc(char *limiter, int *piped, int *fd);
+int			exec_here_doc(char *limiter, int *piped, int *fd);
 void		initialize_or_reset_pipe_state(int *piped, int flag);
-void		open_file_for_redirection(t_ast_node *head, int *piped);
+int			open_file_for_redirection(t_ast_node *head, int *piped);
 
 int			check_if_command_is_builtin(char *cmd);
 int			manage_builtin_execution(char **cmd, int *fd, t_env *env, int *piped);
