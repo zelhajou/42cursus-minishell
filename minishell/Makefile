@@ -6,7 +6,7 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/02/29 19:33:00 by zelhajou         ###   ########.fr        #
+#    Updated: 2024/02/29 23:47:33 by zelhajou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,9 @@ SRCS = $(SRCDIR)/main.c \
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 LDFLAGS = -L$(LIBFTDIR) -lft -L$(READLINE_LIB) -lreadline
 LIBFT = $(LIBFTDIR)/libft.a
+
+# setup:
+# 	@stty -ctlecho
 
 all: $(NAME)
 

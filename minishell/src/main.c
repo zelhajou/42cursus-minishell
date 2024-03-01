@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/29 13:28:04 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:20:18 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	main_shell_execution_loop(t_env *env)
 
 	while (1)
 	{
-		line = readline("  > ");
+		line = readline("\033[1;32m→\033[1;36m\033[0m ");
 		if (!line)
 			break ;
 		if (check_line(&line))
