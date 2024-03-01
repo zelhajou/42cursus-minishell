@@ -85,7 +85,8 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 	int					_fd[2];
 	int					status;
 
-	if (head->file_type == FILE_READY)
+	if (head->args && head->args[0]
+		&& head->file_type == FILE_READY)
 	{
 		if (head->type == TOKEN_PIPE)
 			status = handle_piped_command_execution(head, _piped, env, _fd);
@@ -95,7 +96,8 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 			|| head->type == TOKEN_REDIR_HEREDOC)
 			status = handle_command_redirection(head, _piped, env, _fd);
 	}
-	if (head->file_type == EXECUTE_FILE)
+	if (head->args && head->args[0] &&
+		head->file_type == EXECUTE_FILE)
 		status = prepare_and_execute_command(head->args, _fd, _piped, env);
 	status = wait_for_children(status, _piped);
 	return (status);

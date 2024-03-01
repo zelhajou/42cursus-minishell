@@ -19,14 +19,15 @@ int	verify_command_file_permissions(t_ast_node *head, char **env)
 
 	status = 1;
 	path_ = NULL;
-	if (head->args && !check_if_command_is_builtin(head->args[0])
+	if (head->args && head->args[0] && !check_if_command_is_builtin(head->args[0])
 		&& (head->file_type == READ_FILE || head->file_type == EXECUTE_FILE))
 	{
 		if (head->file_type == READ_FILE)
 			path_ = fetch_file_path(head->args[0], env, "PWD", R_OK);
 		else if (head->file_type == EXECUTE_FILE)
 			path_ = fetch_file_path(head->args[0], env, "PATH", X_OK);
-		if (!path_)
+		if (!path_ || (!head->args[1]
+				&& str_cmp(head->args[0], ".", ",")))
 			status = 0;
 		else
 			free(path_);
@@ -40,7 +41,8 @@ int	verify_command_file_permissions(t_ast_node *head, char **env)
 
 void	adjust_ast_nodes_for_execution(t_ast_node *head)
 {
-	if (head->type != TOKEN_WORD)
+	if (head->args &&
+		head->args[0] && head->type != TOKEN_WORD)
 	{
 		head->file_type = FILE_READY;
 		if (head->type == TOKEN_REDIR_OUT && head->right)

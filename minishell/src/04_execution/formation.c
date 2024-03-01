@@ -69,7 +69,8 @@ char	*fetch_file_path(char *file, char **envp, char *env_var, int mode)
 		|| (file[0] && file[1] && file[0] == '.' && file[1] == '/'))
 		return (verify_path_without_env(file, mode));
 	indx_s[2] = sizeof_str(envp[indx_s[0]], '\0');
-	while (envp[indx_s[0]][indx_s[1]])
+	while (envp[indx_s[0]][indx_s[1]]
+		&& sizeof_str(file, ' ') == sizeof_str(file, '\0'))
 	{
 		tmp_path = create_subpath_from_var(envp[indx_s[0]], file, indx_s);
 		if (!tmp_path)
@@ -112,7 +113,7 @@ char	**prepare_cmd_arguments(char *cmd, char **envp, int c)
 {
 	char		**cmd_arr;
 	char		*cmd_holder;
-	int			i[2];
+	int			i[3];
 
 	i[1] = count_substrings(cmd, ' ');
 	cmd_arr = malloc((i[1] + 1) * sizeof(char *));
@@ -121,7 +122,7 @@ char	**prepare_cmd_arguments(char *cmd, char **envp, int c)
 	i[0] = 0;
 	while (c < i[1])
 	{
-		cmd_holder = find_next_substring(cmd, ' ', i);
+		cmd_holder = find_next_substring(cmd, '\0', i);
 		if (!c && !check_if_command_is_builtin(cmd_holder))
 		{
 			cmd_arr[c] = fetch_file_path(cmd_holder, envp, "PATH", X_OK);
