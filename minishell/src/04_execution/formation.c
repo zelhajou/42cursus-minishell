@@ -69,8 +69,10 @@ char	*fetch_file_path(char *file, char **envp, char *env_var, int mode)
 		|| (file[0] && file[1] && file[0] == '.' && file[1] == '/'))
 		return (verify_path_without_env(file, mode));
 	indx_s[2] = sizeof_str(envp[indx_s[0]], '\0');
-	while (envp[indx_s[0]][indx_s[1]]
-		&& sizeof_str(file, ' ') == sizeof_str(file, '\0'))
+	if (sizeof_str(file, ' ') != sizeof_str(file, '\0')
+			&& !is_path_accessible(file, mode))
+		return (NULL);
+	while (envp[indx_s[0]][indx_s[1]])
 	{
 		tmp_path = create_subpath_from_var(envp[indx_s[0]], file, indx_s);
 		if (!tmp_path)
