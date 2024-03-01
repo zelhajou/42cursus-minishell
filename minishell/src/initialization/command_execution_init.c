@@ -41,8 +41,7 @@ int	verify_command_file_permissions(t_ast_node *head, char **env)
 
 void	adjust_ast_nodes_for_execution(t_ast_node *head)
 {
-	if (head->args &&
-		head->args[0] && head->type != TOKEN_WORD)
+	if (head->type != TOKEN_WORD)
 	{
 		head->file_type = FILE_READY;
 		if (head->type == TOKEN_REDIR_OUT && head->right)
