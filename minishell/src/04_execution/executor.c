@@ -98,6 +98,7 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 	if (head->file_type == EXECUTE_FILE)
 		status = prepare_and_execute_command(head->args, _fd, _piped, env);
 	status = wait_for_children(status, _piped);
+	signal(SIGINT, handle_ctrl_c);
 	return (status);
 }
 

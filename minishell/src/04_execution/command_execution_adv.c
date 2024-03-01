@@ -20,6 +20,7 @@ int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 
 	pipe(fd_);
 	pid = fork();
+	signal(SIGINT, child_ctrl_c);
 	if (!pid)
 	{
 		if (_piped[0] && _piped[0] <= _piped[5])
@@ -67,6 +68,7 @@ int	prepare_and_execute_command(
 	char				**f_args;
 	int					status;
 
+	signal(SIGINT, SIG_IGN);
 	f_args = prepare_cmd_arguments(_cmd_[0], env->original_env, 0);
 	cmd_args = merge_command_args(f_args, _cmd_);
 	_piped[10] += 1;

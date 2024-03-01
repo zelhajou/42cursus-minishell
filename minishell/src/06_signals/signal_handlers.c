@@ -18,6 +18,12 @@ void	setup_signal_handlers(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
+void	child_ctrl_c(int sig_num)
+{
+	(void)sig_num;
+	printf("\n");
+}
+
 void	handle_ctrl_c(int a)
 {
 	(void)a;

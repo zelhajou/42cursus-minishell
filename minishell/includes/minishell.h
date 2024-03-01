@@ -72,6 +72,7 @@ typedef struct s_env
 void		main_shell_execution_loop(t_env *env);
 void		setup_signal_handlers(void);
 void		handle_ctrl_c(int sig_num);
+void		child_ctrl_c(int sig_num);
 
 /* ------------------ Input Processing ------------------ */
 
