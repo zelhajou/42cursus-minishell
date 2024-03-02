@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   formation.c                                        :+:      :+:    :+:   */
+/*   path_utilities.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:03:19 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/27 23:27:30 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 02:31:56 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*fetch_file_path(char *file, char **envp, char *env_var, int mode)
 		return (verify_path_without_env(file, mode));
 	indx_s[2] = sizeof_str(envp[indx_s[0]], '\0');
 	if (sizeof_str(file, ' ') != sizeof_str(file, '\0')
-			&& !is_path_accessible(file, mode))
+		&& !is_path_accessible(file, mode))
 		return (NULL);
 	while (envp[indx_s[0]][indx_s[1]])
 	{

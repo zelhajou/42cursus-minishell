@@ -6,13 +6,12 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 17:39:43 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/01 23:18:03 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// execute_command_basic
 int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 {
 	pid_t				pid;
@@ -41,7 +40,6 @@ int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 	return (1);
 }
 
-// execute_command_with_redirection
 int	execute_command_with_redirection(
 		char **_cmd_, int *_fd, char **env, int *_piped)
 {

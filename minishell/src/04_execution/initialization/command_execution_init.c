@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:56:04 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 18:56:49 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 02:32:13 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	verify_command_file_permissions(t_ast_node *head, char **env)
 
 	status = 1;
 	path_ = NULL;
-	if (head->args && head->args[0] && !check_if_command_is_builtin(head->args[0])
+	if (head->args && head->args[0]
+		&& !check_if_command_is_builtin(head->args[0])
 		&& (head->file_type == READ_FILE || head->file_type == EXECUTE_FILE))
 	{
 		if (head->file_type == READ_FILE)

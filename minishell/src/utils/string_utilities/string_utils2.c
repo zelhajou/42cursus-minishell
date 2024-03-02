@@ -6,11 +6,11 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:14:59 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 18:56:33 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/01 23:40:42 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	sizeof_str(char *str, char end)
 {
@@ -35,4 +35,43 @@ int	str_cmp(char *s_1, char *s_2, char *s_3)
 	if (s_3)
 		return (str_cmp(s_1, s_3, NULL));
 	return (0);
+}
+
+int	string_to_int(char *str)
+{
+	int					num;
+	int					a;
+
+	num = 0;
+	a = 0;
+	while (str[a])
+	{
+		if (str[a] <= '9' && str[a] >= '0')
+			num = (num * 10) + (str[a] - 48);
+		a++;
+	}
+	return (num);
+}
+
+int	count_strings_in_array(char **arr)
+{
+	int			a;
+
+	a = 0;
+	while (arr[a] != 0)
+		a++;
+	return (a);
+}
+
+void	free_string_array(char **arr)
+{
+	int				a;
+
+	a = 0;
+	while (arr[a] != 0)
+	{
+		free(arr[a]);
+		a += 1;
+	}
+	free(arr);
 }

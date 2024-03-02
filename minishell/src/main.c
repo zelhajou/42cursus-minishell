@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/01 16:20:18 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/01 21:53:47 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	main_shell_execution_loop(t_env *env)
 
 	while (1)
 	{
-		line = readline("\x1B[1m\x1B[5m 実行する\x1B[0m→ ");
+		line = readline("\033[1;32m→\033[1;36m\033[0m ");
 		if (!line)
 			break ;
 		if (check_line(&line))
@@ -62,7 +62,6 @@ int	main(int argc, char **argv, char **original_env)
 	t_env	*env;
 
 	(void)argv;
-	printf("\t---|%i|---\n", getpid());
 	setup_signal_handlers();
 	env = malloc(sizeof(t_env));
 	if (argc == 1 && isatty(1)

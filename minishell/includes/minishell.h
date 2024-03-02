@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/29 17:44:40 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/02 04:51:41 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
-# include "../lib/get_next_line/get_next_line.h"
 
 typedef enum e_token_type
 {
@@ -86,27 +85,36 @@ int			has_unclosed_quotes(const char *input);
 int			has_invalid_redirections(const char *input);
 int			has_misplaced_operators(const char *input);
 int			has_logical_operators(const char *input);
+void		update_quote_counts(char c, int *s_q_count, int *d_q_count);
+const char	*skip_spaces(const char *input);
+int			is_invalid_operator(const char **input);
+void		update_quote_status(char c, int *in_quote, char *quote_char);
+void		add_word_token_if_valid(char **start, char **input,
+				t_token **tokens);
 
 /* ------------------ Token Management ------------------ */
 
+t_token		*new_token(t_token_type type, char *value);
+void		add_token_to_list(t_token **tokens, t_token *new_token);
+void		free_tokens(t_token *tokens);
 void		handle_quotes(char **input, t_token **tokens);
 void		handle_special_chars(char **input, t_token **tokens);
 void		handle_word(char **input, t_token **tokens);
 t_token		*tokenize_input(char *input);
 
-t_token		*new_token(t_token_type type, char *value);
-void		add_token_to_list(t_token **tokens, t_token *new_token);
-void		display_tokens(t_token *tokens);
-void		free_tokens(t_token *tokens);
-
 /* ------------------ AST Construction and Management ------------------ */
-
-t_ast_node	*parse_tokens(t_token **tokens);
-t_ast_node	*parse_command(t_token **tokens);
 
 t_ast_node	*new_ast_node(t_token_type type);
 void		free_ast(t_ast_node *node);
-void		adjust_ast_nodes_for_execution(t_ast_node *head);
+t_ast_node	*parse_tokens(t_token **tokens);
+t_ast_node	*parse_command(t_token **tokens);
+int			count_command_arguments(t_token *current);
+void		fill_command_arguments(t_ast_node *command_node,
+				t_token **tokens, int arg_count);
+t_ast_node	*parse_pipeline(t_token **tokens);
+t_ast_node	*parse_redirection(t_token **tokens);
+t_ast_node	*new_ast_file(t_token *token);
+t_ast_node	*create_and_link_redirection(t_token **tokens, t_token *tmp);
 
 /* ------------------ Built-in Command Execution ------------------ */
 
@@ -114,8 +122,8 @@ int			cd_cmd(char **cmd, t_env *env, int *out_fd);
 int			echo_cmd(char **cmd, int *out_fd);
 int			env_or_pwd_cmd(char *cmd, t_env *env, int condition, int *out_fd);
 char		**export_cmd(char **cmd, t_env *env, int *out_fd, int **status);
-char		**unset_or_export_cmd(
-				char **cmd, t_env *env, int *out_fd, int *status);
+char		**unset_or_export_cmd(char **cmd, t_env *env,
+				int *out_fd, int *status);
 
 /* ------------------ Built-in Command Utilities ------------------ */
 
@@ -139,34 +147,33 @@ void		print_export_declaration_to_fd(char *key, char *value, int fd);
 
 /* ------------------ Command Execution Management ------------------ */
 
-void		command_execution_manager(
-				t_ast_node *head, t_env *env, int *status);
+void		adjust_ast_nodes_for_execution(t_ast_node *head);
+void		command_execution_manager(t_ast_node *head,
+				t_env *env, int *status);
 int			execute_ast_node(t_ast_node *head, int *piped, t_env *env);
-int			prepare_and_execute_command(
-				char **cmd, int *fd, int *piped, t_env *env);
-
-int			handle_command_redirection(
-				t_ast_node *head, int *piped, t_env *env, int *fd);
-int			handle_piped_command_execution(
-				t_ast_node *head, int *piped, t_env *env, int *fd);
+int			prepare_and_execute_command(char **cmd, int *fd,
+				int *piped, t_env *env);
+int			handle_command_redirection(t_ast_node *head, int *piped,
+				t_env *env, int *fd);
+int			handle_piped_command_execution(t_ast_node *head,
+				int *piped, t_env *env, int *fd);
 int			exec_here_doc(char *limiter, int *piped, int *fd);
 void		initialize_or_reset_pipe_state(int *piped, int flag);
 int			open_file_for_redirection(t_ast_node *head, int *piped);
-
 int			check_if_command_is_builtin(char *cmd);
-int			manage_builtin_execution(
-				char **cmd, int *fd, t_env *env, int *piped);
-int			manage_single_builtin_execution(
-				char **cmd, int *fd, t_env *env, int *piped);
-int			execute_builtin_command_in_child(
-				char **cmd, t_env *env, int *out_fd);
+int			manage_builtin_execution(char **cmd, int *fd,
+				t_env *env, int *piped);
+int			manage_single_builtin_execution(char **cmd, int *fd,
+				t_env *env, int *piped);
+int			execute_builtin_command_in_child(char **cmd,
+				t_env *env, int *out_fd);
 
 /* ----------- Path and Environment Variable Handling --------- */
 
-void		increment_path_index(
-				char *env_var, int *index_start, int *index_end);
-void		add_env_entry(
-				t_env *env, char *cmd, int bool_condition, int condition);
+void		increment_path_index(char *env_var, int *index_start,
+				int *index_end);
+void		add_env_entry(t_env *env, char *cmd,
+				int bool_condition, int condition);
 void		remove_env_entry(t_env *env, int index);
 void		update_env_status(t_env *env, int status, char *start);
 int			is_path_accessible(char *path, int mode);
@@ -195,8 +202,8 @@ void		parent_fds_managment(int *_piped, int *_fd, int *fd_);
 
 void		expand_variables_in_ast(t_ast_node *head, t_env *env);
 char		*recursively_expand_variables(char *var, t_env *env);
-char		*replace_variable_with_value(
-				char *old_var, char *new_value, int start, int end);
+char		*replace_variable_with_value(char *old_var, char *new_value,
+				int start, int end);
 
 /* ------------------ Advanced String and Array Operations ------------------ */
 
@@ -209,8 +216,8 @@ int			string_to_int(char *str);
 int			is_valid_variable_start(char *str, int index, int check_dollar);
 void		free_string_array(char **arr);
 char		*fetch_file_path(char *file, char **envp, char *env_var, int mode);
-char		*create_subpath_from_var(
-				char *env_var, char *file, int *index_start);
+char		*create_subpath_from_var(char *env_var, char *file,
+				int *index_start);
 
 /* ------------------ Miscellaneous Utilities ------------------ */
 

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 19:16:57 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 04:55:30 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ int	env_or_pwd_cmd(char *_cmd, t_env *env, int con, int *_out_fd)
 	if (abs_pwd)
 	{
 		ft_putendl_fd(abs_pwd, _out_fd[1]);
-		free(abs_pwd);
-		return (0);
+		return (free(abs_pwd), 0);
 	}
 	return (1);
 }
@@ -90,8 +89,7 @@ char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
 			else
 			{
 				if (_cmd[a][0] == '=')
-					ft_putendl_fd("  err: export(): misplaced stuff",
-						_out_fd[1]);
+					ft_putendl_fd("  err: export(): misplaced", _out_fd[1]);
 				**s = 1;
 			}
 			a++;
