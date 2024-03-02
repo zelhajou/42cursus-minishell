@@ -248,10 +248,6 @@ the syntax error checker will be responsible for identifying and reporting synta
 
 #### b. Syntax Error Checker Function
 
-```bash
-minishell/src/parser/syntax_checker.c
-```
-
 syntax_checker.c:
 
 - `syntax_error_checker` Function: Iterates through the input string, checking for syntax errors and reporting them if found.
