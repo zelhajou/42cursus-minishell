@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 23:26:44 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/02 04:24:14 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:54:58 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_ast_node	*create_and_link_redirection(t_token **tokens, t_token *tmp)
 	redirect_node = new_ast_node((*tokens)->type);
 	*tokens = (*tokens)->next->next;
 	redirect_node->left = parse_redirection(tokens);
-	redirect_node->right = new_ast_file(tmp->next);
+	redirect_node->right = create_file_node(tmp->next);
 	free(tmp->value);
 	free(tmp);
 	return (redirect_node);
