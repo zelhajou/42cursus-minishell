@@ -28,11 +28,10 @@
 	7. [Environment Variable Expansion](#step-7-environment-variable-expansion)
 	8. [Input/Output Redirection and Pipes](#step-8-inputoutput-redirection-and-pipes)
 	9. [Testing and Debugging](#step-9-testing-and-debugging)
-4. [Team Members](#team-members)
-5. [Project Status](#project-status)
-6. [Project Timeline](#project-timeline)
-7. [Project Structure](#project-structure)
-8. [Resources](#resources)
+4. [Project Structure](#project-structure)
+5. [Team Members](#team-members)
+6. [Resources](#resources)
+
 
 ## Overview
 
