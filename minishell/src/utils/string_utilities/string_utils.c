@@ -28,7 +28,7 @@ void	copy_str_without_quotes(char *new_str, char *old_str, int size)
 	new_str[a] = '\0';
 }
 
-char	*remove_quotes_from_str(char *str)
+/*char	*remove_quotes_from_str(char *str)
 {
 	char				*new_str;
 	int					b;
@@ -46,6 +46,26 @@ char	*remove_quotes_from_str(char *str)
 	}
 	new_str = malloc(size + 1);
 	copy_str_without_quotes(new_str, str, size);
+	free(str);
+	return (new_str);
+}*/
+
+char	*remove_quotes_from_str(char *str)
+{
+	char				*new_str;
+	int					a;
+	int					b;
+
+	a = 0;
+	b = sizeof_str(str, '\0');
+	if ((str[a] == 34 && str[b - 1] == 34)
+		|| (str[a] == 39 && str[b - 1] == 39))
+	{
+		a += 1;
+		b -= 1;
+	}
+	new_str = malloc((b - a) + 1);
+	s_strcopy(new_str, str, a, b);
 	free(str);
 	return (new_str);
 }

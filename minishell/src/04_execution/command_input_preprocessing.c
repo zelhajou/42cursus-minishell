@@ -48,6 +48,23 @@ char	*remove_quotes_from_line(char *line, int a, int b)
 	return (new_line);
 }
 
+/*char	*remove_quotes_from_line(char *line, int a, int b)
+{
+	char				*new_line;
+	
+	b = sizeof_str(line, '\0');
+	if ((line[a] == 34 && line[b - 1] == 34)
+		|| (line[a] == 39 && line[b - 1] == 39))
+	{
+		a += 1;
+		b -= 1;
+	}
+	new_line = malloc((b - a) + 1);
+	s_strcopy(new_line, line, a, b);
+	free(line);
+	return (new_line);
+}*/
+
 int	is_quotation_balanced(char *line)
 {
 	int				a;
