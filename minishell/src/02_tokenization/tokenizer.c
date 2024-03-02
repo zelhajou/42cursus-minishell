@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 14:26:48 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/19 17:49:48 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 04:41:03 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,41 +67,21 @@ void	handle_special_chars(char **input, t_token **tokens)
 void	handle_word(char **input, t_token **tokens)
 {
 	char	*start;
-	char	*word;
+	int		in_quote;
+	char	quote_char;
 
 	start = *input;
-	while (**input && !ft_strchr(" \t\n\'\"<>|", **input))
-		(*input)++;
-	if (*input > start)
+	in_quote = 0;
+	quote_char = '\0';
+	while (**input)
 	{
-		word = strndup(start, *input - start);
-		if (word)
-		{
-			add_token_to_list(tokens, new_token(TOKEN_WORD, word));
-			free(word);
-		}
-		else
-			ft_putstr_fd("Error: Malloc failed in handle_word.\n", 2);
+		update_quote_status(**input, &in_quote, &quote_char);
+		if (!in_quote && ft_strchr(" \t\n><|", **input))
+			break ;
+		(*input)++;
 	}
+	add_word_token_if_valid(&start, input, tokens);
 }
-
-// void	handle_environment_variables(char **input, t_token **tokens)
-// {
-// 	char	*start;
-// 	char	*var_name;
-
-// 	start = (*input)++;
-// 	while (**input && (ft_isalnum(**input) || **input == '_'))
-// 		(*input)++;
-// 	var_name = strndup(start, *input - start);
-// 	if (var_name)
-// 	{
-// 		add_token_to_list(tokens, new_token(TOKEN_ENV_VAR, var_name));
-// 		free(var_name);
-// 	}
-// 	else
-// 		ft_putstr_fd("Error: Malloc failed in handle env variables.\n", 2);
-// }
 
 t_token	*tokenize_input(char *input)
 {
@@ -112,12 +92,8 @@ t_token	*tokenize_input(char *input)
 	{
 		while (*input && ft_strchr(" \t\n", *input))
 			input++;
-		if (ft_strchr("\'\"", *input))
-			handle_quotes(&input, &tokens);
-		else if (ft_strchr("><|", *input))
+		if (ft_strchr("><|", *input))
 			handle_special_chars(&input, &tokens);
-		// else if (*input == '$')
-		// 	handle_environment_variables(&input, &tokens);
 		else
 			handle_word(&input, &tokens);
 	}

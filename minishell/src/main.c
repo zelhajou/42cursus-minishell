@@ -6,54 +6,66 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/02/22 21:11:52 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/01 21:53:47 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-int	main(void)
+t_token	*process_and_tokenize_input(char *input)
 {
-	char		*input;
 	char		*trimmed_input;
+	t_token		*tokens;
+
+	trimmed_input = ft_strtrim(input, " \t\n\v\f\r");
+	free(input);
+	if (!trimmed_input)
+		return (NULL);
+	if (syntax_error_checker(trimmed_input))
+	{
+		free(trimmed_input);
+		return (NULL);
+	}
+	tokens = tokenize_input(trimmed_input);
+	free(trimmed_input);
+	return (tokens);
+}
+
+void	main_shell_execution_loop(t_env *env)
+{
+	char		*line;
+	int			status;
 	t_token		*tokens;
 	t_ast_node	*ast;
 
 	while (1)
 	{
-		input = readline("minishell$ ");
-		if (!input)
+		line = readline("\033[1;32m→\033[1;36m\033[0m ");
+		if (!line)
 			break ;
-		if (*input)
-			add_history(input);
-		trimmed_input = ft_strtrim(input,  " \t\n\v\f\r");
-		if (!trimmed_input)
-		{
-			free(input);
+		if (check_line(&line))
 			continue ;
-		}
-		if (syntax_error_checker(trimmed_input))
-		{
-			free(input);
-			free(trimmed_input);
-			continue ;
-		}
-		tokens = tokenize_input(trimmed_input);
-		//display_tokens(tokens);
-		free(trimmed_input);
+		add_history(line);
+		tokens = process_and_tokenize_input(line);
 		if (!tokens)
-		{
-			free(input);
 			continue ;
-		}
-		// TODO: Implement the parser
 		ast = parse_tokens(&tokens);
-		generate_ast_diagram(ast);
-		// TODO: Execute the AST
-		// TODO: Free the tokens and the AST
-		// free_tokens(tokens);
+		command_execution_manager(ast, env, &status);
+		update_env_status(env, status, "?=");
 		free_ast(ast);
-		free(input);
+		rl_redisplay();
 	}
-	return (0);
-	}
+}
+
+int	main(int argc, char **argv, char **original_env)
+{
+	t_env	*env;
+
+	(void)argv;
+	setup_signal_handlers();
+	env = malloc(sizeof(t_env));
+	if (argc == 1 && isatty(1)
+		&& initialize_shell_with_environment(env, original_env))
+		main_shell_execution_loop(env);
+	cleanup_and_exit_shell(env, 0);
+}
