@@ -1,3 +1,5 @@
+![ascii-text-art (3)](https://github.com/zelhajou/42-minishell/assets/39954629/44830c16-9ec2-471f-a075-f6a7e535c0a3)
+
 
 # Minishell
 
