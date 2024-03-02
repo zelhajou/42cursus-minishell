@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:43:46 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/02 04:23:19 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:55:57 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_ast_node	*parse_command(t_token **tokens)
 	return (command_node);
 }
 
-t_ast_node	*new_ast_file(t_token *token)
+t_ast_node	*create_file_node(t_token *token)
 {
 	t_ast_node			*node;
 
@@ -67,7 +67,7 @@ t_ast_node	*parse_redirection(t_token **tokens)
 			redirect_node = new_ast_node((*tokens)->next->type);
 			(*tokens)->next = next_token->next->next;
 			redirect_node->left = parse_redirection(&tmp);
-			redirect_node->right = new_ast_file((next_token->next));
+			redirect_node->right = create_file_node((next_token->next));
 			return (free(next_token->value), free(next_token), redirect_node);
 		}
 		*tokens = next_token;

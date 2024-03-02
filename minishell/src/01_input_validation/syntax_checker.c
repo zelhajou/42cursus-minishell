@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:56:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/02 04:46:06 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 17:28:26 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,18 +110,15 @@ int	has_misplaced_operators(const char *input)
 
 int	has_logical_operators(const char *input)
 {
-	int							si_q_count;
-	int							do_q_count;
+	int							s_q_count;
+	int							d_q_count;
 
-	si_q_count = 0;
-	do_q_count = 0;
+	s_q_count = 0;
+	d_q_count = 0;
 	while (*input)
 	{
-		if (*input == 34)
-			do_q_count++;
-		else if (*input == 39)
-			si_q_count++;
-		if (!(do_q_count % 2) && !(si_q_count % 2)
+		update_quote_counts(*input, &s_q_count, &d_q_count);
+		if (!(d_q_count % 2) && !(s_q_count % 2)
 			&& ((*input == '&' && *(input + 1) == '&')
 				|| (*input == '|' && *(input + 1) == '|')))
 			return (1);

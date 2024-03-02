@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/02 04:51:41 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 20:55:12 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void		fill_command_arguments(t_ast_node *command_node,
 				t_token **tokens, int arg_count);
 t_ast_node	*parse_pipeline(t_token **tokens);
 t_ast_node	*parse_redirection(t_token **tokens);
-t_ast_node	*new_ast_file(t_token *token);
+t_ast_node	*create_file_node(t_token *token);
 t_ast_node	*create_and_link_redirection(t_token **tokens, t_token *tmp);
 
 /* ------------------ Built-in Command Execution ------------------ */
@@ -227,5 +227,8 @@ int			get_shell_exit_status(int error_code);
 int			count_digits_in_int(int num);
 char		**prepare_cmd_arguments(char *cmd, char **envp, int condition);
 int			verify_command_file_permissions(t_ast_node *head, char **env);
+
+void		generate_ast_diagram(t_ast_node *root);
+void		display_tokens(t_token *tokens);
 
 #endif

@@ -20,14 +20,19 @@
             5. [Tokenization Strategy](#tokenization-strategy)
             6. [Tokenization Function](#tokenization-function)
             7. [Parsing](#parsing)
-            8. [Parsing Function](#parsing-function)
-            9. [AST Node Structure](#ast-node-structure)
-    4. [Command Execution](#command-execution)
-    5. [Built-in Commands Implementation](#built-in-commands-implementation)
-    6. [Signal Handling](#signal-handling)
-    7. [Environment Variable Expansion](#environment-variable-expansion)
-    8. [Input/Output Redirection and Pipes](#inputoutput-redirection-and-pipes)
-    9. [Testing and Debugging](#testing-and-debugging)
+			8. [AST Node Structure](#ast-node-structure)
+			9. [Parsing Function](#parsing-function)
+	4. [Command Execution](#step-4-command-execution)
+	5. [Built-in Commands Implementation](#step-5-built-in-commands-implementation)
+	6. [Signal Handling](#step-6-signal-handling)
+	7. [Environment Variable Expansion](#step-7-environment-variable-expansion)
+	8. [Input/Output Redirection and Pipes](#step-8-inputoutput-redirection-and-pipes)
+	9. [Testing and Debugging](#step-9-testing-and-debugging)
+4. [Team Members](#team-members)
+5. [Project Status](#project-status)
+6. [Project Timeline](#project-timeline)
+7. [Project Structure](#project-structure)
+8. [Resources](#resources)
 
 ## Overview
 
@@ -54,6 +59,8 @@ Our Minishell project represents a collaborative effort to build a custom shell 
 - Set up libft libray
 
 ### Step 2: Research and Design Phase
+
+This phase was about understanding the shell's operations, researching the external functions allowed, and dividing them among ourselves to research and explain their usage to the team.
 
 #### Shell Operations
 
@@ -216,22 +223,22 @@ int main(void)
 
 ### Steps for building the parser and AST (Abstract Syntax Tree)
 
-1. **Syntax Error Checking**: This involves verifying whether the input string adheres to the shell's syntax rules. It checks for unclosed quotes, and misuse of redirection or pipe symbols. Syntax error checking ensures that the input can be correctly interpreted and executed.
-2. **Tokenization**: This step breaks the input string into meaningful pieces, known as tokens. Tokens can be commands, arguments, redirection operators (`<`, `>`, `>>`, `<<`), pipe symbols (`|`), and environment variable identifiers. Tokenization simplifies the parsing process by converting the input string into a format that's easier to analyze.
-3. **Parsing**: During parsing, tokens are analyzed to understand their syntactical relationship. This step involves constructing a representation of the input that reflects the user's intention. Depending on the complexity of the shell, this could mean building an abstract syntax tree (AST) or a simpler structure.
-4. **AST Construction**:
+- **Syntax Error Checking**: This involves verifying whether the input string adheres to the shell's syntax rules. It checks for unclosed quotes, and misuse of redirection or pipe symbols. Syntax error checking ensures that the input can be correctly interpreted and executed.
+- **Tokenization**: This step breaks the input string into meaningful pieces, known as tokens. Tokens can be commands, arguments, redirection operators (`<`, `>`, `>>`, `<<`), pipe symbols (`|`), and environment variable identifiers. Tokenization simplifies the parsing process by converting the input string into a format that's easier to analyze.
+- **Parsing**: During parsing, tokens are analyzed to understand their syntactical relationship. This step involves constructing a representation of the input that reflects the user's intention. Depending on the complexity of the shell, this could mean building an abstract syntax tree (AST) or a simpler structure.
+- **AST Construction**:
     - **Commands**: Nodes in the AST represent commands along with their arguments. These nodes are fundamental to understanding what actions the shell needs to perform.
     - **Redirections**: Redirection nodes are created to represent input and output redirections. These nodes are attached to command nodes to modify how the commands read their input or write their output.
     - **Pipelines**: When a pipe is encountered, a pipeline node links command nodes together, indicating that the output of one command serves as the input to another.
     - **Environment Variable Expansion**: This can be handled as part of command parsing or immediately before command execution. It involves replacing environment variable identifiers with their corresponding values.
 
-5. **Execution AST**: After the AST is built, it is traversed to execute the commands it represents. This involves:
+- **Execution AST**: After the AST is built, it is traversed to execute the commands it represents. This involves:
     - Executing built-in commands directly within the shell.
     - Launching external commands by creating new processes.
     - Setting up redirections as specified by the redirection nodes.
     - Managing pipelines by connecting the stdout of one command to the stdin of the next.
 
-#### Designing a Syntax Error Checker
+#### a. Designing a Syntax Error Checker
 
 the syntax error checker will be responsible for identifying and reporting syntax errors in the user input.
 
@@ -240,21 +247,22 @@ the syntax error checker will be responsible for identifying and reporting synta
 3. **Logical Operators**: Detect logical operators such as `&&` and `||` and report them as not supported.
 4. **Invalid Redirections**: Detect invalid redirections, such as multiple consecutive redirections or redirections at the start or end of the input.
 
-#### Syntax Error Checker Function
+#### b. Syntax Error Checker Function
 
 ```bash
 minishell/src/parser/syntax_checker.c
 ```
 
+syntax_checker.c:
+
 - `syntax_error_checker` Function: Iterates through the input string, checking for syntax errors and reporting them if found.
 - `has_unclosed_quotes` Function: Checks for unclosed quotes in the input string.
-- `has_misplaced_operators` Function: Detects misplaced pipes and redirections.
 - `has_invalid_redirections` Function: Detects invalid redirections, such as multiple consecutive redirections or redirections at the start or end of the input.
+- `has_misplaced_operators` Function: Detects misplaced pipes and redirections.
 - `has_logical_operators` Function: Detects logical operators such as `&&` and `||` and reports them as not supported.
 
 
-
-#### Tokenization
+#### c. Tokenization
 
 The goal of the tokenization process is to break down the input string into a series of tokens that the parser can easily understand. These tokens represent commands, arguments, pipes, redirections, and other elements of the shell syntax.
 
@@ -264,7 +272,7 @@ The goal of the tokenization process is to break down the input string into a se
 - **Environment variables**: Expanding variables starting with `$`.
 - **Command separation**: Identifying commands and their arguments.
 
-#### Token Structure
+#### d. Token Structure
 
 ```c
 // Token type enumeration
@@ -276,6 +284,7 @@ typedef enum e_token_type
     TOKEN_REDIR_OUT, // For '>'
     TOKEN_REDIR_APPEND, // For '>>'
     TOKEN_REDIR_HEREDOC, // For '<<'
+    TOKEN_ENV_VAR, // For environment variables
 }   t_token_type;
 
 // Token structure
@@ -287,66 +296,123 @@ typedef struct s_token
 }   t_token;
 ```
 
-#### Tokenization Strategy:
+#### e. Tokenization Strategy
 
 1. **Whitespace Handling**: Skip whitespace outside quotes to separate commands and arguments.
 2. **Quoting**: Correctly handle single (`'`) and double quotes (`"`), preserving the text exactly as is within single quotes and allowing for variable expansion and escaped characters within double quotes.
 3. **Redirections and Pipes**: Detect `>`, `>>`, `<`, `<<`, and `|`, treating them as separate tokens while managing any adjacent whitespace.
-4. **Variable Expansion**: Identify variables (`$VAR` or `${VAR}`) for later expansion. This might be more related to parsing after tokenization but be aware during tokenization.
 
-#### **Tokenization Function**
+#### f. Tokenization Function
 
 The tokenization function will iterate through the input string, identifying and categorizing segments according to the shell syntax.
 
-- `new_token` Function: Allocates and initializes a new token.
-- `add_token_to_list` Function: Adds the new token to the end of the tokens list.
-- `tokenize_input` Function: Iterates through the input, creating tokens for words separated by spaces.
-- `handle_quotes` Function : Handles the quotes in the input string.
-- `handle_special_chars` : Handles the special characters in the input string.
-- `handle_word` : Handles the words in the input string.
+tokenization.c:
 
-#### Parsing
+- `tokenize_input` Function: Iterates through the input, creating tokens for words separated by spaces.
+- `handle_special_chars` Function: Handles the special characters in the input string.
+- `handle_word` Function: Handles the words in the input string.
+
+#### g. Parsing
 
 The parsing process involves analyzing the tokens to understand their syntactical relationship. This step constructs a representation of the input that reflects the user's intention.
 
-#### Parsing Function
+- **Command Parsing**: Parsing commands and their arguments, creating command nodes in the AST.
+- **Pipeline Parsing**: Parsing pipeline tokens, creating pipeline nodes in the AST.
+- **Redirection Parsing**: Parsing redirection tokens, creating redirection nodes in the AST.
+- **File Node Creation**: Creating a file node for redirections in the AST.
 
-- `parse_input` Function: Iterates through the tokens, building an abstract syntax tree (AST) that represents the input string.
-- `parse_command` Function: Parses a command and its arguments, creating a command node in the AST.
-- `parse_redirection` Function: Parses redirection tokens, creating redirection nodes in the AST.
-- `parse_pipeline` Function: Parses pipeline tokens, creating pipeline nodes in the AST.
+#### h .AST Node Structure
 
-
-#### AST Node Structure
-
-- https://github.com/os-moussao/Recursive-Descent-Parser/tree/master
+The AST node structure will represent the input string in a way that reflects the user's intention. The AST will be composed of nodes that represent commands, arguments, redirections, and pipelines.
 
 ```c
-
 typedef struct s_ast_node
 {
-    t_node_type type;
-    char *data;
+    t_node type type;
+    char *args;
     struct s_ast_node *left;
     struct s_ast_node *right;
 }   t_ast_node;
 ```
 
-### Command Execution
+#### i. Parsing Function
 
-### Built-in Commands Implementation
+The parsing function will iterate through the tokens, building an abstract syntax tree (AST) that represents the input string.
 
-### Signal Handling
+parse.c:
 
-### Environment Variable Expansion
+- `parse_tokens` Function: Iterates through the tokens, building an abstract syntax tree (AST) that represents the input string.
+- `parse_command` Function: Parses a command and its arguments, creating a command node in the AST.
+- `parse_pipeline` Function: Parses pipeline tokens, creating pipeline nodes in the AST.
+- `parse_redirection` Function: Parses redirection tokens, creating redirection nodes in the AST.
+- `create_file_node` Function: Creates a file node for redirections in the AST.
 
-### Input/Output Redirection and Pipes
+### Step 4: Command Execution
 
-### Testing and Debugging
+- **Built-in Commands**: Implementing internal versions of several built-in commands (`echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`) that behave consistently with their bash counterparts.
+- **External Commands**: Implementing logic to search for and execute the right executable based on the PATH environment variable or a specified path.
+- **Process Creation**: Using system calls like `fork`, `execve`, `wait`, and `pipe` to manage process creation and execution.
+- **Redirection and Pipes**: Implementing input and output redirection (`<`, `>`, `>>`, `<<`) and pipes (`|`) to allow for command chaining and data redirection.
 
+### Step 5: Built-in Commands Implementation
+
+- **echo**: Outputs the arguments passed to it.
+- **cd**: Changes the current working directory.
+- **pwd**: Prints the current working directory.
+- **export**: Sets environment variables.
+- **unset**: Unsets environment variables
+- **env**: Prints the environment variables.
+- **exit**: Exits the shell.
+
+### Step 6: Signal Handling
+
+- **SIGINT**: Handling the `ctrl-C` signal to interrupt the shell's execution.
+- **SIGQUIT**: Handling the `ctrl-\` signal to quit the shell.
+- **EOF**: Handling the `ctrl-D` signal to exit the shell.
+
+### Step 7: Environment Variable Expansion
+
+- **Environment Variable Expansion**: Managing environment variables and supporting their expansion within commands, including the special case of `$?` to represent the exit status of the most recently executed command.
+
+### Step 8: Testing and Debugging
+
+- [reda ghouzraf](https://github.com/rghouzra) : The most skilled human tester in the world
 - [Minishell Tests](https://docs.google.com/spreadsheets/d/1BLU6C9S7aoCl01x74GiW7s4xpEWWJ1cPrMTcLwISruk/edit#gid=1627853444)
+
+## Project Structure
+
+```bash
+├── includes
+│   └── minishell.h
+├── lib
+│   └── libft
+├── Makefile
+└── src
+    ├── 01_input_validation
+    ├── 02_tokenization
+    ├── 03_parsing
+    ├── 04_execution
+    ├── 05_builtin
+    ├── 06_signals
+    ├── 07_env_var_expansion
+    ├── main.c
+    └── utils
+```
+
+## Team Members
+
+- [Bilal Edd](https://github.com/edbilal)
+- [Zakaria Elhajoui](https://github.com/zelhajou)
+
+<!--
+## Project Timeline
+
+- **Start Date**:
+- **End Date**:
+ -->
 
 ## Resources
 
-
-- https://www.youtube.com/watch?v=S2W3SXGPVyU&ab_channel=theroadmap
+- <https://www.youtube.com/watch?v=S2W3SXGPVyU&ab_channel=theroadmap>
+- <https://tomassetti.me/guide-parsing-algorithms-terminology/>
+- <https://github.com/os-moussao/Recursive-Descent-Parser/tree/master>

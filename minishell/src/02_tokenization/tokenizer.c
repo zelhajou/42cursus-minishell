@@ -6,36 +6,11 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 14:26:48 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/02 04:41:03 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/02 17:44:51 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	handle_quotes(char **input, t_token **tokens)
-{
-	char	quote_type;
-	char	*start;
-	char	*quoted_content;
-
-	quote_type = **input;
-	start = *input;
-	(*input)++;
-	while (**input && **input != quote_type)
-		(*input)++;
-	if (**input == quote_type)
-	{
-		quoted_content = strndup(start, (*input - start) + 1);
-		if (quoted_content)
-		{
-			add_token_to_list(tokens, new_token(TOKEN_WORD, quoted_content));
-			free(quoted_content);
-		}
-		else
-			ft_putstr_fd("Error: Malloc failed in handle_quotes.\n", 2);
-		(*input)++;
-	}
-}
 
 void	handle_special_chars(char **input, t_token **tokens)
 {
