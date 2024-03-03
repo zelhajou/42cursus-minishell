@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/01 23:18:03 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:16:18 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	prepare_and_execute_command(
 
 int	wait_for_children(int status, int *_piped)
 {
-	if (status && _piped[10] && _piped[11])
+	if (_piped[10] && _piped[11])
 	{
 		while (_piped[10])
 		{

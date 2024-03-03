@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/03 19:46:18 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:14:29 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	env_or_pwd_cmd(char *_cmd, t_env *env, int con, int *_out_fd)
 		ft_putendl_fd(abs_pwd, _out_fd[1]);
 		return (free(abs_pwd), 0);
 	}
-	return (1);
+	return (256);
 }
 
 char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
@@ -88,7 +88,7 @@ char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
 		{
 			if (_cmd[a][0] == '=')
 				ft_putendl_fd("  err: export(): misplaced", _out_fd[1]);
-			**s = 1;
+			**s = 256;
 		}
 		a++;
 	}
@@ -110,7 +110,7 @@ char	**unset_or_export_cmd(char **_cmd, t_env *env, int *_out_fd, int *s)
 			if (c >= 0)
 				remove_env_entry(env, c);
 			else
-				*s = 1;
+				*s = 256;
 			a++;
 		}
 	}
@@ -150,5 +150,5 @@ int	cd_cmd(char **_cmd, t_env *env, int *_out_fd)
 			return (0);
 		}
 	}
-	return (1);
+	return (256);
 }
