@@ -19,9 +19,9 @@ int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 
 	pipe(fd_);
 	pid = fork();
-	signal(SIGINT, child_ctrl_c);
 	if (!pid)
 	{
+		signal(SIGINT, child_ctrl_c);
 		if (_piped[0] && _piped[0] <= _piped[5])
 			dup2(_fd[0], 0);
 		if (_piped[0] > 1)

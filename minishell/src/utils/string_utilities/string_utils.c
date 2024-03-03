@@ -12,60 +12,31 @@
 
 #include "minishell.h"
 
-void	copy_str_without_quotes(char *new_str, char *old_str, int size)
-{
-	int					a;
-	int					b;
-
-	a = 0;
-	b = 0;
-	while (old_str && a < size)
-	{
-		if (old_str[b] != 34 && old_str[b] != 39)
-			new_str[a++] = old_str[b];
-		b++;
-	}
-	new_str[a] = '\0';
-}
-
-/*char	*remove_quotes_from_str(char *str)
-{
-	char				*new_str;
-	int					b;
-	int					a;
-	int					size;
-
-	a = 0;
-	size = 0;
-	b = sizeof_str(str, '\0');
-	while (str && a < b)
-	{
-		if (str[a] != 34 && str[a] != 39)
-			size++;
-		a++;
-	}
-	new_str = malloc(size + 1);
-	copy_str_without_quotes(new_str, str, size);
-	free(str);
-	return (new_str);
-}*/
-
 char	*remove_quotes_from_str(char *str)
 {
 	char				*new_str;
 	int					a;
 	int					b;
+	int					si_q_c;
+	int					do_q_c;
 
 	a = 0;
-	b = sizeof_str(str, '\0');
-	if ((str[a] == 34 && str[b - 1] == 34)
-		|| (str[a] == 39 && str[b - 1] == 39))
+	b = 0;
+	si_q_c = 0;
+	do_q_c = 0;
+	new_str = malloc(sizeof_str(str, '\0') + 1);
+	while (str[a])
 	{
-		a += 1;
-		b -= 1;
+		if (str[a] == 34)
+			do_q_c++;
+		else if (str[a] == 39)
+			si_q_c++;
+		if ((str[a] != 34 || (si_q_c % 2))
+			&& ((str[a] != 39) || (do_q_c % 2)))
+			new_str[b++] = str[a];
+		a++;
 	}
-	new_str = malloc((b - a) + 1);
-	s_strcopy(new_str, str, a, b);
+	new_str[b] = '\0';
 	free(str);
 	return (new_str);
 }
