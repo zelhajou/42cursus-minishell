@@ -18,6 +18,8 @@ int	echo_cmd(char **_cmd, int *_out_fd)
 	int				op_n;
 
 	op_n = 0;
+	for (int i=0;_cmd[i];i++)
+		printf("args[%i]:.%s.\n", i, _cmd[i]);
 	if (_cmd[1] && _cmd[1][1]
 		&& _cmd[1][0] == '-' && _cmd[1][1] == 'n')
 		op_n = 1;

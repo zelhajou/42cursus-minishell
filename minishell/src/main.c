@@ -40,7 +40,7 @@ void	main_shell_execution_loop(t_env *env)
 
 	while (1)
 	{
-		line = readline("\033[1;32m→\033[1;36m\033[0m ");
+		line = readline("\t> ");
 		if (!line)
 			break ;
 		if (check_line(&line))

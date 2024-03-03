@@ -76,7 +76,7 @@ void		child_ctrl_c(int sig_num);
 /* ------------------ Input Processing ------------------ */
 
 t_token		*process_and_tokenize_input(char *input);
-char		*preprocess_input_for_builtins(char *line, t_env *env);
+//char		*preprocess_input_for_builtins(char *line, t_env *env);
 
 /* ------------------ Syntax Analysis ------------------ */
 
@@ -201,7 +201,7 @@ void		parent_fds_managment(int *_piped, int *_fd, int *fd_);
 /* ------------------ Variable Expansion and Replacement ------------------ */
 
 void		expand_variables_in_ast(t_ast_node *head, t_env *env);
-char		*recursively_expand_variables(char *var, t_env *env);
+char		*recursively_expand_variables(char *var, t_env *env, int __con);
 char		*replace_variable_with_value(char *old_var, char *new_value,
 				int start, int end);
 
