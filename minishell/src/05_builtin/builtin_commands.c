@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/02 04:55:30 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/03 19:46:18 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	echo_cmd(char **_cmd, int *_out_fd)
 	int				op_n;
 
 	op_n = 0;
-	if (_cmd[1] && _cmd[1][1]
+	if (_cmd[0] && _cmd[1] && _cmd[1][0] && _cmd[1][1]
 		&& _cmd[1][0] == '-' && _cmd[1][1] == 'n')
 		op_n = 1;
 	a = op_n + 1;
-	if (_cmd[a] || sizeof_str(_cmd[a], '\0'))
+	if ((_cmd[0] && _cmd[a]) || sizeof_str(_cmd[a], '\0'))
 	{
 		while (1)
 		{
