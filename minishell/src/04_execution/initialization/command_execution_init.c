@@ -29,7 +29,7 @@ int	verify_command_file_permissions(t_ast_node *head, char **env)
 			path_ = fetch_file_path(head->args[0], env, "PATH", X_OK);
 		if (!path_ || (!head->args[1]
 				&& (str_cmp(head->args[0], ".", ",")
-				|| str_cmp(head->args[0], "", NULL))))
+					|| str_cmp(head->args[0], "", NULL))))
 			status = 0;
 		else
 			free(path_);

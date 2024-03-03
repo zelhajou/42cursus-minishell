@@ -48,6 +48,7 @@ SRCS = $(SRCDIR)/main.c \
 	$(SRCDIR)/07_env_var_expansion/env_managment.c \
 	$(SRCDIR)/07_env_var_expansion/env_managment2.c \
 	$(SRCDIR)/07_env_var_expansion/variable_expansion.c \
+	$(SRCDIR)/07_env_var_expansion/variable_expansion_utils.c \
 	$(SRCDIR)/utils/string_utilities/string_utils.c \
 	$(SRCDIR)/utils/string_utilities/string_utils2.c \
 	$(SRCDIR)/utils/shell_utilities.c \

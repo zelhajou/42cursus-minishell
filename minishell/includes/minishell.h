@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/02 20:55:12 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/03 09:01:07 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,9 @@ void		expand_variables_in_ast(t_ast_node *head, t_env *env);
 char		*recursively_expand_variables(char *var, t_env *env, int __con);
 char		*replace_variable_with_value(char *old_var, char *new_value,
 				int start, int end);
+void		simplified_refactor_thing(char **array, int *index, char *str);
+int			is_flawed_str(char *str, int a, int b, int res);
+int			detected_flaws(char **array);
 
 /* ------------------ Advanced String and Array Operations ------------------ */
 
