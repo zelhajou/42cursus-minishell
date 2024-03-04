@@ -26,6 +26,13 @@ void	initialize_or_reset_pipe_state(int *_piped, int f)
 	_piped[11] = 1;
 }
 
+void	switch_fds_identifier(int *_piped, int index, int index_2)
+{
+	if (_piped[index])
+		close(_piped[index_2]);
+	_piped[index] = 1;
+}
+
 int	open_file_for_redirection(t_ast_node *head, int *_piped)
 {
 	int			mode;
@@ -34,19 +41,18 @@ int	open_file_for_redirection(t_ast_node *head, int *_piped)
 	status = 1;
 	if (head->file_type == READ_FILE)
 	{
-		_piped[6] = 1;
+		switch_fds_identifier(_piped, 6, 1);
 		_piped[1] = open(head->args[0], O_RDONLY);
 	}
 	else if (head->file_type == READ_FROM_APPEND)
 	{
-		_piped[6] = 1;
-		signal(SIGINT, SIG_IGN);
+		switch_fds_identifier(_piped, 6, 1);
 		status = exec_here_doc(head->args[0], _piped, NULL);
 		signal(SIGINT, handle_ctrl_c);
 	}
 	else
 	{
-		_piped[7] = 1;
+		switch_fds_identifier(_piped, 7, 2);
 		mode = O_TRUNC;
 		if (head->file_type == WRITE_FILE_APPEND)
 			mode = O_APPEND;

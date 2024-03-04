@@ -51,14 +51,12 @@ char	***duplicate_env_structure(t_env *env, int a, int a_2, int d)
 			new_thing[c][1] = strcopy(env->parsed_env[b][1]);
 			c++;
 		}
-		free(env->parsed_env[b][0]);
-		free(env->parsed_env[b][1]);
-		free(env->parsed_env[b]);
 		b++;
 	}
 	if (d >= 0)
 		new_thing[c] = 0;
-	free(env->parsed_env);
+	if (a_2 != 'F')
+		free_environment_variables(env->parsed_env);
 	return (new_thing);
 }
 

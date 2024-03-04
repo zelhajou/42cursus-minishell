@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/02 04:55:30 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/04 06:05:47 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ int	echo_cmd(char **_cmd, int *_out_fd)
 	int				op_n;
 
 	op_n = 0;
-	if (_cmd[1] && _cmd[1][1]
-		&& _cmd[1][0] == '-' && _cmd[1][1] == 'n')
+	if (_cmd[0] && _cmd[1] && is_valid_echo_param(_cmd[1]))
 		op_n = 1;
 	a = op_n + 1;
-	if (_cmd[a] || sizeof_str(_cmd[a], '\0'))
+	while (op_n && _cmd[a] && is_valid_echo_param(_cmd[a]))
+		a++;
+	if ((_cmd[0] && _cmd[a]) || sizeof_str(_cmd[a], '\0'))
 	{
 		while (1)
 		{
@@ -44,18 +45,16 @@ int	env_or_pwd_cmd(char *_cmd, t_env *env, int con, int *_out_fd)
 	int					a;
 	char				*abs_pwd;
 
-	a = 0;
+	a = -1;
 	if (str_cmp(_cmd, "env", NULL))
 	{
-		while (env->parsed_env[a])
+		if (con)
+			print_export_declaration_to_fd(env, _out_fd);
+		else
 		{
-			if (con && !str_cmp(env->parsed_env[a][0], "?", NULL))
-				print_export_declaration_to_fd(
-					env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
-			else if (!str_cmp(env->parsed_env[a][0], "?", NULL))
+			while (env->parsed_env[++a])
 				print_env_var_to_fd(
 					env->parsed_env[a][0], env->parsed_env[a][1], _out_fd[1]);
-			a++;
 		}
 		return (0);
 	}
@@ -65,7 +64,7 @@ int	env_or_pwd_cmd(char *_cmd, t_env *env, int con, int *_out_fd)
 		ft_putendl_fd(abs_pwd, _out_fd[1]);
 		return (free(abs_pwd), 0);
 	}
-	return (1);
+	return (256);
 }
 
 char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
@@ -88,7 +87,7 @@ char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
 		{
 			if (_cmd[a][0] == '=')
 				ft_putendl_fd("  err: export(): misplaced", _out_fd[1]);
-			**s = 1;
+			**s = 256;
 		}
 		a++;
 	}
@@ -110,7 +109,7 @@ char	**unset_or_export_cmd(char **_cmd, t_env *env, int *_out_fd, int *s)
 			if (c >= 0)
 				remove_env_entry(env, c);
 			else
-				*s = 1;
+				*s = 256;
 			a++;
 		}
 	}
@@ -150,5 +149,5 @@ int	cd_cmd(char **_cmd, t_env *env, int *_out_fd)
 			return (0);
 		}
 	}
-	return (1);
+	return (256);
 }

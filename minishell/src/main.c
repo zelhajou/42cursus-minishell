@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/01 21:53:47 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/04 06:09:17 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	main_shell_execution_loop(t_env *env)
 
 	while (1)
 	{
-		line = readline("\033[1;32m→\033[1;36m\033[0m ");
+		line = readline("  > ");
 		if (!line)
 			break ;
 		if (check_line(&line))
@@ -63,6 +63,7 @@ int	main(int argc, char **argv, char **original_env)
 
 	(void)argv;
 	setup_signal_handlers();
+	printf("-->%i<---\n", getpid());
 	env = malloc(sizeof(t_env));
 	if (argc == 1 && isatty(1)
 		&& initialize_shell_with_environment(env, original_env))

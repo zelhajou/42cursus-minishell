@@ -36,20 +36,19 @@ int	count_digits_in_int(int num)
 	return (a);
 }
 
-void	free_environment_variables(t_env *env)
+void	free_environment_variables(char ***array)
 {
 	int				a;
 
 	a = 0;
-	while (env->parsed_env[a])
+	while (array[a])
 	{
-		free(env->parsed_env[a][0]);
-		free(env->parsed_env[a][1]);
-		free(env->parsed_env[a]);
+		free(array[a][0]);
+		free(array[a][1]);
+		free(array[a]);
 		a += 1;
 	}
-	free(env->parsed_env);
-	free(env);
+	free(array);
 }
 
 void	cleanup_and_exit_shell(t_env *env, int status)
@@ -57,7 +56,8 @@ void	cleanup_and_exit_shell(t_env *env, int status)
 	if (env)
 	{
 		free_string_array(env->original_env);
-		free_environment_variables(env);
+		free_environment_variables(env->parsed_env);
+		free(env);
 	}
 	exit(status);
 }
