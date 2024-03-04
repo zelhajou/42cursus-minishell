@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:56:04 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/02 02:32:13 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:20:59 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ int	verify_command_file_permissions(t_ast_node *head, char **env)
 		if (path_)
 			free(path_);
 	}
-	if (status && head->left)
+	if (!status && head->left)
 		status = verify_command_file_permissions(head->left, env);
-	if (status && head->right)
+	if (!status && head->right)
 		status = verify_command_file_permissions(head->right, env);
 	return (status);
 }

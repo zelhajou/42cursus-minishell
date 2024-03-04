@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/04 06:09:17 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:21:40 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int	main(int argc, char **argv, char **original_env)
 
 	(void)argv;
 	setup_signal_handlers();
-	printf("-->%i<---\n", getpid());
 	env = malloc(sizeof(t_env));
 	if (argc == 1 && isatty(1)
 		&& initialize_shell_with_environment(env, original_env))
