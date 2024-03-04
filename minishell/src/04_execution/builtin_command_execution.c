@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 16:36:57 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/04 21:20:12 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	int						fd_[2];
 	int						_out_fd_[2];
 
-	pipe(fd_);
-	pid = fork();
+	(pipe(fd_), pid = fork());
 	if (!pid)
 	{
 		if (_piped[0] && _piped[0] <= _piped[5])
@@ -94,6 +93,7 @@ int	manage_builtin_execution(char **_cmd_, int *_fd, t_env *env, int *_piped)
 			status = simple_child_for_builtins(_cmd_, _fd, env, _piped);
 		else
 			status = execute_child_with_redirections(_cmd_, _fd, env, _piped);
+		free_string_array(_cmd_);
 	}
 	else
 		status = manage_single_builtin_execution(_cmd_, _fd, env, _piped);

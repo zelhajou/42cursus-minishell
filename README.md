@@ -375,6 +375,9 @@ parse.c:
 
 - [reda ghouzraf](https://github.com/rghouzra) : The most skilled human tester in the world
 - [Minishell Tests](https://docs.google.com/spreadsheets/d/1BLU6C9S7aoCl01x74GiW7s4xpEWWJ1cPrMTcLwISruk/edit#gid=1627853444)
+- <https://github.com/Pyr-0/Minishell-42/wiki/edge-(or-non-edge)-cases-to-test-out>
+- <https://github.com/nicolasgasco/42_minishell/blob/main/test_cases.txt>
+
 
 ## Project Structure
 
@@ -409,7 +412,7 @@ parse.c:
  -->
 
 ## Resources
-
+- <https://www.gnu.org/software/bash/manual/html_node/Definitions.html#index-name>
 - <https://www.youtube.com/watch?v=S2W3SXGPVyU&ab_channel=theroadmap>
 - <https://tomassetti.me/guide-parsing-algorithms-terminology/>
 - <https://github.com/os-moussao/Recursive-Descent-Parser/tree/master>

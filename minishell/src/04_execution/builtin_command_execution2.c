@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 12:53:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 19:01:00 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/04 21:09:10 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	execute_builtin_with_simple_piping(
 {
 	int				status;
 	int				_out_fd[2];
+
 
 	_out_fd[1] = 1;
 	if (_piped[8] && _piped[7])

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:20:26 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 19:33:20 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/04 20:36:09 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	setup_signal_handlers(void)
 void	child_ctrl_c(int sig_num)
 {
 	(void)sig_num;
-	write(1, "\n", 1 );
+	write(1, "\n", 1);
 }
 
 void	handle_ctrl_c(int a)
