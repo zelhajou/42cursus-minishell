@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:59:58 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 19:00:43 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/04 05:42:00 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,29 +72,44 @@ char	*get_current_working_directory(int size, int tries, int fd)
 	return (buffer);
 }
 
-void	print_env_var_to_fd(char *str_1, char *str_2, int fd)
+char	***sort_tha_array(char ***_array, int _si)
 {
-	if (!str_cmp(str_2, "F1", NULL))
+	int					a;
+	int					b;
+	int					c;
+	char				**temp_p;
+
+	a = 0;
+	while (a < _si - 1)
 	{
-		ft_putstr_fd(str_1, fd);
-		ft_putstr_fd(" : ", fd);
-		if (str_2[0])
-			ft_putstr_fd(str_2, fd);
-		write(fd, "\n", 1);
+		b = a + 1;
+		c = string_weight_compare(_array[a][0], _array[b][0]);
+		if (c)
+		{
+			temp_p = _array[a];
+			_array[a] = _array[b];
+			_array[b] = temp_p;
+		}
+		a++;
 	}
+	if (check_array_arrangment(_array, _si))
+		return (_array);
+	return (sort_tha_array(_array, _si));
 }
 
-void	print_export_declaration_to_fd(char *str_1, char *str_2, int fd)
+void	print_export_declaration_to_fd(t_env *env, int *_out_fd)
 {
-	ft_putstr_fd("declare -x ", fd);
-	ft_putstr_fd(str_1, fd);
-	if (!str_cmp(str_2, "F1", NULL))
-	{
-		write(fd, "=", 1);
-		ft_putchar_fd('"', fd);
-		if (str_2[0])
-			ft_putstr_fd(str_2, fd);
-		ft_putchar_fd('"', fd);
-	}
-	write(fd, "\n", 1);
+	char				***new_array;
+	int					a;
+
+	a = 0;
+	while (env->parsed_env[a] != 0)
+		a++;
+	if (!a)
+		return ;
+	new_array = duplicate_env_structure(env, a, 'F', -1);
+	new_array[a] = 0;
+	new_array = sort_tha_array(new_array, a);
+	print_export_vars(new_array, a, _out_fd[1]);
+	free_environment_variables(new_array);
 }

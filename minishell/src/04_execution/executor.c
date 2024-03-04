@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 19:02:15 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/04 06:16:09 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,10 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 	if (head->file_type == EXECUTE_FILE)
 		status = prepare_and_execute_command(head->args, _fd, _piped, env);
 	status = wait_for_children(status, _piped);
-	signal(SIGINT, handle_ctrl_c);
+	if (_piped[6])
+		close(_piped[1]);
+	if (_piped[7])
+		close(_piped[2]);
 	return (status);
 }
 
@@ -111,7 +114,7 @@ void	command_execution_manager(t_ast_node *head, t_env *env, int *status)
 	initialize_or_reset_pipe_state(_piped, 0);
 	adjust_ast_nodes_for_execution(head);
 	expand_variables_in_ast(head, env);
-	if (verify_command_file_permissions(head, env->original_env))
+	if (!verify_command_file_permissions(head, env->original_env))
 		*status = execute_ast_node(head, _piped, env);
 	else
 	{

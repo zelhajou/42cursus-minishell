@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/03 09:01:07 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/04 05:53:00 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <fcntl.h>
 # include <dirent.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <signal.h>
 # include <errno.h>
 # include <string.h>
@@ -76,7 +77,6 @@ void		child_ctrl_c(int sig_num);
 /* ------------------ Input Processing ------------------ */
 
 t_token		*process_and_tokenize_input(char *input);
-//char		*preprocess_input_for_builtins(char *line, t_env *env);
 
 /* ------------------ Syntax Analysis ------------------ */
 
@@ -135,7 +135,7 @@ char		*get_current_working_directory(int size, int tries, int fd);
 
 int			check_line(char **line);
 int			find_env_var_index(t_env *env, char *name);
-void		free_environment_variables(t_env *env);
+void		free_environment_variables(char ***array);
 void		replace_env_var(char *var, t_env *env);
 void		append_env_var(char *var, t_env *env);
 int			is_string_numeric(char *s_1);
@@ -143,7 +143,8 @@ int			is_string_numeric(char *s_1);
 /* ------------------ Printing and Utility Functions ------------------ */
 
 void		print_env_var_to_fd(char *key, char *value, int fd);
-void		print_export_declaration_to_fd(char *key, char *value, int fd);
+void		print_export_vars(char ***arr, int a, int fd);
+void		print_export_declaration_to_fd(t_env *env, int *_out_fd);
 
 /* ------------------ Command Execution Management ------------------ */
 
@@ -210,6 +211,8 @@ int			detected_flaws(char **array);
 
 /* ------------------ Advanced String and Array Operations ------------------ */
 
+int			string_weight_compare(char *s_1, char *s_2);
+int			check_array_arrangment(char ***array, int _si);
 char		**merge_command_args(char **first_args, char **additional_args);
 char		***duplicate_env_structure(t_env *env, int a, int a_2, int d);
 int			count_substrings(char *str, char delimiter);
@@ -221,6 +224,7 @@ void		free_string_array(char **arr);
 char		*fetch_file_path(char *file, char **envp, char *env_var, int mode);
 char		*create_subpath_from_var(char *env_var, char *file,
 				int *index_start);
+int			is_valid_echo_param(char *s);
 
 /* ------------------ Miscellaneous Utilities ------------------ */
 

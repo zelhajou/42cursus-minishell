@@ -39,7 +39,7 @@ void	read_and_write(int std_out, char *limiter)
 
 	while (1)
 	{
-		buf = readline(" >> ");
+		buf = readline(">> ");
 		if (!buf || str_compare(limiter, buf, sizeof_str(buf, '\n')))
 		{
 			free(buf);
@@ -60,10 +60,10 @@ int	exec_here_doc(char *limiter, int *_piped, int *_fd)
 	(void)_fd;
 	pipe(_out_fd_);
 	pid = fork();
+	signal(SIGINT, SIG_IGN);
 	if (!pid)
 	{
 		signal(SIGINT, quite_heredoc);
-		signal(SIGQUIT, SIG_IGN);
 		close(_out_fd_[0]);
 		read_and_write(_out_fd_[1], limiter);
 		exit(1);

@@ -12,12 +12,34 @@
 
 #include "minishell.h"
 
+void	sus_dir_check(char *path_, t_ast_node *head, int *status)
+{
+	struct stat		s;
+
+	if (!head->args[1]
+		&& (str_cmp(head->args[0], ".", ",")
+			|| str_cmp(head->args[0], "", NULL)))
+		*status = 1;
+	else if (str_cmp(path_, "..", NULL))
+	{
+		*status = 1;
+		errno = 2;
+	}
+	else if (!stat(path_, &s)
+		&& s.st_mode & S_IFDIR)
+	{
+		*status = 1;
+		ft_putendl_fd("\terr: that path Is a directory", 2);
+		errno = 13;
+	}
+}
+
 int	verify_command_file_permissions(t_ast_node *head, char **env)
 {
 	int				status;
 	char			*path_;
 
-	status = 1;
+	status = 0;
 	path_ = NULL;
 	if (head->args
 		&& !check_if_command_is_builtin(head->args[0])
@@ -27,11 +49,11 @@ int	verify_command_file_permissions(t_ast_node *head, char **env)
 			path_ = fetch_file_path(head->args[0], env, "PWD", R_OK);
 		else if (head->file_type == EXECUTE_FILE)
 			path_ = fetch_file_path(head->args[0], env, "PATH", X_OK);
-		if (!path_ || (!head->args[1]
-				&& (str_cmp(head->args[0], ".", ",")
-					|| str_cmp(head->args[0], "", NULL))))
-			status = 0;
+		if (!path_)
+			status = 1;
 		else
+			sus_dir_check(path_, head, &status);
+		if (path_)
 			free(path_);
 	}
 	if (status && head->left)
