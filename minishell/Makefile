@@ -6,7 +6,7 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/03/04 05:45:25 by beddinao         ###   ########.fr        #
+#    Updated: 2024/03/04 19:39:15 by zelhajou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,8 @@ SRCS = $(SRCDIR)/main.c \
 	$(SRCDIR)/04_execution/heredoc_handling.c \
 	$(SRCDIR)/05_builtin/builtin_commands.c \
 	$(SRCDIR)/05_builtin/builtin_commands_utils.c \
-	$(SRCDIR)/05_builtin/builtin_commands_utils_2.c \
+	$(SRCDIR)/05_builtin/builtin_commands_utils2.c \
+	$(SRCDIR)/05_builtin/builtin_commands_utils3.c \
 	$(SRCDIR)/06_signals/signal_handlers.c \
 	$(SRCDIR)/07_env_var_expansion/env_handling.c \
 	$(SRCDIR)/07_env_var_expansion/env_managment.c \

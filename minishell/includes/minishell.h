@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/04 05:53:00 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:53:53 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ char		**unset_or_export_cmd(char **cmd, t_env *env,
 void		set_new_pwd_in_env(char *new_path, t_env *env, int unused);
 int			change_current_directory(char *path, t_env *env);
 char		*get_current_working_directory(int size, int tries, int fd);
+int			export_statment_check(char *_cmd_);
 
 /* ------------------ Input Validation and Environment Management -------- */
 

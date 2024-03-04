@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_commands_utils_2.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 05:42:06 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 05:59:47 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:13:42 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_env_var_to_fd(char *str_1, char *str_2, int fd)
 		&& !str_cmp(str_2, "F1", NULL))
 	{
 		ft_putstr_fd(str_1, fd);
-		ft_putstr_fd(" : ", fd);
+		ft_putstr_fd("=", fd);
 		if (str_2[0])
 			ft_putstr_fd(str_2, fd);
 		write(fd, "\n", 1);

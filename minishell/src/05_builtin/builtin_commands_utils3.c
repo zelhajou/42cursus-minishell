@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handlers.c                                  :+:      :+:    :+:   */
+/*   builtin_commands_utils3.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/27 10:20:26 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 19:33:20 by zelhajou         ###   ########.fr       */
+/*   Created: 2024/03/04 18:44:36 by zelhajou          #+#    #+#             */
+/*   Updated: 2024/03/04 19:31:05 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	setup_signal_handlers(void)
+int	export_statment_check(char *_cmd_)
 {
-	signal(SIGINT, handle_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
-}
+	int							a;
+	int							b;
 
-void	child_ctrl_c(int sig_num)
-{
-	(void)sig_num;
-	write(1, "\n", 1 );
-}
-
-void	handle_ctrl_c(int a)
-{
-	(void)a;
-	rl_replace_line("", 0);
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_redisplay();
+	a = sizeof_str(_cmd_, '=');
+	if (a > 1 && _cmd_[a - 1] == '+')
+		a -= 1;
+	if (a)
+	{
+		b = 0;
+		while (b < a)
+		{
+			if (!b && !ft_isalpha(_cmd_[b]) && _cmd_[b] != '_')
+				return (-1);
+			else if (b && !ft_isalnum(_cmd_[b]) && _cmd_[b] != '_')
+				return (-1);
+			b++;
+		}
+	}
+	return (a);
 }

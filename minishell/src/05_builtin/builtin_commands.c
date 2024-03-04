@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 06:05:47 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/04 19:31:35 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,19 @@ char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
 	a = 1;
 	while (_cmd[a])
 	{
-		b = sizeof_str(_cmd[a], '=');
-		if (b)
+		b = export_statment_check(_cmd[a]);
+		if (b > 0)
 		{
-			if (b > 1 && _cmd[a][b - 1] == '+')
+			if (b >= 1 && _cmd[a][b] == '+')
 				append_env_var(_cmd[a], env);
 			else
 				replace_env_var(_cmd[a], env);
 		}
 		else
 		{
-			if (_cmd[a][0] == '=')
-				ft_putendl_fd("  err: export(): misplaced", _out_fd[1]);
+			if (_cmd[a][0] == '=' || b < 0)
+				ft_putendl_fd("err: export(): Not a valid identifier",
+					_out_fd[1]);
 			**s = 256;
 		}
 		a++;
