@@ -314,6 +314,33 @@ tokenization.c:
 - `tokenize_input` Function: Iterates through the input, creating tokens for words separated by spaces.
 - `handle_special_chars` Function: Handles the special characters in the input string.
 - `handle_word` Function: Handles the words in the input string.
+- `print_tokens` Function: Prints the tokens to verify the tokenization process.
+
+```bahs
+> ls -l | wc -l > output.txt | ls > output2.txt
+Token:  ls                    |                         Type:  WORD                
+--------------------------------------------------
+Token:  -l                    |                         Type:  WORD                
+--------------------------------------------------
+Token:  |                     |                         Type:  PIPE                
+--------------------------------------------------
+Token:  wc                    |                         Type:  WORD                
+--------------------------------------------------
+Token:  -l                    |                         Type:  WORD                
+--------------------------------------------------
+Token:  >                     |                         Type:  REDIRECT_OUT        
+--------------------------------------------------
+Token:  output.txt            |                         Type:  WORD                
+--------------------------------------------------
+Token:  |                     |                         Type:  PIPE                
+--------------------------------------------------
+Token:  ls                    |                         Type:  WORD                
+--------------------------------------------------
+Token:  >                     |                         Type:  REDIRECT_OUT        
+--------------------------------------------------
+Token:  output2.txt           |                         Type:  WORD                
+--------------------------------------------------
+```
 
 #### g. Parsing
 
