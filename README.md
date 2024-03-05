@@ -316,6 +316,8 @@ tokenization.c:
 - `handle_word` Function: Handles the words in the input string.
 - `print_tokens` Function: Prints the tokens to verify the tokenization process.
 
+Example:
+
 ```bahs
 > ls -l | wc -l > output.txt | ls > output2.txt
 Token:  ls                    |                         Type:  WORD                
