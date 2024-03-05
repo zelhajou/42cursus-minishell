@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/05 22:30:32 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:57:35 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	main_shell_execution_loop(t_env *env)
 		add_history(line);
 		tokens = process_and_tokenize_input(line);
 		if (!tokens)
-			status = 2;
+			status = 258;
 		if (!status)
 		{
 			ast = parse_tokens(&tokens);
