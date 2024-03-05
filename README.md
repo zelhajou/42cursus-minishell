@@ -344,6 +344,12 @@ parse.c:
 - `parse_redirection` Function: Parses redirection tokens, creating redirection nodes in the AST.
 - `create_file_node` Function: Creates a file node for redirections in the AST.
 
+generate_ast_diagram/generate_ast_diagram.c:
+
+- `generate_ast_diagram` Function: Generates a visual representation of the AST, showing the structure of the input string.
+
+
+
 ### Step 4: Command Execution
 
 - **Built-in Commands**: Implementing internal versions of several built-in commands (`echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`) that behave consistently with their bash counterparts.
