@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:56:04 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 17:20:59 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:05:47 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ void	sus_dir_check(char *path_, t_ast_node *head, int *status)
 	if (!head->args[1]
 		&& (str_cmp(head->args[0], ".", ",")
 			|| str_cmp(head->args[0], "", NULL)))
-		*status = 1;
+		*status = 2;
 	else if (str_cmp(path_, "..", NULL))
 	{
-		*status = 1;
+		*status = 2;
 		errno = 2;
 	}
 	else if (!stat(path_, &s)
 		&& s.st_mode & S_IFDIR)
 	{
-		*status = 1;
+		*status = 2;
 		ft_putendl_fd("\terr: that path Is a directory", 2);
 		errno = 13;
 	}

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_commands_utils_2.c                         :+:      :+:    :+:   */
+/*   builtin_commands_utils2.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 05:42:06 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 18:13:42 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:22:08 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_export_vars(char ***arr, int a, int fd)
 		{
 			ft_putstr_fd("declare -x ", fd);
 			ft_putstr_fd(arr[a][0], fd);
-			if (!str_cmp(arr[a][0], "F1", NULL))
+			if (!str_cmp(arr[a][1], "F1", NULL))
 			{
 				write(fd, "=", 1);
 				ft_putchar_fd('"', fd);

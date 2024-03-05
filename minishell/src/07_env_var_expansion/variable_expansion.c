@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/05 03:30:29 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:59:38 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,12 @@ char	*expand_variable_in_string(char *var, t_env *env, int a)
 		return (replace_variable_with_value(var, "", a, b));
 }
 
-char	*recursively_expand_variables(char *var, t_env *env, int __con)
+char	*recursively_expand_variables(char *var, t_env *env, int __con, int a)
 {
-	int							a;
 	int							si_q_count;
 	int							do_q_count;
+	char						*new_var;
 
-	a = 0;
 	si_q_count = 0;
 	do_q_count = 0;
 	while (var[a])
@@ -72,8 +71,10 @@ char	*recursively_expand_variables(char *var, t_env *env, int __con)
 			do_q_count++;
 		if (is_valid_variable_start(var, a, 1)
 			&& (!(do_q_count % 2) || !__con))
-			return (recursively_expand_variables(
-					expand_variable_in_string(var, env, a), env, __con));
+		{
+			new_var = expand_variable_in_string(var, env, a);
+			return (recursively_expand_variables(new_var, env, __con, a + sizeof_str(new_var, '\0')));
+		}
 		a++;
 	}
 	return (var);
@@ -112,12 +113,12 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 	{
 		a = -1;
 		while (head->args[++a])
-			head->args[a] = recursively_expand_variables(head->args[a], env, 1);
+			head->args[a] = recursively_expand_variables(head->args[a], env, 1, 0);
 		head->args = refactore_args_array(head->args);
 		a = 0;
 		while (head->args[a])
 		{
-			head->args[a] = recursively_expand_variables(head->args[a], env, 0);
+			head->args[a] = recursively_expand_variables(head->args[a], env, 0, 0);
 			head->args[a] = remove_quotes_from_str(head->args[a]);
 			a++;
 		}

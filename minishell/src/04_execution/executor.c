@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 21:18:01 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:10:14 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,18 +110,26 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 void	command_execution_manager(t_ast_node *head, t_env *env, int *status)
 {
 	int				_piped[13];
+	int				_status;
 
 	initialize_or_reset_pipe_state(_piped, 1);
 	count_redirections_and_pipes(head, _piped);
 	initialize_or_reset_pipe_state(_piped, 0);
 	adjust_ast_nodes_for_execution(head);
 	expand_variables_in_ast(head, env);
-	if (!verify_command_file_permissions(head, env->original_env))
+	_status = verify_command_file_permissions(head, env->original_env);
+	if (!_status)
 		*status = execute_ast_node(head, _piped, env);
 	else
 	{
-		*status = get_shell_exit_status(errno);
-		ft_putstr_fd("\terr: ", 2);
-		ft_putendl_fd(strerror(errno), 2);
+		if (_status == 1)
+		{
+			*status = get_shell_exit_status(errno);
+			ft_putstr_fd("\terr: ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
+		}
+		*status = _status;
+		ft_putendl_fd("\terr: just close the program", 2);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/05 03:28:00 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:44:24 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	main_shell_execution_loop(t_env *env)
 
 	while (1)
 	{
+		status = 0;
 		line = readline("> ");
 		if (!line)
 			break ;
@@ -48,11 +49,14 @@ void	main_shell_execution_loop(t_env *env)
 		add_history(line);
 		tokens = process_and_tokenize_input(line);
 		if (!tokens)
-			continue ;
-		ast = parse_tokens(&tokens);
-		command_execution_manager(ast, env, &status);
+			status = 2;
+		if (!status)
+		{
+			ast = parse_tokens(&tokens);
+			command_execution_manager(ast, env, &status);
+			free_ast(ast);
+		}
 		update_env_status(env, status, "?=");
-		free_ast(ast);
 		rl_redisplay();
 	}
 }
