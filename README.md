@@ -348,6 +348,12 @@ generate_ast_diagram/generate_ast_diagram.c:
 
 - `generate_ast_diagram` Function: Generates a visual representation of the AST, showing the structure of the input string.
 
+Example : `ls -l | wc -l > output.txt | ls > output2.txt`
+
+![graphviz](https://github.com/zelhajou/42-minishell/assets/39954629/e8cbd784-3ee1-4642-803c-3b903cbb7afe)
+
+[GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/#digraph%20AST%20%7B%0A%220x7ff812f05540%22%20%5Blabel%3D%22%7C%22%5D%3B%0A%220x7ff812f05540%22%20-%3E%20%220x7ff812f05560%22%20%5Blabel%3D%22L%22%5D%3B%0A%220x7ff812f05560%22%20%5Blabel%3D%22CMD%3A%20ls%20-l%22%5D%3B%0A%220x7ff812f05540%22%20-%3E%20%220x7ff812f05360%22%20%5Blabel%3D%22R%22%5D%3B%0A%220x7ff812f05360%22%20%5Blabel%3D%22%7C%22%5D%3B%0A%220x7ff812f05360%22%20-%3E%20%220x7ff812f05300%22%20%5Blabel%3D%22L%22%5D%3B%0A%220x7ff812f05300%22%20%5Blabel%3D%22REDIR%3A%20%22%5D%3B%0A%220x7ff812f05300%22%20-%3E%20%220x7ff812f05320%22%20%5Blabel%3D%22L%22%5D%3B%0A%220x7ff812f05320%22%20%5Blabel%3D%22CMD%3A%20wc%20-l%22%5D%3B%0A%220x7ff812f05300%22%20-%3E%20%220x7ff812f053f0%22%20%5Blabel%3D%22R%22%5D%3B%0A%220x7ff812f053f0%22%20%5Blabel%3D%22CMD%3A%20output.txt%22%5D%3B%0A%220x7ff812f05360%22%20-%3E%20%220x7ff812f05420%22%20%5Blabel%3D%22R%22%5D%3B%0A%220x7ff812f05420%22%20%5Blabel%3D%22REDIR%3A%20%22%5D%3B%0A%220x7ff812f05420%22%20-%3E%20%220x7ff812f05450%22%20%5Blabel%3D%22L%22%5D%3B%0A%220x7ff812f05450%22%20%5Blabel%3D%22CMD%3A%20ls%22%5D%3B%0A%220x7ff812f05420%22%20-%3E%20%220x7ff812f054b0%22%20%5Blabel%3D%22R%22%5D%3B%0A%220x7ff812f054b0%22%20%5Blabel%3D%22CMD%3A%20output2.txt%22%5D%3B%0A%7D%0A)
+
 
 
 ### Step 4: Command Execution
