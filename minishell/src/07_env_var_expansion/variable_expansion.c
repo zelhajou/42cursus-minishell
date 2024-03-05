@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/05 23:40:06 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/06 00:01:55 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ char	*expand_variable_in_string(char *var, t_env *env, int a, int *f_hole)
 	return (new_var);
 }
 
-char	*recursively_expand_variables(char *var, t_env *env, int __con, int *f_arr)
+char	*recursively_expand_variables(
+		char *var, t_env *env, int __con, int *f_arr)
 {
 	char						*new_var;
 
@@ -72,7 +73,8 @@ char	*recursively_expand_variables(char *var, t_env *env, int __con, int *f_arr)
 			f_arr[2]++;
 		if (is_valid_variable_start(var, f_arr[0], 1)
 			&& ((!(f_arr[2] % 2) && __con) || (f_arr[2] % 2 && !__con)))
-			return (new_var = expand_variable_in_string(var, env, f_arr[0], &f_arr[0]),
+			return (new_var = expand_variable_in_string(
+					var, env, f_arr[0], &f_arr[0]),
 				recursively_expand_variables(new_var,
 					env, __con, f_arr));
 		f_arr[0]++;
@@ -114,16 +116,16 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 	{
 		a = -1;
 		while (head->args[++a])
-		{
-			ft_memset(f_arr, 0, 3 * sizeof(int));
-			head->args[a] = recursively_expand_variables(head->args[a], env, 1, f_arr);
-		}
+			((ft_memset(f_arr, 0, 3 * sizeof(int))),
+				(head->args[a] = recursively_expand_variables(
+						head->args[a], env, 1, f_arr)));
 		head->args = refactore_args_array(head->args);
 		a = 0;
 		while (head->args[a])
 		{
 			ft_memset(f_arr, 0, 3 * sizeof(int));
-			head->args[a] = recursively_expand_variables(head->args[a], env, 0, f_arr);
+			head->args[a] = recursively_expand_variables(
+					head->args[a], env, 0, f_arr);
 			head->args[a] = remove_quotes_from_str(head->args[a]);
 			a++;
 		}
