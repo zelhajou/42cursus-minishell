@@ -462,3 +462,5 @@ ls -l | wc -l > output.txt | ls > output2.txt
 - <https://www.youtube.com/watch?v=S2W3SXGPVyU&ab_channel=theroadmap>
 - <https://tomassetti.me/guide-parsing-algorithms-terminology/>
 - <https://github.com/os-moussao/Recursive-Descent-Parser/tree/master>
+- <https://minishell.simple.ink/>
+- <https://github.com/iciamyplant/Minishell>
