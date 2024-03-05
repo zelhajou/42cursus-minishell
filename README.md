@@ -24,6 +24,12 @@
             7. [Parsing](#parsing)
 			8. [AST Node Structure](#ast-node-structure)
 			9. [Parsing Function](#parsing-function)
+			10. [AST Visualization](#ast-visualization)
+	4. [Command Execution](#step-4-command-execution)
+	5. [Built-in Commands Implementation](#step-5-built-in-commands-implementation)
+	6. [Signal Handling](#step-6-signal-handling)
+	7. [Environment Variable Expansion](#step-7-environment-variable-expansion)
+	8. [Testing and Debugging](#step-8-testing-and-debugging)
 	4. [Command Execution](#step-4-command-execution)
 	5. [Built-in Commands Implementation](#step-5-built-in-commands-implementation)
 	6. [Signal Handling](#step-6-signal-handling)
@@ -350,7 +356,10 @@ generate_ast_diagram/generate_ast_diagram.c:
 
 - `generate_ast_diagram` Function: Generates a visual representation of the AST, showing the structure of the input string.
 
-Example : `ls -l | wc -l > output.txt | ls > output2.txt`
+Example:
+```bash
+ls -l | wc -l > output.txt | ls > output2.txt
+```
 
 ![graphviz](https://github.com/zelhajou/42-minishell/assets/39954629/e8cbd784-3ee1-4642-803c-3b903cbb7afe)
 
