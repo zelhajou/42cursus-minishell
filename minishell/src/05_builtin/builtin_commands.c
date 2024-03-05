@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 19:31:35 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:21:20 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char	**unset_or_export_cmd(char **_cmd, t_env *env, int *_out_fd, int *s)
 	}
 	else if (str_cmp(_cmd[0], "export", NULL))
 	{
-		if (_cmd[1])
+		if (_cmd[1] && _cmd[1][0])
 			_cmd = export_cmd(_cmd, env, _out_fd, &s);
 		else
 			env_or_pwd_cmd("env", env, 1, _out_fd);
