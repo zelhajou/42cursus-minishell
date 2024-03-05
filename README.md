@@ -344,6 +344,8 @@ parse.c:
 - `parse_redirection` Function: Parses redirection tokens, creating redirection nodes in the AST.
 - `create_file_node` Function: Creates a file node for redirections in the AST.
 
+#### j. AST Visualization
+
 generate_ast_diagram/generate_ast_diagram.c:
 
 - `generate_ast_diagram` Function: Generates a visual representation of the AST, showing the structure of the input string.
