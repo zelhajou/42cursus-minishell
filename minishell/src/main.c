@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/05 21:44:24 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:30:32 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	main_shell_execution_loop(t_env *env)
 			free_ast(ast);
 		}
 		update_env_status(env, status, "?=");
-		rl_redisplay();
 	}
 }
 

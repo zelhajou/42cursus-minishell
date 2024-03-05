@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/05 21:59:38 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:40:06 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*replace_variable_with_value(
 	return (new__);
 }
 
-char	*expand_variable_in_string(char *var, t_env *env, int a)
+char	*expand_variable_in_string(char *var, t_env *env, int a, int *f_hole)
 {
 	int							hole_size;
 	int							c;
@@ -44,38 +44,38 @@ char	*expand_variable_in_string(char *var, t_env *env, int a)
 	s_strcopy(new_var, var, a + 1, b);
 	c = find_env_var_index(env, new_var);
 	free(new_var);
+	*f_hole = a + hole_size;
 	if (c >= 0)
-		return (replace_variable_with_value(var, env->parsed_env[c][1], a, b));
+	{
+		new_var = replace_variable_with_value(var, env->parsed_env[c][1], a, b);
+		*f_hole = sizeof_str(env->parsed_env[c][1], '\0') + a;
+	}
 	else
-		return (replace_variable_with_value(var, "", a, b));
+		new_var = replace_variable_with_value(var, "", a, b);
+	return (new_var);
 }
 
-char	*recursively_expand_variables(char *var, t_env *env, int __con, int a)
+char	*recursively_expand_variables(char *var, t_env *env, int __con, int *f_arr)
 {
-	int							si_q_count;
-	int							do_q_count;
 	char						*new_var;
 
-	si_q_count = 0;
-	do_q_count = 0;
-	while (var[a])
+	while (var[f_arr[0]])
 	{
-		if (var[a] == 39)
+		if (var[f_arr[0]] == 39)
 		{
-			a++;
-			si_q_count++;
-			while (!(do_q_count % 2) && var[a] && var[a] != 39)
-				a++;
+			f_arr[0]++;
+			f_arr[1]++;
+			while (!(f_arr[2] % 2) && var[f_arr[0]] && var[f_arr[0]] != 39)
+				f_arr[0]++;
 		}
-		if (var[a] == 34)
-			do_q_count++;
-		if (is_valid_variable_start(var, a, 1)
-			&& (!(do_q_count % 2) || !__con))
-		{
-			new_var = expand_variable_in_string(var, env, a);
-			return (recursively_expand_variables(new_var, env, __con, a + sizeof_str(new_var, '\0')));
-		}
-		a++;
+		if (var[f_arr[0]] == 34)
+			f_arr[2]++;
+		if (is_valid_variable_start(var, f_arr[0], 1)
+			&& ((!(f_arr[2] % 2) && __con) || (f_arr[2] % 2 && !__con)))
+			return (new_var = expand_variable_in_string(var, env, f_arr[0], &f_arr[0]),
+				recursively_expand_variables(new_var,
+					env, __con, f_arr));
+		f_arr[0]++;
 	}
 	return (var);
 }
@@ -108,17 +108,22 @@ char	**refactore_args_array(char **args)
 void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 {
 	int							a;
+	int							f_arr[3];
 
 	if (head->file_type != FILE_READY && head->args)
 	{
 		a = -1;
 		while (head->args[++a])
-			head->args[a] = recursively_expand_variables(head->args[a], env, 1, 0);
+		{
+			ft_memset(f_arr, 0, 3 * sizeof(int));
+			head->args[a] = recursively_expand_variables(head->args[a], env, 1, f_arr);
+		}
 		head->args = refactore_args_array(head->args);
 		a = 0;
 		while (head->args[a])
 		{
-			head->args[a] = recursively_expand_variables(head->args[a], env, 0, 0);
+			ft_memset(f_arr, 0, 3 * sizeof(int));
+			head->args[a] = recursively_expand_variables(head->args[a], env, 0, f_arr);
 			head->args[a] = remove_quotes_from_str(head->args[a]);
 			a++;
 		}

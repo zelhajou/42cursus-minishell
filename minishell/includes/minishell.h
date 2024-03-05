@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/05 21:55:59 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:34:28 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,8 @@ void		parent_fds_managment(int *_piped, int *_fd, int *fd_);
 /* ------------------ Variable Expansion and Replacement ------------------ */
 
 void		expand_variables_in_ast(t_ast_node *head, t_env *env);
-char		*recursively_expand_variables(char *var, t_env *env, int __con, int a);
+char		*recursively_expand_variables(
+				char *var, t_env *env, int __con, int *f_arr);
 char		*replace_variable_with_value(char *old_var, char *new_value,
 				int start, int end);
 int			simplified_refactor_thing(char **array,
