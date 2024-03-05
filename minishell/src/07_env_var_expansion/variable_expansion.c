@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/05 00:06:45 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/05 03:30:29 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ char	*replace_variable_with_value(
 	s_strcopy(new__ + st, __new, 0, unsize);
 	s_strcopy(new__ + st + unsize, old_var, end, sizeof_str(old_var, '\0'));
 	free(old_var);
-	//printf("here.%s.\n", new__);
 	return (new__);
 }
 
@@ -60,7 +59,6 @@ char	*recursively_expand_variables(char *var, t_env *env, int __con)
 	a = 0;
 	si_q_count = 0;
 	do_q_count = 0;
-	//printf("--->[%s]\n", var);
 	while (var[a])
 	{
 		if (var[a] == 39)
@@ -74,11 +72,8 @@ char	*recursively_expand_variables(char *var, t_env *env, int __con)
 			do_q_count++;
 		if (is_valid_variable_start(var, a, 1)
 			&& (!(do_q_count % 2) || !__con))
-			{
-				//printf("got in .%c.%i\n", var[a], a);
-				return (recursively_expand_variables(
+			return (recursively_expand_variables(
 					expand_variable_in_string(var, env, a), env, __con));
-					}
 		a++;
 	}
 	return (var);
@@ -94,17 +89,15 @@ char	**refactore_args_array(char **args)
 	a = 0;
 	b = 0;
 	c = count_strings_in_array(args);
-	//printf("---->%i\n", c);
 	new_args = malloc((detected_flaws(args) + c + 1) * sizeof(char **));
 	while (args[a])
 	{
 		c = is_flawed_str(args[a], 0, 0, 0);
 		if (c)
-			simplified_refactor_thing(new_args, &b, args[a]);
+			b = simplified_refactor_thing(new_args, b, args[a], 0);
 		else
-			new_args[b] = strcopy(args[a]);
+			new_args[b++] = strcopy(args[a]);
 		a++;
-		b++;
 	}
 	new_args[b] = 0;
 	free_string_array(args);
@@ -119,14 +112,8 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 	{
 		a = -1;
 		while (head->args[++a])
-				head->args[a] = recursively_expand_variables(head->args[a], env, 1);
-		for (int i = 0; head->args[i];i++)
-			printf("--->before: |%s|\n", head->args[i]);
-		//>
+			head->args[a] = recursively_expand_variables(head->args[a], env, 1);
 		head->args = refactore_args_array(head->args);
-		//>
-		for (int i = 0; head->args[i];i++)
-			printf("--->second: |%s|\n", head->args[i]);
 		a = 0;
 		while (head->args[a])
 		{

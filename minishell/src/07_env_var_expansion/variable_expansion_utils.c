@@ -6,31 +6,52 @@
 /*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 08:59:59 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/03 09:00:02 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 03:17:14 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	simplified_refactor_thing(char **array, int *index, char *str)
+// /// // probably will fail at some point
+
+int	simplified_refactor_thing(char **array, int index, char *str, int in)
 {
-	int							a;
+	int							size;
+
+	if (!str[in] || in > sizeof_str(str, '\0'))
+		return (index);
+	while (str[in] && str[in] == ' ')
+		in++;
+	size = sizeof_str(str + in, ' ');
+	if (size > sizeof_str(str + in, 34))
+		size = sizeof_str(str + in, 34);
+	if (size > sizeof_str(str + in, 39))
+		size = sizeof_str(str + in, 39);
+	if (str[in] == 34)
+		size = sizeof_str(str + in + 1, 34) + 2;
+	if (str[in] == 39)
+		size = sizeof_str(str + in + 1, 39) + 2;
+	if ((in + size) > sizeof_str(str, '\0'))
+		return (index);
+	array[index] = malloc(size + 1);
+	s_strcopy(array[index], str, in, in + size);
+	return (simplified_refactor_thing(array, index + 1, str, in + size));
+}
+
+int	sus_getit_right(char *str, int s_q, int d_q)
+{
+	int					a;
 
 	a = 0;
-	while (str[a] && str[a] == ' ')
-		a++;
+	(void)s_q;
 	while (str[a])
 	{
-		array[*index] = malloc(sizeof_str(str + a, ' ') + 1);
-		s_strcopy(array[*index], str, a, a + sizeof_str(str + a, ' '));
-		a += sizeof_str(str + a, ' ') + 1;
-		if (a >= sizeof_str(str, '\0'))
-			break ;
-		while (str[a] && str[a] == ' ')
-			a++;
-		if (str[a])
-			*index += 1;
+		if (str[a] == 34 || str[a] == 39
+			|| str[a] == '$')
+			d_q++;
+		a++;
 	}
+	return (d_q);
 }
 
 int	is_flawed_str(char *str, int a, int b, int res)
@@ -72,6 +93,7 @@ int	detected_flaws(char **array)
 	while (array[a])
 	{
 		res += is_flawed_str(array[a], 0, 0, 0);
+		res += sus_getit_right(array[a], 0, 0);
 		a++;
 	}
 	return (res);
