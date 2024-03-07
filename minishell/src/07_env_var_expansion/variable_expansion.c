@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/06 00:01:55 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:32:52 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	*replace_variable_with_value(
 	unsize = sizeof_str(__new, '\0');
 	size = st + (sizeof_str(old_var, '\0') - end) + unsize;
 	new__ = malloc(size + 1);
+	if (!new__)
+		return (NULL);
 	s_strcopy(new__, old_var, 0, st);
 	s_strcopy(new__ + st, __new, 0, unsize);
 	s_strcopy(new__ + st + unsize, old_var, end, sizeof_str(old_var, '\0'));
@@ -41,6 +43,8 @@ char	*expand_variable_in_string(char *var, t_env *env, int a, int *f_hole)
 		b++;
 	hole_size = b - a;
 	new_var = malloc(hole_size + 1);
+	if (!new_var)
+		return (NULL);
 	s_strcopy(new_var, var, a + 1, b);
 	c = find_env_var_index(env, new_var);
 	free(new_var);
@@ -60,6 +64,8 @@ char	*recursively_expand_variables(
 {
 	char						*new_var;
 
+	if (f_arr[0] >= sizeof_str(var, '\0'))
+		return (var);
 	while (var[f_arr[0]])
 	{
 		if (var[f_arr[0]] == 39)
@@ -93,6 +99,8 @@ char	**refactore_args_array(char **args)
 	b = 0;
 	c = count_strings_in_array(args);
 	new_args = malloc((detected_flaws(args) + c + 1) * sizeof(char **));
+	if (!new_args)
+		return (NULL);
 	while (args[a])
 	{
 		c = is_flawed_str(args[a], 0, 0, 0);
@@ -126,7 +134,7 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 			ft_memset(f_arr, 0, 3 * sizeof(int));
 			head->args[a] = recursively_expand_variables(
 					head->args[a], env, 0, f_arr);
-			head->args[a] = remove_quotes_from_str(head->args[a]);
+			head->args[a] = remove_quotes_from_str(head->args[a], 0, 0, 0);
 			a++;
 		}
 	}

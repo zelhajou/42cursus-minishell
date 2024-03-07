@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:20:26 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 20:36:09 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/07 09:04:42 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@ void	setup_signal_handlers(void)
 
 void	child_ctrl_c(int sig_num)
 {
-	(void)sig_num;
+	if (sig_num == 2)
+		g_thing = 130;
+	else
+	{
+		ft_putstr_fd("minishell: quit signal detected\n", 1);
+		g_thing = 131;
+	}
 	write(1, "\n", 1);
 }
 

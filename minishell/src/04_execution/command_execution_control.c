@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/03 20:16:47 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:49:31 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,39 @@ void	initialize_or_reset_pipe_state(int *_piped, int f)
 	_piped[11] = 1;
 }
 
-void	switch_fds_identifier(int *_piped, int index, int index_2)
+int	check_file_exx(t_env *env, t_ast_node *head)
 {
-	if (_piped[index])
-		close(_piped[index_2]);
-	_piped[index] = 1;
+	int				mode;
+
+	mode = R_OK;
+	if (!head || !head->args || !head->args[0])
+		return (0);
+	if (head->file_type == WRITE_FILE
+		|| head->file_type == WRITE_FILE_APPEND
+		|| head->file_type == READ_FROM_APPEND)
+		return (0);
+	return (verify_file_permissions(
+			head->args[0], env->original_env, "PWD", mode));
 }
 
-int	open_file_for_redirection(t_ast_node *head, int *_piped)
+int	open_file_for_redirection(t_ast_node *head, int *_piped, t_env *env)
 {
 	int			mode;
 	int			status;
 
-	status = 1;
-	if (head->file_type == READ_FILE)
+	status = check_file_exx(env, head);
+	if (!status && head->file_type == READ_FILE)
 	{
 		switch_fds_identifier(_piped, 6, 1);
 		_piped[1] = open(head->args[0], O_RDONLY);
 	}
-	else if (head->file_type == READ_FROM_APPEND)
+	else if (!status && head->file_type == READ_FROM_APPEND)
 	{
 		switch_fds_identifier(_piped, 6, 1);
 		status = exec_here_doc(head->args[0], _piped, NULL);
 		signal(SIGINT, handle_ctrl_c);
 	}
-	else
+	else if (!status)
 	{
 		switch_fds_identifier(_piped, 7, 2);
 		mode = O_TRUNC;
@@ -68,6 +76,8 @@ int	check_if_command_is_builtin(char *_cmd)
 
 	status = 0;
 	tmp_cmd = malloc(sizeof_str(_cmd, ' ') + 1);
+	if (!tmp_cmd)
+		return (0);
 	s_strcopy(tmp_cmd, _cmd, 0, sizeof_str(_cmd, ' '));
 	if (str_cmp(tmp_cmd, "echo", "cd")
 		|| str_cmp(tmp_cmd, "pwd", "export")
@@ -91,6 +101,15 @@ int	execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd)
 		_cmd_ = unset_or_export_cmd(_cmd_, env, _out_fd, &status);
 	else if (str_cmp(_cmd_[0], "cd", NULL))
 		status = cd_cmd(_cmd_, env, _out_fd);
+	else if (str_cmp(_cmd_[0], "exit", NULL))
+	{
+		if (_cmd_[1] && _cmd_[2])
+			status = 1;
+		else if (_cmd_[1] && !is_string_numeric(_cmd_[1]))
+			status = 255;
+		else if (_cmd_[1])
+			status = string_to_int(_cmd_[1]);
+	}
 	free_string_array(_cmd_);
 	return (status);
 }

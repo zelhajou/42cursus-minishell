@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:59:58 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 05:42:00 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:40:13 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,12 @@ void	set_new_pwd_in_env(char *new_, t_env *env, int c)
 	b = 4;
 	(void)c;
 	exp_pwd = malloc(3 * sizeof(char *));
+	if (!exp_pwd)
+		return ;
 	exp_pwd[0] = strcopy("export");
 	exp_pwd[1] = malloc(sizeof_str(new_, '\0') + 5);
+	if (!exp_pwd[1])
+		return ;
 	s_strcopy(exp_pwd[1], "PWD=", 0, 4);
 	while (new_[a])
 		exp_pwd[1][b++] = new_[a++];

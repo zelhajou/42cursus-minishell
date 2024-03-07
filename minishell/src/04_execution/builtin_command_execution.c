@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 21:20:12 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/07 12:19:47 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	manage_builtin_execution(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	status = 0;
 	if (_piped[0])
 	{
+		_piped[10] += 1;
 		if (!_piped[8])
 			status = simple_child_for_builtins(_cmd_, _fd, env, _piped);
 		else

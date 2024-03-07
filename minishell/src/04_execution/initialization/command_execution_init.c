@@ -6,19 +6,18 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:56:04 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/05 22:05:47 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/07 06:27:31 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sus_dir_check(char *path_, t_ast_node *head, int *status)
+void	sus_dir_check(char *path_, char *file, int *status)
 {
 	struct stat		s;
 
-	if (!head->args[1]
-		&& (str_cmp(head->args[0], ".", ",")
-			|| str_cmp(head->args[0], "", NULL)))
+	if (file && (str_cmp(file, ".", ",")
+			|| str_cmp(file, "", NULL)))
 		*status = 2;
 	else if (str_cmp(path_, "..", NULL))
 	{
@@ -34,32 +33,37 @@ void	sus_dir_check(char *path_, t_ast_node *head, int *status)
 	}
 }
 
-int	verify_command_file_permissions(t_ast_node *head, char **env)
+int	specify_what_error_stuff(int _status)
+{
+	if (_status == 1)
+	{
+		_status = get_shell_exit_status(errno);
+		ft_putstr_fd("\terr: ", 2);
+		ft_putendl_fd(strerror(errno), 2);
+		return (_status);
+	}
+	else if (_status)
+		ft_putendl_fd("minishell: go play somewhere else Kid", 2);
+	return (_status);
+}
+
+int	verify_file_permissions(char *file, char **env, char *variable, int mode)
 {
 	int				status;
 	char			*path_;
 
 	status = 0;
-	path_ = NULL;
-	if (head->args
-		&& !check_if_command_is_builtin(head->args[0])
-		&& (head->file_type == READ_FILE || head->file_type == EXECUTE_FILE))
-	{
-		if (head->file_type == READ_FILE)
-			path_ = fetch_file_path(head->args[0], env, "PWD", R_OK);
-		else if (head->file_type == EXECUTE_FILE)
-			path_ = fetch_file_path(head->args[0], env, "PATH", X_OK);
-		if (!path_)
-			status = 1;
-		else
-			sus_dir_check(path_, head, &status);
-		if (path_)
-			free(path_);
-	}
-	if (!status && head->left)
-		status = verify_command_file_permissions(head->left, env);
-	if (!status && head->right)
-		status = verify_command_file_permissions(head->right, env);
+	if (check_if_command_is_builtin(file)
+		&& mode != R_OK && mode != W_OK)
+		return (status);
+	path_ = fetch_file_path(file, env, variable, mode);
+	if (!path_)
+		status = 1;
+	else
+		sus_dir_check(path_, file, &status);
+	if (status)
+		free(path_);
+	status = specify_what_error_stuff(status);
 	return (status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:43:46 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/02 20:55:57 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:43:20 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_ast_node	*parse_command(t_token **tokens)
 	command_node = new_ast_node(TOKEN_WORD);
 	arg_count = count_command_arguments(*tokens);
 	command_node->args = malloc(sizeof(char *) * (arg_count + 1));
+	if (!command_node->args)
+		return (NULL);
 	fill_command_arguments(command_node, tokens, arg_count);
 	return (command_node);
 }
