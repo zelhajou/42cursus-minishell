@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/08 09:00:37 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/08 22:43:09 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	main_shell_execution_loop(t_env *env)
 	while (1)
 	{
 		status = 0;
-		line = readline("> ");
+		line = readline(" > ");
 		if (!line)
 			break ;
 		if (check_line(&line))
