@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:56:04 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/07 06:27:31 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/08 12:12:34 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,10 @@ int	verify_file_permissions(char *file, char **env, char *variable, int mode)
 	if (!path_)
 		status = 1;
 	else
+	{
 		sus_dir_check(path_, file, &status);
-	if (status)
 		free(path_);
+	}
 	status = specify_what_error_stuff(status);
 	return (status);
 }

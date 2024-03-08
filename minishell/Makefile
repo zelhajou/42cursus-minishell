@@ -6,7 +6,7 @@
 #    By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/10 20:09:25 by zelhajou          #+#    #+#              #
-#    Updated: 2024/03/07 13:21:08 by beddinao         ###   ########.fr        #
+#    Updated: 2024/03/08 11:38:09 by beddinao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 READLINE_LIB = $(shell brew --prefix readline)/lib
-INCLUDES = -I./includes -I./lib/libft -I./lib/get_next_line -I$(READLINE_INCLUDE)
+INCLUDES = -I./includes -I./lib/libft -I$(READLINE_INCLUDE)
 SRCDIR = ./src
 OBJDIR = ./obj
 LIBFTDIR = ./lib/libft
@@ -66,11 +66,11 @@ LIBFT = $(LIBFTDIR)/libft.a
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME) $(CFLAGS) $(LDFLAGS)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c ./includes/minishell.h
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CC) -c $< -o $@ $(INCLUDES)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFTDIR)
