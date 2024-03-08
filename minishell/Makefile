@@ -12,7 +12,7 @@
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 READLINE_INCLUDE = $(shell brew --prefix readline)/include
 READLINE_LIB = $(shell brew --prefix readline)/lib
 INCLUDES = -I./includes -I./lib/libft -I./lib/get_next_line -I$(READLINE_INCLUDE)
@@ -60,10 +60,10 @@ OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 LDFLAGS = -L$(LIBFTDIR) -lft -L$(READLINE_LIB) -lreadline
 LIBFT = $(LIBFTDIR)/libft.a
 
-# setup:
-# 	@stty -ctlecho
+all: setup $(NAME)
 
-all: $(NAME)
+setup:
+	@stty -ctlecho
 
 $(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)

@@ -21,10 +21,13 @@ void	setup_signal_handlers(void)
 void	child_ctrl_c(int sig_num)
 {
 	if (sig_num == 2)
+	{
+		ft_putstr_fd("\\^C", 1);
 		g_thing = 130;
+	}
 	else
 	{
-		ft_putstr_fd("minishell: SIGQUIT detected", 1);
+		ft_putstr_fd("\\^Quit", 1);
 		g_thing = 131;
 	}
 	write(1, "\n", 1);

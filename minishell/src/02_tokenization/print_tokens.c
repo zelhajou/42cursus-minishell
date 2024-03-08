@@ -35,8 +35,8 @@
 // 	token = tokens;
 // 	while (token)
 // 	{
-// 		printf("Token: \033[0;36m %-20s \033[0m |\t \
-// 			Type: \033[0;35m %-18s \033[0m \n",
+/* 		printf("Token: \033[0;36m %-20s \033[0m |\t \
+ 			Type: \033[0;35m %-18s \033[0m \n",*/
 // 			token->value, get_token_type_name(token->type));
 // 		printf("--------------------------------------------------\n");
 // 		token = token->next;

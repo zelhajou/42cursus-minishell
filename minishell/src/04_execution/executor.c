@@ -31,6 +31,7 @@
 ///		_piped[10]: children count
 ///		_piped[11]: second heredoc status
 /////
+int				g_thing;
 
 int	handle_piped_command_execution(
 		t_ast_node *head, int *_piped, t_env *env, int *_fd)

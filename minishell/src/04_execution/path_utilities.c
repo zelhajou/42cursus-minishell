@@ -22,8 +22,6 @@ char	*create_subpath_from_var(char *env_var, char *file, int *indx_s)
 	increment_path_index(env_var, indx_s, &a);
 	file_size = sizeof_str(file, ' ');
 	tmp_path = malloc((indx_s[1] - a) + file_size + 2);
-	if (!tmp_path)
-		return (NULL);
 	b = 0;
 	while (b < ((indx_s[1] - a) + file_size + 1))
 	{

@@ -34,7 +34,7 @@
 # include <readline/history.h>
 # include "libft.h"
 
-int	g_thing;
+extern int	g_thing;
 
 typedef enum e_token_type
 {

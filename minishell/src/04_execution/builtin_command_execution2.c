@@ -73,6 +73,7 @@ int	manage_single_builtin_execution(
 		else if (_cmd_[1])
 			ex_status = string_to_int(_cmd_[1]);
 		free_string_array(_cmd_);
+		ft_putendl_fd("EXIT", 1);
 		cleanup_and_exit_shell(env, ex_status);
 	}
 	else if (!_piped[8])
