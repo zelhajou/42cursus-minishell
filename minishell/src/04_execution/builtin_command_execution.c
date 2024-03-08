@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/07 12:19:47 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/08 02:26:28 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	pid_t					pid;
 	int						fd_[2];
 	int						_out_fd_[2];
+	int						status;
 
 	(pipe(fd_), pid = fork());
 	if (!pid)
@@ -29,7 +30,8 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 			close(_fd[0]);
 		close_pipe_ends(fd_[0], fd_[1]);
 		dup2(1, _out_fd_[1]);
-		exit(execute_builtin_command_in_child(_cmd_, env, _out_fd_));
+		status = execute_builtin_command_in_child(_cmd_, env, _out_fd_);
+		exit(WEXITSTATUS(status));
 	}
 	close_pipe_ends(fd_[1], _fd[0]);
 	if (_piped[0] > 1)
@@ -44,6 +46,7 @@ int	execute_child_with_redirections(
 {
 	pid_t			pid;
 	int				_out_fd[2];
+	int				status;
 
 	_out_fd[1] = 1;
 	if (_piped[8] && _piped[7])
@@ -52,7 +55,8 @@ int	execute_child_with_redirections(
 		pipe(_out_fd);
 	pid = fork();
 	if (!pid)
-		exit(execute_builtin_command_in_child(_cmd_, env, _out_fd));
+		(status = execute_builtin_command_in_child(_cmd_, env, _out_fd),
+		 exit(WEXITSTATUS(status)));
 	if (_piped[8] && _piped[7])
 	{
 		close(_out_fd[1]);
@@ -87,9 +91,9 @@ int	manage_builtin_execution(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	int				status;
 
 	status = 0;
+	_piped[10] += 1;
 	if (_piped[0])
 	{
-		_piped[10] += 1;
 		if (!_piped[8])
 			status = simple_child_for_builtins(_cmd_, _fd, env, _piped);
 		else

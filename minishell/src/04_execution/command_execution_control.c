@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/07 11:49:31 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/08 02:06:33 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int	execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd)
 {
 	int			status;
 
+	dup2(_out_fd[1], 1);
+	_out_fd[1] = 1;
 	status = 0;
 	if (str_cmp(_cmd_[0], "echo", NULL))
 		status = echo_cmd(_cmd_, _out_fd);

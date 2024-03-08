@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/07 11:32:52 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/08 03:32:04 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ char	*expand_variable_in_string(char *var, t_env *env, int a, int *f_hole)
 	if (!new_var)
 		return (NULL);
 	s_strcopy(new_var, var, a + 1, b);
+	if (str_cmp(new_var, "?", NULL) && g_thing)
+		update_env_status(env, g_thing, "?=");
+	g_thing = 0;
 	c = find_env_var_index(env, new_var);
 	free(new_var);
 	*f_hole = a + hole_size;
