@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/08 02:26:28 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:19:35 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 		status = execute_builtin_command_in_child(_cmd_, env, _out_fd_, _piped);
 		exit(WEXITSTATUS(status));
 	}
-	close_pipe_ends(fd_[1], _fd[0]);
+	close(fd_[1]);
+	if (_piped[0] && _piped[0] <= _piped[5])
+		close(_fd[0]);
 	if (_piped[0] > 1)
 		_fd[0] = fd_[0];
 	else
