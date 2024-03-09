@@ -26,7 +26,7 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 			dup2(_fd[0], 0);
 		if (_piped[0] > 1)
 			dup2(fd_[1], 1);
-		else
+		else if (_piped[0])
 			close(_fd[0]);
 		close_pipe_ends(fd_[0], fd_[1]);
 		dup2(1, _out_fd_[1]);

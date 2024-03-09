@@ -29,7 +29,7 @@ void	child_fds_managment(int *_piped, int *_fd, int *fd_)
 		dup2(_fd[0], 0);
 	if (_piped[0] > 1 && (!_piped[8] || !_piped[7]))
 		dup2(fd_[1], 1);
-	else
+	else if (_piped[0])
 		close(fd_[0]);
 	close(fd_[0]);
 	close(fd_[1]);
