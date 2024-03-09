@@ -34,7 +34,6 @@ int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 		exit(EXIT_FAILURE);
 	}
 	close(fd_[1]);
-	
 	if (_piped[0] && _piped[0] <= _piped[5])
 		close(_fd[0]);
 	if (_piped[0] > 1)

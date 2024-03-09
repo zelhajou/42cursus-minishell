@@ -104,8 +104,6 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 		close(_piped[1]);
 	if (_piped[7])
 		close(_piped[2]);
-	/*close(_fd[0]);
-	close(_fd[1]);*/
 	g_thing = 0;
 	return (status);
 }

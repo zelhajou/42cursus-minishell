@@ -37,15 +37,9 @@ void	main_shell_execution_loop(t_env *env)
 	int			status;
 	t_token		*tokens;
 	t_ast_node	*ast;
-	int fd[2];
 
-	/*fd[0] = dup(0);
-	fd[1] = dup(1);*/
 	while (1)
 	{
-		ast = NULL;
-		tokens = NULL;
-		line = NULL;
 		status = 0;
 		line = readline(" > ");
 		if (!line)
@@ -61,13 +55,9 @@ void	main_shell_execution_loop(t_env *env)
 			ast = parse_tokens(&tokens);
 			command_execution_manager(ast, env, &status);
 			free_ast(ast);
-			/*dup2(fd[0], 0);
-			dup2(fd[1], 1);*/
 		}
 		update_env_status(env, status, "?=");
 	}
-	/*close(fd[0]);
-	close(fd[1]);*/
 }
 
 int	main(int argc, char **argv, char **original_env)
@@ -77,7 +67,6 @@ int	main(int argc, char **argv, char **original_env)
 	(void)argv;
 	setup_signal_handlers();
 	env = malloc(sizeof(t_env));
-	printf("--|%i|--\n", getpid());
 	if (!isatty(1) || !isatty(0))
 		return (free(env), 0);
 	if (argc == 1 && initialize_shell_with_environment(env, original_env))

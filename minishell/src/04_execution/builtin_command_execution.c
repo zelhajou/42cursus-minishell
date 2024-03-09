@@ -79,6 +79,8 @@ int	execute_child_with_redirections(
 		close(_out_fd[1]);
 		_fd[0] = _out_fd[0];
 	}
+	if (_piped[0] && _piped[0] <= _piped[5])
+		close(_fd[0]);
 	return (1);
 }
 
