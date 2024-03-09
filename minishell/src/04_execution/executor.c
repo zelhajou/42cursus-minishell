@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/09 18:18:33 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:52:06 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 		close(_piped[1]);
 	if (_piped[7])
 		close(_piped[2]);
-	close(_fd[0]);
-	close(_fd[1]);
+	/*close(_fd[0]);
+	close(_fd[1]);*/
 	g_thing = 0;
 	return (status);
 }

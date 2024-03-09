@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/09 18:18:20 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:53:58 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	main_shell_execution_loop(t_env *env)
 	t_ast_node	*ast;
 	int fd[2];
 
-	fd[0] = dup(0);
-	fd[1] = dup(1);
+	/*fd[0] = dup(0);
+	fd[1] = dup(1);*/
 	while (1)
 	{
 		ast = NULL;
@@ -61,13 +61,13 @@ void	main_shell_execution_loop(t_env *env)
 			ast = parse_tokens(&tokens);
 			command_execution_manager(ast, env, &status);
 			free_ast(ast);
-			dup2(fd[0], 0);
-			dup2(fd[1], 1);
+			/*dup2(fd[0], 0);
+			dup2(fd[1], 1);*/
 		}
 		update_env_status(env, status, "?=");
 	}
-	close(fd[0]);
-	close(fd[1]);
+	/*close(fd[0]);
+	close(fd[1]);*/
 }
 
 int	main(int argc, char **argv, char **original_env)

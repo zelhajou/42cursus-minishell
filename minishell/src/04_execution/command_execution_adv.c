@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/09 18:10:39 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/09 18:53:05 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 	
 	if (_piped[0] && _piped[0] <= _piped[5])
 		close(_fd[0]);
-	// close_pipe_ends(fd_[1], _fd[0]);
 	if (_piped[0] > 1)
 		_fd[0] = fd_[0];
 	else
