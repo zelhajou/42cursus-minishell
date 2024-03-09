@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+int	export_print_or_export(char **_cmd_)
+{
+	int							a;
+
+	a = 1;
+	while (_cmd_[a])
+	{
+		if (_cmd_[a])
+			return (1);
+		a++;
+	}
+	return (0);
+}
+
 int	export_statment_check(char *_cmd_)
 {
 	int							a;

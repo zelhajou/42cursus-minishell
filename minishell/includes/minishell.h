@@ -244,5 +244,6 @@ int			verify_file_permissions(
 void		generate_ast_diagram(t_ast_node *root);
 void		display_tokens(t_token *tokens);
 void		switch_fds_identifier(int *_piped, int index, int index_2);
+int			export_print_or_export(char **_cmd_);
 
 #endif

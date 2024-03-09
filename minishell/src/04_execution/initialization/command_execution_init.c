@@ -16,34 +16,42 @@ void	sus_dir_check(char *path_, char *file, int *status)
 {
 	struct stat		s;
 
-	if (file && (str_cmp(file, ".", ",")
-			|| str_cmp(file, "", NULL)))
+	if (file && str_cmp(file, ".", NULL))
 		*status = 2;
-	else if (str_cmp(path_, "..", NULL))
+	else if (str_cmp(file, "..", NULL)
+		|| str_cmp(file, ",", ""))
 	{
-		*status = 2;
+		*status = 1;
 		errno = 2;
 	}
 	else if (!stat(path_, &s)
 		&& s.st_mode & S_IFDIR)
 	{
 		*status = 2;
-		ft_putendl_fd("\terr: that path Is a directory", 2);
+		ft_putstr_fd("   err: this \'", 2);
+		ft_putstr_fd(path_, 2);
+		ft_putendl_fd("\' Is a directory", 2);
 		errno = 13;
 	}
 }
 
-int	specify_what_error_stuff(int _status)
+int	specify_what_error_stuff(char *file, int _status)
 {
 	if (_status == 1)
 	{
 		_status = get_shell_exit_status(errno);
-		ft_putstr_fd("\terr: ", 2);
+		ft_putstr_fd("   err: \'", 2);
+		ft_putstr_fd(file, 2);
+		ft_putstr_fd("\' ", 2);
 		ft_putendl_fd(strerror(errno), 2);
 		return (_status);
 	}
 	else if (_status)
-		ft_putendl_fd("minishell: go play somewhere else Kid", 2);
+	{
+		ft_putstr_fd("   minishell(\'", 2);
+		ft_putstr_fd(file, 2);
+		ft_putendl_fd("\'): go play somewhere else Kid", 2);
+	}
 	return (_status);
 }
 
@@ -64,7 +72,7 @@ int	verify_file_permissions(char *file, char **env, char *variable, int mode)
 		sus_dir_check(path_, file, &status);
 		free(path_);
 	}
-	status = specify_what_error_stuff(status);
+	status = specify_what_error_stuff(file, status);
 	return (status);
 }
 

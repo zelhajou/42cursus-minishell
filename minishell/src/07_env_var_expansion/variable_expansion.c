@@ -51,7 +51,7 @@ char	*expand_variable_in_string(char *var, t_env *env, int a, int *f_hole)
 	g_thing = 0;
 	c = find_env_var_index(env, new_var);
 	free(new_var);
-	*f_hole = a + hole_size;
+	*f_hole = 0;
 	if (c >= 0)
 	{
 		new_var = replace_variable_with_value(var, env->parsed_env[c][1], a, b);
