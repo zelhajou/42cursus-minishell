@@ -33,10 +33,28 @@ void	quite_heredoc(int a)
 	exit(0);
 }
 
-void	read_and_write(int std_out, char *limiter)
+int	is_there_any_quotes(char *s)
+{
+	int						a;
+
+	a = 0;
+	while (s && s[a])
+	{
+		if (s[a] == 34 || s[a] == 39)
+			return (0);
+		a++;
+	}
+	return (1);
+}
+
+void	read_and_write(int std_out, char *limiter, t_env *env)
 {
 	char							*buf;
-
+	int								is_expandable;
+	int								f_arr[3];
+	
+	is_expandable = is_there_any_quotes(limiter);
+	limiter = remove_quotes_from_str(limiter, 0, 0, 0);
 	while (1)
 	{
 		buf = readline(">> ");
@@ -45,19 +63,27 @@ void	read_and_write(int std_out, char *limiter)
 			free(buf);
 			break ;
 		}
+		if (is_expandable)
+		{
+			buf[sizeof_str(buf, '\n')] = '\0';
+			ft_memset(f_arr, 0, 3 * sizeof(int));
+			buf = recursively_expand_variables(buf, env, 0, f_arr);
+			ft_memset(f_arr, 0, 3 * sizeof(int));
+			buf = recursively_expand_variables(buf, env, 1, f_arr);
+		}
 		write(std_out, buf, sizeof_str(buf, '\0'));
 		write(std_out, "\n", 1);
 		free(buf);
 	}
+	free(limiter);
 }
 
-int	exec_here_doc(char *limiter, int *_piped, int *_fd)
+int	exec_here_doc(char *limiter, int *_piped, t_env *env)
 {
 	int							_out_fd_[2];
 	pid_t						pid;
 	int							status;
 
-	(void)_fd;
 	pipe(_out_fd_);
 	pid = fork();
 	signal(SIGINT, SIG_IGN);
@@ -65,7 +91,7 @@ int	exec_here_doc(char *limiter, int *_piped, int *_fd)
 	{
 		signal(SIGINT, quite_heredoc);
 		close(_out_fd_[0]);
-		read_and_write(_out_fd_[1], limiter);
+		read_and_write(_out_fd_[1], limiter, env);
 		exit(1);
 	}
 	waitpid(pid, &status, 0);

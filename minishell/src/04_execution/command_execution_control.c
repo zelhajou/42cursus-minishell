@@ -55,7 +55,7 @@ int	open_file_for_redirection(t_ast_node *head, int *_piped, t_env *env)
 	else if (!status && head->file_type == READ_FROM_APPEND)
 	{
 		switch_fds_identifier(_piped, 6, 1);
-		status = exec_here_doc(head->args[0], _piped, NULL);
+		status = exec_here_doc(head->args[0], _piped, env);
 		signal(SIGINT, handle_ctrl_c);
 	}
 	else if (!status)

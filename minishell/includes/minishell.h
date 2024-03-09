@@ -161,7 +161,7 @@ int			handle_command_redirection(t_ast_node *head, int *piped,
 				t_env *env, int *fd);
 int			handle_piped_command_execution(t_ast_node *head,
 				int *piped, t_env *env, int *fd);
-int			exec_here_doc(char *limiter, int *piped, int *fd);
+int			exec_here_doc(char *limiter, int *piped, t_env *env);
 void		initialize_or_reset_pipe_state(int *piped, int flag);
 int			open_file_for_redirection(t_ast_node *head, int *piped, t_env *env);
 int			check_if_command_is_builtin(char *cmd);

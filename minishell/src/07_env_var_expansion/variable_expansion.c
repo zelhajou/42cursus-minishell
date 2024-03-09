@@ -123,7 +123,8 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 	int							a;
 	int							f_arr[3];
 
-	if (head->file_type != FILE_READY && head->args)
+	if (head->file_type != FILE_READY && head->args
+		&& head->file_type != READ_FROM_APPEND)
 	{
 		a = -1;
 		while (head->args[++a])
