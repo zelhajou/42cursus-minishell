@@ -31,7 +31,7 @@ char	*remove_quotes_from_str(char *str, int si_q_c, int do_q_c, int a)
 			&& (str[a] != 39 || do_q_c % 2))
 			new_str[b++] = str[a];
 		a++;
-	}//      " /'\ /' "    " '\ "
+	}
 	new_str[b] = '\0';
 	return (free(str), new_str);
 }

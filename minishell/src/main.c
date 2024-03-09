@@ -67,6 +67,7 @@ int	main(int argc, char **argv, char **original_env)
 	(void)argv;
 	setup_signal_handlers();
 	env = malloc(sizeof(t_env));
+	printf("--|%i|--\n", getpid());
 	if (!isatty(1) || !isatty(0))
 		return (free(env), 0);
 	if (argc == 1 && initialize_shell_with_environment(env, original_env))

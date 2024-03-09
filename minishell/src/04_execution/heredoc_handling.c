@@ -47,13 +47,12 @@ int	is_there_any_quotes(char *s)
 	return (1);
 }
 
-void	read_and_write(int std_out, char *limiter, t_env *env)
+void	read_and_write(
+	int std_out, char *limiter, t_env *env, int is_expandable)
 {
 	char							*buf;
-	int								is_expandable;
 	int								f_arr[3];
-	
-	is_expandable = is_there_any_quotes(limiter);
+
 	limiter = remove_quotes_from_str(limiter, 0, 0, 0);
 	while (1)
 	{
@@ -91,7 +90,8 @@ int	exec_here_doc(char *limiter, int *_piped, t_env *env)
 	{
 		signal(SIGINT, quite_heredoc);
 		close(_out_fd_[0]);
-		read_and_write(_out_fd_[1], limiter, env);
+		read_and_write(_out_fd_[1], limiter, env,
+			is_there_any_quotes(limiter));
 		exit(1);
 	}
 	waitpid(pid, &status, 0);

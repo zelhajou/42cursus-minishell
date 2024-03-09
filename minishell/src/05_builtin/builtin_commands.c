@@ -88,7 +88,7 @@ char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
 			ft_putstr_fd("  err: export(\'", _out_fd[1]);
 			ft_putstr_fd(_cmd[a], _out_fd[1]);
 			ft_putendl_fd("\') : Not a valid thing",
-					_out_fd[1]);
+				_out_fd[1]);
 			**s = 256;
 		}
 		a++;

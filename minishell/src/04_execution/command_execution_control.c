@@ -34,6 +34,16 @@ int	check_file_exx(t_env *env, t_ast_node *head)
 	if (!head || !head->args || !head->args[0])
 		return (0);
 	if (head->file_type == WRITE_FILE
+		&& head->args && (!head->args[0]
+			|| str_cmp(head->args[0], "", " ")))
+	{
+		ft_putstr_fd("   err: \'", 2);
+		if (head->args[0])
+			ft_putstr_fd(head->args[0], 2);
+		ft_putendl_fd("\' ambiguous things", 2);
+		return (1);
+	}
+	else if (head->file_type == WRITE_FILE
 		|| head->file_type == WRITE_FILE_APPEND
 		|| head->file_type == READ_FROM_APPEND)
 		return (0);
@@ -88,12 +98,16 @@ int	check_if_command_is_builtin(char *_cmd)
 	return (status);
 }
 
-int	execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd)
+int	execute_builtin_command_in_child(
+	char **_cmd_, t_env *env, int *_out_fd, int *_piped)
 {
 	int			status;
 
-	dup2(_out_fd[1], 1);
-	_out_fd[1] = 1;
+	if (!_piped[7])
+	{
+		dup2(_out_fd[1], 1);
+		_out_fd[1] = 1;
+	}
 	status = 0;
 	if (str_cmp(_cmd_[0], "echo", NULL))
 		status = echo_cmd(_cmd_, _out_fd);
@@ -104,16 +118,7 @@ int	execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd)
 	else if (str_cmp(_cmd_[0], "cd", NULL))
 		status = cd_cmd(_cmd_, env, _out_fd);
 	else if (str_cmp(_cmd_[0], "exit", NULL))
-	{
-		if (_cmd_[1] && _cmd_[2])
-			status = 1;
-		else if (_cmd_[1] && !is_string_numeric(_cmd_[1]))
-			status = 255;
-		else if (_cmd_[1])
-			status = string_to_int(_cmd_[1]);
-		free_string_array(_cmd_);
-		exit(status);
-	}
+		__exit(_cmd_);
 	free_string_array(_cmd_);
 	return (status);
 }

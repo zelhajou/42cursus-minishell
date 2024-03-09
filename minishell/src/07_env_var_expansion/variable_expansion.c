@@ -43,8 +43,6 @@ char	*expand_variable_in_string(char *var, t_env *env, int a, int *f_hole)
 		b++;
 	hole_size = b - a;
 	new_var = malloc(hole_size + 1);
-	if (!new_var)
-		return (NULL);
 	s_strcopy(new_var, var, a + 1, b);
 	if (str_cmp(new_var, "?", NULL) && g_thing)
 		update_env_status(env, g_thing, "?=");
@@ -91,7 +89,7 @@ char	*recursively_expand_variables(
 	return (var);
 }
 
-char	**refactore_args_array(char **args)
+char	**refactore_args_array(char **args, int *quick_norm_fix)
 {
 	int						a;
 	int						b;
@@ -100,6 +98,7 @@ char	**refactore_args_array(char **args)
 
 	a = 0;
 	b = 0;
+	*quick_norm_fix = 0;
 	c = count_strings_in_array(args);
 	new_args = malloc((detected_flaws(args) + c + 1) * sizeof(char **));
 	if (!new_args)
@@ -131,8 +130,7 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 			((ft_memset(f_arr, 0, 3 * sizeof(int))),
 				(head->args[a] = recursively_expand_variables(
 						head->args[a], env, 1, f_arr)));
-		head->args = refactore_args_array(head->args);
-		a = 0;
+		head->args = refactore_args_array(head->args, &a);
 		while (head->args[a])
 		{
 			ft_memset(f_arr, 0, 3 * sizeof(int));

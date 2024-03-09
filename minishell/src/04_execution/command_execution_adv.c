@@ -38,7 +38,7 @@ int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 		_fd[0] = fd_[0];
 	else
 		close(fd_[0]);
-	return (1);
+	return (free_string_array(_cmd_), 1);
 }
 
 int	execute_command_with_redirection(
@@ -81,9 +81,8 @@ int	prepare_and_execute_command(
 	{
 		_piped[10] += 1;
 		if (!_piped[8])
-			((status = execute_command_basic(
-				cmd_args, _fd, env->original_env, _piped)),
-			free_string_array(cmd_args));
+			status = execute_command_basic(
+					cmd_args, _fd, env->original_env, _piped);
 		else
 			status = execute_command_with_redirection(
 					cmd_args, _fd, env->original_env, _piped);

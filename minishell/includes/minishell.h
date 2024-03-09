@@ -133,6 +133,7 @@ void		set_new_pwd_in_env(char *new_path, t_env *env, int unused);
 int			change_current_directory(char *path, t_env *env);
 char		*get_current_working_directory(int size, int tries, int fd);
 int			export_statment_check(char *_cmd_);
+void		__exit(char **_cmd_);
 
 /* ------------------ Input Validation and Environment Management -------- */
 
@@ -170,7 +171,7 @@ int			manage_builtin_execution(char **cmd, int *fd,
 int			manage_single_builtin_execution(char **cmd, int *fd,
 				t_env *env, int *piped);
 int			execute_builtin_command_in_child(char **cmd,
-				t_env *env, int *out_fd);
+				t_env *env, int *out_fd, int *_piped);
 
 /* ----------- Path and Environment Variable Handling --------- */
 

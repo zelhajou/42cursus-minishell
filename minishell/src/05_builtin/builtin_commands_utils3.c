@@ -12,6 +12,21 @@
 
 #include "minishell.h"
 
+void	__exit(char **_cmd_)
+{
+	int				status;
+
+	status = 0;
+	if (_cmd_[1] && _cmd_[2])
+		status = 1;
+	else if (_cmd_[1] && !is_string_numeric(_cmd_[1]))
+		status = 255;
+	else if (_cmd_[1])
+		status = string_to_int(_cmd_[1]);
+	free_string_array(_cmd_);
+	exit(status);
+}
+
 int	export_print_or_export(char **_cmd_)
 {
 	int							a;

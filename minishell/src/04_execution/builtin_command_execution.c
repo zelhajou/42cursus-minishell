@@ -30,7 +30,7 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 			close(_fd[0]);
 		close_pipe_ends(fd_[0], fd_[1]);
 		dup2(1, _out_fd_[1]);
-		status = execute_builtin_command_in_child(_cmd_, env, _out_fd_);
+		status = execute_builtin_command_in_child(_cmd_, env, _out_fd_, _piped);
 		exit(WEXITSTATUS(status));
 	}
 	close_pipe_ends(fd_[1], _fd[0]);
@@ -41,12 +41,21 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	return (1);
 }
 
+void	exec_builtin_and_exit(
+	char **_cmd_, t_env *env, int *_out_fd, int *_piped)
+{
+	int				status;
+
+	status = execute_builtin_command_in_child(
+			_cmd_, env, _out_fd, _piped);
+	exit(WEXITSTATUS(status));
+}
+
 int	execute_child_with_redirections(
 		char **_cmd_, int *_fd, t_env *env, int *_piped)
 {
 	pid_t			pid;
 	int				_out_fd[2];
-	int				status;
 
 	_out_fd[1] = 1;
 	if (_piped[8] && _piped[7])
@@ -55,8 +64,7 @@ int	execute_child_with_redirections(
 		pipe(_out_fd);
 	pid = fork();
 	if (!pid)
-		(status = execute_builtin_command_in_child(_cmd_, env, _out_fd),
-		 exit(WEXITSTATUS(status)));
+		exec_builtin_and_exit(_cmd_, env, _out_fd, _piped);
 	if (_piped[8] && _piped[7])
 	{
 		close(_out_fd[1]);
