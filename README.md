@@ -33,6 +33,7 @@
 4. [Project Structure](#project-structure)
 5. [Team Members](#team-members)
 6. [Resources](#resources)
+7. [Acknowledgements](#acknowledgements)
 
 
 ## Overview
@@ -450,17 +451,15 @@ ls -l | wc -l > output.txt | ls > output2.txt
 - [Bilal Edd](https://github.com/edbilal)
 - [Zakaria Elhajoui](https://github.com/zelhajou)
 
-<!--
-## Project Timeline
-
-- **Start Date**:
-- **End Date**:
- -->
-
 ## Resources
+
 - <https://www.gnu.org/software/bash/manual/html_node/Definitions.html#index-name>
 - <https://www.youtube.com/watch?v=S2W3SXGPVyU&ab_channel=theroadmap>
 - <https://tomassetti.me/guide-parsing-algorithms-terminology/>
 - <https://github.com/os-moussao/Recursive-Descent-Parser/tree/master>
 - <https://minishell.simple.ink/>
 - <https://github.com/iciamyplant/Minishell>
+
+## Acknowledgements
+
+thanks to [reda ghouzraf](https://github.com/rghouzra), [MTRX](https://github.com/whoismtrx), [Nasreddine hanafi](https://github.com/Nx21), [Khalid zerri](https://github.com/zerrikhalid) for their help and support during the project.
