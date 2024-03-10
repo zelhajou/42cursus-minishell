@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_pipeline_management.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: beddinao <beddinao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:37 by beddinao          #+#    #+#             */
-/*   Updated: 2024/02/29 19:02:40 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/10 09:43:24 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

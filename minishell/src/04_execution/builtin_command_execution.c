@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_command_execution.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: beddinao <beddinao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:00:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/04 21:20:12 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/10 09:37:06 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	pid_t					pid;
 	int						fd_[2];
 	int						_out_fd_[2];
+	int						status;
 
 	(pipe(fd_), pid = fork());
 	if (!pid)
@@ -29,7 +30,8 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 			close(_fd[0]);
 		close_pipe_ends(fd_[0], fd_[1]);
 		dup2(1, _out_fd_[1]);
-		exit(execute_builtin_command_in_child(_cmd_, env, _out_fd_));
+		status = execute_builtin_command_in_child(_cmd_, env, _out_fd_, _piped);
+		exit(WEXITSTATUS(status));
 	}
 	close_pipe_ends(fd_[1], _fd[0]);
 	if (_piped[0] > 1)
@@ -37,6 +39,16 @@ int	simple_child_for_builtins(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	else
 		close(fd_[0]);
 	return (1);
+}
+
+void	exec_builtin_and_exit(
+		char **_cmd_, t_env *env, int *_out_fd, int *_piped)
+{
+	int				status;
+
+	status = execute_builtin_command_in_child(
+			_cmd_, env, _out_fd, _piped);
+	exit(WEXITSTATUS(status));
 }
 
 int	execute_child_with_redirections(
@@ -52,7 +64,7 @@ int	execute_child_with_redirections(
 		pipe(_out_fd);
 	pid = fork();
 	if (!pid)
-		exit(execute_builtin_command_in_child(_cmd_, env, _out_fd));
+		exec_builtin_and_exit(_cmd_, env, _out_fd, _piped);
 	if (_piped[8] && _piped[7])
 	{
 		close(_out_fd[1]);
@@ -87,6 +99,7 @@ int	manage_builtin_execution(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	int				status;
 
 	status = 0;
+	_piped[10] += 1;
 	if (_piped[0])
 	{
 		if (!_piped[8])

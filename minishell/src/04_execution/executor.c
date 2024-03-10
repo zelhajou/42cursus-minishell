@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/05 22:10:14 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:38:06 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 ///		_piped[10]: children count
 ///		_piped[11]: second heredoc status
 /////
+int					g_var_thing;
 
 int	handle_piped_command_execution(
 		t_ast_node *head, int *_piped, t_env *env, int *_fd)
@@ -61,9 +62,13 @@ int	handle_command_redirection(
 
 	_piped[11] = 1;
 	if (head->right)
-		status = open_file_for_redirection(head->right, _piped);
+	{
+		status = open_file_for_redirection(head->right, _piped, env, 0);
+		if ((status || !head->left) && _piped[0] > 1)
+			_piped[0] -= 1;
+	}
 	if (head->left && head->left->file_type == EXECUTE_FILE
-		&& _piped[11])
+		&& _piped[11] && !status)
 	{
 		_piped[8] = 1;
 		status = prepare_and_execute_command(
@@ -85,6 +90,8 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 	int					_fd[2];
 	int					status;
 
+	_fd[0] = -1;
+	_fd[1] = -1;
 	if (head->file_type == FILE_READY)
 	{
 		if (head->type == TOKEN_PIPE)
@@ -102,15 +109,15 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 		close(_piped[1]);
 	if (_piped[7])
 		close(_piped[2]);
-	close(_fd[0]);
-	close(_fd[1]);
-	return (status);
+	if (_fd[0] != -1 || _fd[1] != -1)
+		(close(_fd[0]), close(_fd[1]));
+	return (g_var_thing = 0, status);
 }
 
 void	command_execution_manager(t_ast_node *head, t_env *env, int *status)
 {
-	int				_piped[13];
-	int				_status;
+	int	_piped[13];
+	int	_status;
 
 	initialize_or_reset_pipe_state(_piped, 1);
 	count_redirections_and_pipes(head, _piped);
@@ -120,16 +127,4 @@ void	command_execution_manager(t_ast_node *head, t_env *env, int *status)
 	_status = verify_command_file_permissions(head, env->original_env);
 	if (!_status)
 		*status = execute_ast_node(head, _piped, env);
-	else
-	{
-		if (_status == 1)
-		{
-			*status = get_shell_exit_status(errno);
-			ft_putstr_fd("\terr: ", 2);
-			ft_putendl_fd(strerror(errno), 2);
-			return ;
-		}
-		*status = _status;
-		ft_putendl_fd("\terr: just close the program", 2);
-	}
 }

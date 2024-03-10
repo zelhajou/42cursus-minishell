@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansion_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: beddinao <beddinao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 08:59:59 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/05 03:17:14 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/10 09:50:57 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// /// // probably will fail at some point
 
 int	simplified_refactor_thing(char **array, int index, char *str, int in)
 {
@@ -34,6 +32,8 @@ int	simplified_refactor_thing(char **array, int index, char *str, int in)
 	if ((in + size) > sizeof_str(str, '\0'))
 		return (index);
 	array[index] = malloc(size + 1);
+	if (!array[index])
+		return (index);
 	s_strcopy(array[index], str, in, in + size);
 	return (simplified_refactor_thing(array, index + 1, str, in + size));
 }

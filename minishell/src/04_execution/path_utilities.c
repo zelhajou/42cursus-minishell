@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utilities.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: beddinao <beddinao@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:03:19 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/02 02:31:56 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/10 09:42:25 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,6 @@ char	**prepare_cmd_arguments(char *cmd, char **envp, int c)
 
 	i[1] = count_substrings(cmd, ' ');
 	cmd_arr = malloc((i[1] + 1) * sizeof(char *));
-	if (!cmd_arr)
-		return (NULL);
 	i[0] = 0;
 	while (c < i[1])
 	{
@@ -128,6 +126,8 @@ char	**prepare_cmd_arguments(char *cmd, char **envp, int c)
 		if (!c && !check_if_command_is_builtin(cmd_holder))
 		{
 			cmd_arr[c] = fetch_file_path(cmd_holder, envp, "PATH", X_OK);
+			if (!cmd_arr[c])
+				cmd_arr[c] = ft_strdup(cmd_holder);
 			free(cmd_holder);
 		}
 		else

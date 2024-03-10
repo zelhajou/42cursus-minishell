@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/05 23:34:28 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/10 14:14:21 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
+
+extern int	g_var_thing;
 
 typedef enum e_token_type
 {
@@ -67,6 +69,8 @@ typedef struct s_env
 	char				***parsed_env;
 }	t_env;
 
+void		__exit(char **_cmd_);
+int			export_print_or_export(char **_cmd_);
 /* ------------------ Main Shell Functionality ------------------ */
 
 void		main_shell_execution_loop(t_env *env);
@@ -159,16 +163,17 @@ int			handle_command_redirection(t_ast_node *head, int *piped,
 				t_env *env, int *fd);
 int			handle_piped_command_execution(t_ast_node *head,
 				int *piped, t_env *env, int *fd);
-int			exec_here_doc(char *limiter, int *piped, int *fd);
+int			exec_here_doc(char *limiter, int *piped, t_env *env);
 void		initialize_or_reset_pipe_state(int *piped, int flag);
-int			open_file_for_redirection(t_ast_node *head, int *piped);
+int			open_file_for_redirection(
+				t_ast_node *head, int *piped, t_env *env, int status);
 int			check_if_command_is_builtin(char *cmd);
 int			manage_builtin_execution(char **cmd, int *fd,
 				t_env *env, int *piped);
 int			manage_single_builtin_execution(char **cmd, int *fd,
 				t_env *env, int *piped);
 int			execute_builtin_command_in_child(char **cmd,
-				t_env *env, int *out_fd);
+				t_env *env, int *out_fd, int *_piped);
 
 /* ----------- Path and Environment Variable Handling --------- */
 
@@ -186,7 +191,7 @@ int			env_just_print(t_env *env, int con, int *_out_fd);
 void		s_strcopy(char *dest, char *src, int start, int end);
 char		*strcopy(char *src);
 char		*str_without_char(char *str, char delimiter);
-char		*remove_quotes_from_str(char *str);
+char		*remove_quotes_from_str(char *str, int a, int b, int c);
 int			str_cmp(char *str1, char *str2, char *str3);
 int			is_space(char *line);
 int			sizeof_str(char *str, char delimiter);
