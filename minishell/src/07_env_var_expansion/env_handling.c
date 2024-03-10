@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 06:53:11 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/06 12:39:22 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/04 23:46:36 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	append_env_var(char *var, t_env *env)
 	{
 		b = sizeof_str(env->original_env[o], '\0');
 		env_var = malloc(b + d + 1);
-		if (!env_var)
-			return ;
 		s_strcopy(env_var, env->original_env[o], 0, b);
 		s_strcopy(env_var + b, var, c + 2, sizeof_str(var, '\0'));
 	}

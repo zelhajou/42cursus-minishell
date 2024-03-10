@@ -6,34 +6,39 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 06:51:24 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/07 11:31:41 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:56:30 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*remove_quotes_from_str(char *str, int si_q_c, int do_q_c, int a)
+char	*remove_quotes_from_str(char *str)
 {
 	char				*new_str;
+	int					a;
 	int					b;
+	int					si_q_c;
+	int					do_q_c;
 
+	a = 0;
 	b = 0;
+	si_q_c = 0;
+	do_q_c = 0;
 	new_str = malloc(sizeof_str(str, '\0') + 1);
-	if (!new_str)
-		return (NULL);
 	while (str[a])
 	{
-		if (str[a] == 34 && !(si_q_c % 2))
+		if (str[a] == 34)
 			do_q_c++;
-		else if (str[a] == 39 && !(do_q_c % 2))
+		else if (str[a] == 39)
 			si_q_c++;
-		if ((str[a] != 34 || si_q_c % 2)
-			&& (str[a] != 39 || do_q_c % 2))
+		if ((str[a] != 34 || (si_q_c % 2))
+			&& ((str[a] != 39) || (do_q_c % 2)))
 			new_str[b++] = str[a];
 		a++;
 	}
 	new_str[b] = '\0';
-	return (free(str), new_str);
+	free(str);
+	return (new_str);
 }
 
 char	*strcopy(char *src)
@@ -46,8 +51,6 @@ char	*strcopy(char *src)
 	while (src[b])
 		b += 1;
 	dest = malloc(b + 1);
-	if (!dest)
-		return (NULL);
 	a = 0;
 	while (a < b)
 	{

@@ -6,11 +6,11 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 18:00:12 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/09 18:53:58 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:57:35 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 t_token	*process_and_tokenize_input(char *input)
 {
@@ -41,7 +41,7 @@ void	main_shell_execution_loop(t_env *env)
 	while (1)
 	{
 		status = 0;
-		line = readline(" > ");
+		line = readline("> ");
 		if (!line)
 			break ;
 		if (check_line(&line))
@@ -50,7 +50,7 @@ void	main_shell_execution_loop(t_env *env)
 		tokens = process_and_tokenize_input(line);
 		if (!tokens)
 			status = 258;
-		else
+		if (!status)
 		{
 			ast = parse_tokens(&tokens);
 			command_execution_manager(ast, env, &status);
@@ -70,9 +70,6 @@ int	main(int argc, char **argv, char **original_env)
 	if (!isatty(1) || !isatty(0))
 		return (free(env), 0);
 	if (argc == 1 && initialize_shell_with_environment(env, original_env))
-	{
 		main_shell_execution_loop(env);
-		cleanup_and_exit_shell(env, 0);
-	}
-	return (0);
+	cleanup_and_exit_shell(env, 0);
 }

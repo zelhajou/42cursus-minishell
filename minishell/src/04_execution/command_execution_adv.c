@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:01:18 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/09 19:37:18 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/04 03:23:25 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,27 +20,25 @@ int	execute_command_basic(char **_cmd_, int *_fd, char **env, int *_piped)
 	pipe(fd_);
 	pid = fork();
 	signal(SIGINT, child_ctrl_c);
-	signal(SIGQUIT, child_ctrl_c);
 	if (!pid)
 	{
+		signal(SIGQUIT, child_ctrl_c);
 		if (_piped[0] && _piped[0] <= _piped[5])
 			dup2(_fd[0], 0);
 		if (_piped[0] > 1)
 			dup2(fd_[1], 1);
-		else if (_piped[0])
+		else
 			close(_fd[0]);
 		close_pipe_ends(fd_[0], fd_[1]);
 		execve(_cmd_[0], _cmd_, env);
 		exit(EXIT_FAILURE);
 	}
-	close(fd_[1]);
-	if (_piped[0] && _piped[0] <= _piped[5])
-		close(_fd[0]);
+	close_pipe_ends(fd_[1], _fd[0]);
 	if (_piped[0] > 1)
 		_fd[0] = fd_[0];
 	else
 		close(fd_[0]);
-	return (free_string_array(_cmd_), 1);
+	return (1);
 }
 
 int	execute_command_with_redirection(
@@ -52,9 +50,9 @@ int	execute_command_with_redirection(
 	pipe(fd_);
 	pid = fork();
 	signal(SIGINT, child_ctrl_c);
-	signal(SIGQUIT, child_ctrl_c);
 	if (!pid)
 	{
+		signal(SIGQUIT, child_ctrl_c);
 		child_fds_managment(_piped, _fd, fd_);
 		execve(_cmd_[0], _cmd_, env);
 		exit(EXIT_FAILURE);
@@ -71,20 +69,19 @@ int	prepare_and_execute_command(
 	char				**f_args;
 	int					status;
 
-	status = verify_file_permissions(_cmd_[0], env->original_env, "PATH", X_OK);
-	if (!status)
-	{
-		f_args = prepare_cmd_arguments(_cmd_[0], env->original_env, 0);
-		cmd_args = merge_command_args(f_args, _cmd_);
-	}
-	if (!status && check_if_command_is_builtin(cmd_args[0]))
+	f_args = prepare_cmd_arguments(_cmd_[0], env->original_env, 0);
+	cmd_args = merge_command_args(f_args, _cmd_);
+	_piped[10] += 1;
+	if (check_if_command_is_builtin(cmd_args[0]))
 		status = manage_builtin_execution(cmd_args, _fd, env, _piped);
-	else if (!status)
+	else
 	{
-		_piped[10] += 1;
 		if (!_piped[8])
+		{
 			status = execute_command_basic(
 					cmd_args, _fd, env->original_env, _piped);
+			free_string_array(cmd_args);
+		}
 		else
 			status = execute_command_with_redirection(
 					cmd_args, _fd, env->original_env, _piped);
@@ -96,9 +93,7 @@ int	prepare_and_execute_command(
 
 int	wait_for_children(int status, int *_piped)
 {
-	if (status != 2 && status != 127
-		&& status != 126 && _piped[10]
-		&& _piped[11])
+	if (_piped[10] && _piped[11])
 	{
 		while (_piped[10])
 		{
@@ -106,11 +101,7 @@ int	wait_for_children(int status, int *_piped)
 			_piped[10] -= 1;
 		}
 		signal(SIGINT, handle_ctrl_c);
-		signal(SIGQUIT, SIG_IGN);
-		if (!g_thing)
-			return (WEXITSTATUS(status));
-		else
-			return (g_thing);
+		return (WEXITSTATUS(status));
 	}
 	return (status);
 }

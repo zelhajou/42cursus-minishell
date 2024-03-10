@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:20:26 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/08 22:22:10 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/04 20:36:09 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,13 @@ void	setup_signal_handlers(void)
 
 void	child_ctrl_c(int sig_num)
 {
-	if (sig_num == 2)
-	{
-		ft_putstr_fd("\\^C", 1);
-		g_thing = 130;
-	}
-	else
-	{
-		ft_putstr_fd("\\^Quit", 1);
-		g_thing = 131;
-	}
+	(void)sig_num;
 	write(1, "\n", 1);
 }
 
 void	handle_ctrl_c(int a)
 {
-	g_thing = a + 128;
+	(void)a;
 	rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();

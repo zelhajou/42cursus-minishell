@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 16:43:38 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/03/07 11:11:14 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:34:28 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
-
-extern int	g_thing;
 
 typedef enum e_token_type
 {
@@ -133,7 +131,6 @@ void		set_new_pwd_in_env(char *new_path, t_env *env, int unused);
 int			change_current_directory(char *path, t_env *env);
 char		*get_current_working_directory(int size, int tries, int fd);
 int			export_statment_check(char *_cmd_);
-void		__exit(char **_cmd_);
 
 /* ------------------ Input Validation and Environment Management -------- */
 
@@ -162,16 +159,16 @@ int			handle_command_redirection(t_ast_node *head, int *piped,
 				t_env *env, int *fd);
 int			handle_piped_command_execution(t_ast_node *head,
 				int *piped, t_env *env, int *fd);
-int			exec_here_doc(char *limiter, int *piped, t_env *env);
+int			exec_here_doc(char *limiter, int *piped, int *fd);
 void		initialize_or_reset_pipe_state(int *piped, int flag);
-int			open_file_for_redirection(t_ast_node *head, int *piped, t_env *env);
+int			open_file_for_redirection(t_ast_node *head, int *piped);
 int			check_if_command_is_builtin(char *cmd);
 int			manage_builtin_execution(char **cmd, int *fd,
 				t_env *env, int *piped);
 int			manage_single_builtin_execution(char **cmd, int *fd,
 				t_env *env, int *piped);
 int			execute_builtin_command_in_child(char **cmd,
-				t_env *env, int *out_fd, int *_piped);
+				t_env *env, int *out_fd);
 
 /* ----------- Path and Environment Variable Handling --------- */
 
@@ -189,7 +186,7 @@ int			env_just_print(t_env *env, int con, int *_out_fd);
 void		s_strcopy(char *dest, char *src, int start, int end);
 char		*strcopy(char *src);
 char		*str_without_char(char *str, char delimiter);
-char		*remove_quotes_from_str(char *str, int si_q_c, int do_q_c, int a);
+char		*remove_quotes_from_str(char *str);
 int			str_cmp(char *str1, char *str2, char *str3);
 int			is_space(char *line);
 int			sizeof_str(char *str, char delimiter);
@@ -239,12 +236,9 @@ void		cleanup_and_exit_shell(t_env *env, int status);
 int			get_shell_exit_status(int error_code);
 int			count_digits_in_int(int num);
 char		**prepare_cmd_arguments(char *cmd, char **envp, int condition);
-int			verify_file_permissions(
-				char *file, char **env, char *variable, int mode);
+int			verify_command_file_permissions(t_ast_node *head, char **env);
 
 void		generate_ast_diagram(t_ast_node *root);
 void		display_tokens(t_token *tokens);
-void		switch_fds_identifier(int *_piped, int index, int index_2);
-int			export_print_or_export(char **_cmd_);
 
 #endif

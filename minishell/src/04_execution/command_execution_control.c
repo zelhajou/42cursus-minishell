@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:11:08 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/09 18:18:52 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:16:47 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,49 +26,31 @@ void	initialize_or_reset_pipe_state(int *_piped, int f)
 	_piped[11] = 1;
 }
 
-int	check_file_exx(t_env *env, t_ast_node *head)
+void	switch_fds_identifier(int *_piped, int index, int index_2)
 {
-	int				mode;
-
-	mode = R_OK;
-	if (!head || !head->args || !head->args[0])
-		return (0);
-	if (head->file_type == WRITE_FILE
-		&& head->args && (!head->args[0]
-			|| str_cmp(head->args[0], "", " ")))
-	{
-		ft_putstr_fd("   err: \'", 2);
-		if (head->args[0])
-			ft_putstr_fd(head->args[0], 2);
-		ft_putendl_fd("\' ambiguous things", 2);
-		return (1);
-	}
-	else if (head->file_type == WRITE_FILE
-		|| head->file_type == WRITE_FILE_APPEND
-		|| head->file_type == READ_FROM_APPEND)
-		return (0);
-	return (verify_file_permissions(
-			head->args[0], env->original_env, "PWD", mode));
+	if (_piped[index])
+		close(_piped[index_2]);
+	_piped[index] = 1;
 }
 
-int	open_file_for_redirection(t_ast_node *head, int *_piped, t_env *env)
+int	open_file_for_redirection(t_ast_node *head, int *_piped)
 {
 	int			mode;
 	int			status;
 
-	status = check_file_exx(env, head);
-	if (!status && head->file_type == READ_FILE)
+	status = 1;
+	if (head->file_type == READ_FILE)
 	{
 		switch_fds_identifier(_piped, 6, 1);
 		_piped[1] = open(head->args[0], O_RDONLY);
 	}
-	else if (!status && head->file_type == READ_FROM_APPEND)
+	else if (head->file_type == READ_FROM_APPEND)
 	{
 		switch_fds_identifier(_piped, 6, 1);
-		status = exec_here_doc(head->args[0], _piped, env);
+		status = exec_here_doc(head->args[0], _piped, NULL);
 		signal(SIGINT, handle_ctrl_c);
 	}
-	else if (!status)
+	else
 	{
 		switch_fds_identifier(_piped, 7, 2);
 		mode = O_TRUNC;
@@ -86,8 +68,6 @@ int	check_if_command_is_builtin(char *_cmd)
 
 	status = 0;
 	tmp_cmd = malloc(sizeof_str(_cmd, ' ') + 1);
-	if (!tmp_cmd)
-		return (0);
 	s_strcopy(tmp_cmd, _cmd, 0, sizeof_str(_cmd, ' '));
 	if (str_cmp(tmp_cmd, "echo", "cd")
 		|| str_cmp(tmp_cmd, "pwd", "export")
@@ -98,16 +78,10 @@ int	check_if_command_is_builtin(char *_cmd)
 	return (status);
 }
 
-int	execute_builtin_command_in_child(
-	char **_cmd_, t_env *env, int *_out_fd, int *_piped)
+int	execute_builtin_command_in_child(char **_cmd_, t_env *env, int *_out_fd)
 {
 	int			status;
 
-	if (!_piped[7])
-	{
-		dup2(_out_fd[1], 1);
-		_out_fd[1] = 1;
-	}
 	status = 0;
 	if (str_cmp(_cmd_[0], "echo", NULL))
 		status = echo_cmd(_cmd_, _out_fd);
@@ -117,8 +91,6 @@ int	execute_builtin_command_in_child(
 		_cmd_ = unset_or_export_cmd(_cmd_, env, _out_fd, &status);
 	else if (str_cmp(_cmd_[0], "cd", NULL))
 		status = cd_cmd(_cmd_, env, _out_fd);
-	else if (str_cmp(_cmd_[0], "exit", NULL))
-		__exit(_cmd_);
 	free_string_array(_cmd_);
 	return (status);
 }

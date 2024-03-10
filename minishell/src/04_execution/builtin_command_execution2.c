@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 12:53:43 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/07 11:48:38 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 03:30:05 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	execute_builtin_with_piping(char **_cmd_, int *_fd, t_env *env, int *_piped)
 	_out_fd[1] = 1;
 	if (_piped[0] > 1)
 		pipe(_out_fd);
-	status = execute_builtin_command_in_child(_cmd_, env, _out_fd, _piped);
+	status = execute_builtin_command_in_child(_cmd_, env, _out_fd);
 	if (_piped[0] > 1)
 	{
 		close(_out_fd[1]);
@@ -40,7 +40,7 @@ int	execute_builtin_with_simple_piping(
 		_out_fd[1] = _piped[2];
 	if (_piped[0] > 1 && (!_piped[8] || !_piped[7]))
 		pipe(_out_fd);
-	status = execute_builtin_command_in_child(_cmd_, env, _out_fd, _piped);
+	status = execute_builtin_command_in_child(_cmd_, env, _out_fd);
 	if (_piped[8] && _piped[7])
 	{
 		close(_out_fd[1]);
@@ -73,7 +73,6 @@ int	manage_single_builtin_execution(
 		else if (_cmd_[1])
 			ex_status = string_to_int(_cmd_[1]);
 		free_string_array(_cmd_);
-		ft_putendl_fd("EXIT", 1);
 		cleanup_and_exit_shell(env, ex_status);
 	}
 	else if (!_piped[8])

@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:02:22 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/09 19:35:25 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/05 22:10:14 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 ///		_piped[10]: children count
 ///		_piped[11]: second heredoc status
 /////
-int				g_thing;
 
 int	handle_piped_command_execution(
 		t_ast_node *head, int *_piped, t_env *env, int *_fd)
@@ -61,20 +60,19 @@ int	handle_command_redirection(
 	int				status;
 
 	_piped[11] = 1;
-	status = 0;
 	if (head->right)
-		status = open_file_for_redirection(head->right, _piped, env);
-	if (!status && head->left && head->left->file_type == EXECUTE_FILE
+		status = open_file_for_redirection(head->right, _piped);
+	if (head->left && head->left->file_type == EXECUTE_FILE
 		&& _piped[11])
 	{
 		_piped[8] = 1;
 		status = prepare_and_execute_command(
 				head->left->args, _fd, _piped, env);
 	}
-	if (!status && head->left && head->left->type == TOKEN_PIPE
+	if (head->left && head->left->type == TOKEN_PIPE
 		&& _piped[11])
 		status = handle_piped_command_execution(head->left, _piped, env, _fd);
-	if (!status && head->left && (head->left->type == TOKEN_REDIR_IN
+	if (head->left && (head->left->type == TOKEN_REDIR_IN
 			|| head->left->type == TOKEN_REDIR_OUT
 			|| head->left->type == TOKEN_REDIR_APPEND
 			|| head->left->type == TOKEN_REDIR_HEREDOC))
@@ -104,18 +102,34 @@ int	execute_ast_node(t_ast_node *head, int *_piped, t_env *env)
 		close(_piped[1]);
 	if (_piped[7])
 		close(_piped[2]);
-	g_thing = 0;
+	close(_fd[0]);
+	close(_fd[1]);
 	return (status);
 }
 
 void	command_execution_manager(t_ast_node *head, t_env *env, int *status)
 {
 	int				_piped[13];
+	int				_status;
 
 	initialize_or_reset_pipe_state(_piped, 1);
 	count_redirections_and_pipes(head, _piped);
 	initialize_or_reset_pipe_state(_piped, 0);
 	adjust_ast_nodes_for_execution(head);
 	expand_variables_in_ast(head, env);
-	*status = execute_ast_node(head, _piped, env);
+	_status = verify_command_file_permissions(head, env->original_env);
+	if (!_status)
+		*status = execute_ast_node(head, _piped, env);
+	else
+	{
+		if (_status == 1)
+		{
+			*status = get_shell_exit_status(errno);
+			ft_putstr_fd("\terr: ", 2);
+			ft_putendl_fd(strerror(errno), 2);
+			return ;
+		}
+		*status = _status;
+		ft_putendl_fd("\terr: just close the program", 2);
+	}
 }

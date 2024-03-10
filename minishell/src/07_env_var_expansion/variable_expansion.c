@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 10:17:44 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/08 22:22:31 by beddinao         ###   ########.fr       */
+/*   Updated: 2024/03/06 00:01:55 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ char	*replace_variable_with_value(
 	unsize = sizeof_str(__new, '\0');
 	size = st + (sizeof_str(old_var, '\0') - end) + unsize;
 	new__ = malloc(size + 1);
-	if (!new__)
-		return (NULL);
 	s_strcopy(new__, old_var, 0, st);
 	s_strcopy(new__ + st, __new, 0, unsize);
 	s_strcopy(new__ + st + unsize, old_var, end, sizeof_str(old_var, '\0'));
@@ -44,12 +42,9 @@ char	*expand_variable_in_string(char *var, t_env *env, int a, int *f_hole)
 	hole_size = b - a;
 	new_var = malloc(hole_size + 1);
 	s_strcopy(new_var, var, a + 1, b);
-	if (str_cmp(new_var, "?", NULL) && g_thing)
-		update_env_status(env, g_thing, "?=");
-	g_thing = 0;
 	c = find_env_var_index(env, new_var);
 	free(new_var);
-	*f_hole = 0;
+	*f_hole = a + hole_size;
 	if (c >= 0)
 	{
 		new_var = replace_variable_with_value(var, env->parsed_env[c][1], a, b);
@@ -65,8 +60,6 @@ char	*recursively_expand_variables(
 {
 	char						*new_var;
 
-	if (f_arr[0] >= sizeof_str(var, '\0'))
-		return (var);
 	while (var[f_arr[0]])
 	{
 		if (var[f_arr[0]] == 39)
@@ -89,7 +82,7 @@ char	*recursively_expand_variables(
 	return (var);
 }
 
-char	**refactore_args_array(char **args, int *quick_norm_fix)
+char	**refactore_args_array(char **args)
 {
 	int						a;
 	int						b;
@@ -98,11 +91,8 @@ char	**refactore_args_array(char **args, int *quick_norm_fix)
 
 	a = 0;
 	b = 0;
-	*quick_norm_fix = 0;
 	c = count_strings_in_array(args);
 	new_args = malloc((detected_flaws(args) + c + 1) * sizeof(char **));
-	if (!new_args)
-		return (NULL);
 	while (args[a])
 	{
 		c = is_flawed_str(args[a], 0, 0, 0);
@@ -122,21 +112,21 @@ void	expand_variables_in_ast(t_ast_node *head, t_env *env)
 	int							a;
 	int							f_arr[3];
 
-	if (head->file_type != FILE_READY && head->args
-		&& head->file_type != READ_FROM_APPEND)
+	if (head->file_type != FILE_READY && head->args)
 	{
 		a = -1;
 		while (head->args[++a])
 			((ft_memset(f_arr, 0, 3 * sizeof(int))),
 				(head->args[a] = recursively_expand_variables(
 						head->args[a], env, 1, f_arr)));
-		head->args = refactore_args_array(head->args, &a);
+		head->args = refactore_args_array(head->args);
+		a = 0;
 		while (head->args[a])
 		{
 			ft_memset(f_arr, 0, 3 * sizeof(int));
 			head->args[a] = recursively_expand_variables(
 					head->args[a], env, 0, f_arr);
-			head->args[a] = remove_quotes_from_str(head->args[a], 0, 0, 0);
+			head->args[a] = remove_quotes_from_str(head->args[a]);
 			a++;
 		}
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variable_expansion_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: beddinao <beddinao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 08:59:59 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/06 12:46:58 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/03/05 03:17:14 by beddinao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ int	simplified_refactor_thing(char **array, int index, char *str, int in)
 	if ((in + size) > sizeof_str(str, '\0'))
 		return (index);
 	array[index] = malloc(size + 1);
-	if (!array[index])
-		return (index);
 	s_strcopy(array[index], str, in, in + size);
 	return (simplified_refactor_thing(array, index + 1, str, in + size));
 }

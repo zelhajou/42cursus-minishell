@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 09:55:35 by beddinao          #+#    #+#             */
-/*   Updated: 2024/03/06 14:39:23 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:56:54 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ char	**duplicate_environment_variables(char **env)
 	while (env[a])
 		a++;
 	new_old = malloc((a + 1) * sizeof(char **));
-	if (!new_old)
-		return (NULL);
 	while (b < a)
 	{
 		new_old[b] = strcopy(env[b]);
@@ -46,42 +44,21 @@ int	initialize_shell_environment_structure(
 	env->parsed_env = malloc((a + 1) * sizeof(char ***));
 	if (!env->parsed_env)
 		return (0);
-	b = -1;
-	while (++b < a)
+	b = 0;
+	while (b < a)
 	{
 		c = sizeof_str(original_env[b], '=');
 		env->parsed_env[b] = malloc(2 * sizeof(char **));
 		env->parsed_env[b][0] = malloc(c * sizeof(char *));
 		env->parsed_env[b][1] = malloc(
 				(sizeof_str(original_env[b], '\0') - c) * sizeof(char *));
-		if (!env->parsed_env[b] || !env->parsed_env[b][0]
-			|| !env->parsed_env[b][1])
-			return (0);
 		s_strcopy(env->parsed_env[b][0], original_env[b], 0, c);
 		s_strcopy(env->parsed_env[b][1], original_env[b],
 			c + 1, sizeof_str(original_env[b], '\0'));
+		b++;
 	}
-	return (env->parsed_env[b] = 0, 1);
-}
-
-void	initialize_default_variables(t_env *env, int a)
-{
-	char				*new_pwd;
-
-	a = find_env_var_index(env, "SHELL");
-	if (a >= 0)
-		remove_env_entry(env, a);
-	replace_env_var("SHELL=minishell", env);
-	replace_env_var("?=0", env);
-	a = find_env_var_index(env, "PWD");
-	new_pwd = get_current_working_directory(100, 5, 2);
-	if (new_pwd)
-	{
-		if (a >= 0)
-			remove_env_entry(env, a);
-		set_new_pwd_in_env(new_pwd, env, a);
-		free(new_pwd);
-	}
+	env->parsed_env[b] = 0;
+	return (1);
 }
 
 int	initialize_shell_with_environment(t_env *env, char **original_env)
@@ -98,6 +75,10 @@ int	initialize_shell_with_environment(t_env *env, char **original_env)
 	if (a >= 0)
 		__index = string_to_int(env->parsed_env[a][1]);
 	update_env_status(env, __index + 1, "SHLVL=");
-	initialize_default_variables(env, 0);
+	a = find_env_var_index(env, "SHELL");
+	if (a >= 0)
+		remove_env_entry(env, a);
+	replace_env_var("SHELL=minishell", env);
+	replace_env_var("?=0", env);
 	return (status);
 }

@@ -85,10 +85,9 @@ char	**export_cmd(char **_cmd, t_env *env, int *_out_fd, int **s)
 		}
 		else
 		{
-			ft_putstr_fd("  err: export(\'", _out_fd[1]);
-			ft_putstr_fd(_cmd[a], _out_fd[1]);
-			ft_putendl_fd("\') : Not a valid thing",
-				_out_fd[1]);
+			if (_cmd[a][0] == '=' || b < 0)
+				ft_putendl_fd("err: export(): Not a valid identifier",
+					_out_fd[1]);
 			**s = 256;
 		}
 		a++;
@@ -117,7 +116,7 @@ char	**unset_or_export_cmd(char **_cmd, t_env *env, int *_out_fd, int *s)
 	}
 	else if (str_cmp(_cmd[0], "export", NULL))
 	{
-		if (export_print_or_export(_cmd))
+		if (_cmd[1] && _cmd[1][0])
 			_cmd = export_cmd(_cmd, env, _out_fd, &s);
 		else
 			env_or_pwd_cmd("env", env, 1, _out_fd);
