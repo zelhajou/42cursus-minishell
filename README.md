@@ -315,27 +315,27 @@ Example:
 
 ```bahs
 > ls -l | wc -l > output.txt | ls > output2.txt
-Token:  ls                    |                         Type:  WORD                
+Token:  ls                    | Type:  WORD                
 --------------------------------------------------
-Token:  -l                    |                         Type:  WORD                
+Token:  -l                    | Type:  WORD                
 --------------------------------------------------
-Token:  |                     |                         Type:  PIPE                
+Token:  |                     | Type:  PIPE                
 --------------------------------------------------
-Token:  wc                    |                         Type:  WORD                
+Token:  wc                    | Type:  WORD                
 --------------------------------------------------
-Token:  -l                    |                         Type:  WORD                
+Token:  -l                    | Type:  WORD                
 --------------------------------------------------
-Token:  >                     |                         Type:  REDIRECT_OUT        
+Token:  >                     | Type:  REDIRECT_OUT        
 --------------------------------------------------
-Token:  output.txt            |                         Type:  WORD                
+Token:  output.txt            | Type:  WORD                
 --------------------------------------------------
-Token:  |                     |                         Type:  PIPE                
+Token:  |                     | Type:  PIPE                
 --------------------------------------------------
-Token:  ls                    |                         Type:  WORD                
+Token:  ls                    | Type:  WORD                
 --------------------------------------------------
-Token:  >                     |                         Type:  REDIRECT_OUT        
+Token:  >                     | Type:  REDIRECT_OUT        
 --------------------------------------------------
-Token:  output2.txt           |                         Type:  WORD                
+Token:  output2.txt           | Type:  WORD                
 --------------------------------------------------
 ```
 
