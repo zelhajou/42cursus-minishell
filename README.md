@@ -66,6 +66,8 @@ This phase was about understanding the shell's operations, researching the exter
 
 #### Shell Operations
 
+![shell](https://github.com/user-attachments/assets/730358f1-dd34-49f3-b15f-647bef40c40c)
+
 - [What Happens When You Type a Command in Your Terminal](https://www.youtube.com/watch?v=2P7fcVHxA9o&list=LL&index=6) 📹
 - [Shell Code Explained](https://www.youtube.com/playlist?list=PLbtzT1TYeoMhF4hcpEiCsOeN13zqrzBJq) 📹
 
@@ -389,16 +391,23 @@ ls -l | wc -l > output.txt | ls > output2.txt
 
 [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/#digraph%20AST%20%7B%0A%220x7ff812f05540%22%20%5Blabel%3D%22%7C%22%5D%3B%0A%220x7ff812f05540%22%20-%3E%20%220x7ff812f05560%22%20%5Blabel%3D%22L%22%5D%3B%0A%220x7ff812f05560%22%20%5Blabel%3D%22CMD%3A%20ls%20-l%22%5D%3B%0A%220x7ff812f05540%22%20-%3E%20%220x7ff812f05360%22%20%5Blabel%3D%22R%22%5D%3B%0A%220x7ff812f05360%22%20%5Blabel%3D%22%7C%22%5D%3B%0A%220x7ff812f05360%22%20-%3E%20%220x7ff812f05300%22%20%5Blabel%3D%22L%22%5D%3B%0A%220x7ff812f05300%22%20%5Blabel%3D%22REDIR%3A%20%22%5D%3B%0A%220x7ff812f05300%22%20-%3E%20%220x7ff812f05320%22%20%5Blabel%3D%22L%22%5D%3B%0A%220x7ff812f05320%22%20%5Blabel%3D%22CMD%3A%20wc%20-l%22%5D%3B%0A%220x7ff812f05300%22%20-%3E%20%220x7ff812f053f0%22%20%5Blabel%3D%22R%22%5D%3B%0A%220x7ff812f053f0%22%20%5Blabel%3D%22CMD%3A%20output.txt%22%5D%3B%0A%220x7ff812f05360%22%20-%3E%20%220x7ff812f05420%22%20%5Blabel%3D%22R%22%5D%3B%0A%220x7ff812f05420%22%20%5Blabel%3D%22REDIR%3A%20%22%5D%3B%0A%220x7ff812f05420%22%20-%3E%20%220x7ff812f05450%22%20%5Blabel%3D%22L%22%5D%3B%0A%220x7ff812f05450%22%20%5Blabel%3D%22CMD%3A%20ls%22%5D%3B%0A%220x7ff812f05420%22%20-%3E%20%220x7ff812f054b0%22%20%5Blabel%3D%22R%22%5D%3B%0A%220x7ff812f054b0%22%20%5Blabel%3D%22CMD%3A%20output2.txt%22%5D%3B%0A%7D%0A)
 
-
-
 ### Step 4: Command Execution
 
 - **Built-in Commands**: Implementing internal versions of several built-in commands (`echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`) that behave consistently with their bash counterparts.
+  
+	![builtins](https://github.com/user-attachments/assets/ce5fba5b-96bc-44d8-88be-b5a39b0b362e)
+
 - **External Commands**: Implementing logic to search for and execute the right executable based on the PATH environment variable or a specified path.
 - **Process Creation**: Using system calls like `fork`, `execve`, `wait`, and `pipe` to manage process creation and execution.
 - **Redirection and Pipes**: Implementing input and output redirection (`<`, `>`, `>>`, `<<`) and pipes (`|`) to allow for command chaining and data redirection.
+  
+	![redirects](https://github.com/user-attachments/assets/cc07277b-2fe0-425a-ba39-0013f9871d1c)
+	![pipes](https://github.com/user-attachments/assets/3cbc7f85-53e7-4312-bf3d-1b9053533ece)
+	![bash-pipes](https://github.com/user-attachments/assets/90379cd6-43f8-44f6-b089-958bed58a3a9)
 
 ### Step 5: Built-in Commands Implementation
+
+![builtins](https://github.com/user-attachments/assets/ce5fba5b-96bc-44d8-88be-b5a39b0b362e)
 
 - **echo**: Outputs the arguments passed to it.
 - **cd**: Changes the current working directory.
@@ -410,6 +419,8 @@ ls -l | wc -l > output.txt | ls > output2.txt
 
 ### Step 6: Signal Handling
 
+![signals](https://github.com/user-attachments/assets/308b83ea-ad8f-4bcd-ba32-0cf79bf1b71f)
+
 - **SIGINT**: Handling the `ctrl-C` signal to interrupt the shell's execution.
 - **SIGQUIT**: Handling the `ctrl-\` signal to quit the shell.
 - **EOF**: Handling the `ctrl-D` signal to exit the shell.
@@ -417,6 +428,7 @@ ls -l | wc -l > output.txt | ls > output2.txt
 ### Step 7: Environment Variable Expansion
 
 - **Environment Variable Expansion**: Managing environment variables and supporting their expansion within commands, including the special case of `$?` to represent the exit status of the most recently executed command.
+![environment-variables](https://github.com/user-attachments/assets/87e4570b-e029-4f0e-a38c-f31837e0612e)
 
 ### Step 8: Testing and Debugging
 
