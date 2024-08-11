@@ -228,6 +228,9 @@ int main(void)
 ### Steps for building the parser and AST (Abstract Syntax Tree)
 
 - **Syntax Error Checking**: This involves verifying whether the input string adheres to the shell's syntax rules. It checks for unclosed quotes, and misuse of redirection or pipe symbols. Syntax error checking ensures that the input can be correctly interpreted and executed.
+
+	![bash-quotes](https://github.com/user-attachments/assets/13f1ff3a-d537-477c-a37e-377a8c29ab5c)
+
 - **Tokenization**: This step breaks the input string into meaningful pieces, known as tokens. Tokens can be commands, arguments, redirection operators (`<`, `>`, `>>`, `<<`), pipe symbols (`|`), and environment variable identifiers. Tokenization simplifies the parsing process by converting the input string into a format that's easier to analyze.
 - **Parsing**: During parsing, tokens are analyzed to understand their syntactical relationship. This step involves constructing a representation of the input that reflects the user's intention. Depending on the complexity of the shell, this could mean building an abstract syntax tree (AST) or a simpler structure.
 - **AST Construction**:
