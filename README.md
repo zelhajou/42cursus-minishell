@@ -77,6 +77,8 @@ This phase was about understanding the shell's operations, researching the exter
 
 - [Terminal vs. Bash vs. Command line vs. Prompt](https://www.youtube.com/watch?v=hMSByvFHOro&ab_channel=LukeSmith) 📹
 
+![terminals](https://github.com/user-attachments/assets/0296cfe7-6a1d-42c8-ba4c-53419e64cccd)
+
 - [Tutorial - Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/) 📝
 
 #### External Functions
