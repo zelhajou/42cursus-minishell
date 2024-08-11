@@ -398,6 +398,9 @@ ls -l | wc -l > output.txt | ls > output2.txt
 	![builtins](https://github.com/user-attachments/assets/ce5fba5b-96bc-44d8-88be-b5a39b0b362e)
 
 - **External Commands**: Implementing logic to search for and execute the right executable based on the PATH environment variable or a specified path.
+  
+	![path](https://github.com/user-attachments/assets/88709685-dfae-49c5-85e6-e4d45f0a1dd9)
+
 - **Process Creation**: Using system calls like `fork`, `execve`, `wait`, and `pipe` to manage process creation and execution.
 - **Redirection and Pipes**: Implementing input and output redirection (`<`, `>`, `>>`, `<<`) and pipes (`|`) to allow for command chaining and data redirection.
   
@@ -415,6 +418,9 @@ ls -l | wc -l > output.txt | ls > output2.txt
 - **export**: Sets environment variables.
 - **unset**: Unsets environment variables
 - **env**: Prints the environment variables.
+  
+  ![environment-variables](https://github.com/user-attachments/assets/87e4570b-e029-4f0e-a38c-f31837e0612e)
+  
 - **exit**: Exits the shell.
 
 ### Step 6: Signal Handling
@@ -428,7 +434,8 @@ ls -l | wc -l > output.txt | ls > output2.txt
 ### Step 7: Environment Variable Expansion
 
 - **Environment Variable Expansion**: Managing environment variables and supporting their expansion within commands, including the special case of `$?` to represent the exit status of the most recently executed command.
-![environment-variables](https://github.com/user-attachments/assets/87e4570b-e029-4f0e-a38c-f31837e0612e)
+  
+	![parameter-expansion](https://github.com/user-attachments/assets/c1824c1c-7d2a-4244-ae4c-e95d063c4a45)
 
 ### Step 8: Testing and Debugging
 
