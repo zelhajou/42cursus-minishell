@@ -407,6 +407,9 @@ ls -l | wc -l > output.txt | ls > output2.txt
 	![path](https://github.com/user-attachments/assets/88709685-dfae-49c5-85e6-e4d45f0a1dd9)
 
 - **Process Creation**: Using system calls like `fork`, `execve`, `wait`, and `pipe` to manage process creation and execution.
+
+	![processes (1)](https://github.com/user-attachments/assets/5c7a2793-78ff-4dd5-bd01-a208457fd9cf)
+
 - **Redirection and Pipes**: Implementing input and output redirection (`<`, `>`, `>>`, `<<`) and pipes (`|`) to allow for command chaining and data redirection.
   
 	![redirects](https://github.com/user-attachments/assets/cc07277b-2fe0-425a-ba39-0013f9871d1c)
@@ -415,7 +418,7 @@ ls -l | wc -l > output.txt | ls > output2.txt
 
 ### Step 5: Built-in Commands Implementation
 
-![builtins](https://github.com/user-attachments/assets/ce5fba5b-96bc-44d8-88be-b5a39b0b362e)
+	![builtins](https://github.com/user-attachments/assets/ce5fba5b-96bc-44d8-88be-b5a39b0b362e)
 
 - **echo**: Outputs the arguments passed to it.
 - **cd**: Changes the current working directory.
@@ -424,7 +427,7 @@ ls -l | wc -l > output.txt | ls > output2.txt
 - **unset**: Unsets environment variables
 - **env**: Prints the environment variables.
   
-  ![environment-variables](https://github.com/user-attachments/assets/87e4570b-e029-4f0e-a38c-f31837e0612e)
+  	![environment-variables](https://github.com/user-attachments/assets/87e4570b-e029-4f0e-a38c-f31837e0612e)
   
 - **exit**: Exits the shell.
 
