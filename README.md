@@ -418,7 +418,7 @@ ls -l | wc -l > output.txt | ls > output2.txt
 
 ### Step 5: Built-in Commands Implementation
 
-	![builtins](https://github.com/user-attachments/assets/ce5fba5b-96bc-44d8-88be-b5a39b0b362e)
+![builtins](https://github.com/user-attachments/assets/ce5fba5b-96bc-44d8-88be-b5a39b0b362e)
 
 - **echo**: Outputs the arguments passed to it.
 - **cd**: Changes the current working directory.
