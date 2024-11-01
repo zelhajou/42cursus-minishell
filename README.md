@@ -187,7 +187,8 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 
 ### Step 3: Parsing and Input Management
 
-[Parsing - Computerphile](https://youtu.be/r6vNthpQtSI?list=LL)
+- [Parsing - Computerphile](https://youtu.be/r6vNthpQtSI?list=LL)
+- [Learn About Parsing - What is it and Why Do You Need It?](https://youtu.be/T0BO415l3N0?list=LL)
 
 #### Command Reading
 
