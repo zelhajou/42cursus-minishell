@@ -196,6 +196,7 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 ```bash
 brew install readline
 ```
+[readline(3) - Linux manual page](https://man7.org/linux/man-pages/man3/readline.3.html)
 
 Add the following to the Makefile:
 ```makefile
@@ -227,7 +228,6 @@ int main(void)
 }
 ```
 
-[readline(3) - Linux manual page](https://man7.org/linux/man-pages/man3/readline.3.html)
 
 ### Steps for building the parser and AST (Abstract Syntax Tree)
 
