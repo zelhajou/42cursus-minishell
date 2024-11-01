@@ -187,6 +187,8 @@ Reviewed the external functions allowed, dividing them among ourselves to resear
 
 ### Step 3: Parsing and Input Management
 
+[Parsing - Computerphile](https://youtu.be/r6vNthpQtSI?list=LL)
+
 #### Command Reading
 
 **Readline Library**: Implemented readline and integrated add_history ( [GNU Readline](https://en.wikipedia.org/wiki/GNU_Readline))
@@ -228,6 +230,9 @@ int main(void)
 [readline(3) - Linux manual page](https://man7.org/linux/man-pages/man3/readline.3.html)
 
 ### Steps for building the parser and AST (Abstract Syntax Tree)
+
+[What Is An Abstract Syntax Tree](https://youtu.be/wINY109MG10?list=LL)
+
 
 - **Syntax Error Checking**: This involves verifying whether the input string adheres to the shell's syntax rules. It checks for unclosed quotes, and misuse of redirection or pipe symbols. Syntax error checking ensures that the input can be correctly interpreted and executed.
 
